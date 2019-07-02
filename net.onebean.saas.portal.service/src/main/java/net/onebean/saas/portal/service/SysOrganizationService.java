@@ -1,6 +1,6 @@
 package net.onebean.saas.portal.service;
 
-import com.eakay.core.IBaseSplitBiz;
+import net.onebean.core.IBaseSplitBiz;
 import net.onebean.saas.portal.VO.OrgTree;
 import net.onebean.saas.portal.model.SysOrganization;
 import net.onebean.saas.portal.model.SysUser;

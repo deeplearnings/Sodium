@@ -1,6 +1,6 @@
 package ${vo_package_name};
 
-import com.eakay.core.BaseTree;
+import net.onebean.core.BaseTree;
 import ${model_package_name}.${model_name};
 
 import java.util.List;

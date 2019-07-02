@@ -1,6 +1,6 @@
 package net.onebean.saas.portal.service;
 import net.onebean.saas.portal.model.CodeDatabaseField;
-import com.eakay.core.IBaseBiz;
+import net.onebean.core.IBaseBiz;
 
 import java.util.List;
 

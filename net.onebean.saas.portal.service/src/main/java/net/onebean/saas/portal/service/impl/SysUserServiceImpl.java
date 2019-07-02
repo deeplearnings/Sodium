@@ -3,8 +3,8 @@ package net.onebean.saas.portal.service.impl;
 import net.onebean.saas.portal.dao.SysUserDao;
 import net.onebean.saas.portal.model.SysUser;
 import net.onebean.saas.portal.service.SysUserService;
-import com.eakay.core.BaseSplitBiz;
-import com.eakay.core.Condition;
+import net.onebean.core.BaseSplitBiz;
+import net.onebean.core.Condition;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

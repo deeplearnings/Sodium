@@ -1,15 +1,15 @@
 package net.onebean.saas.portal.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.eakay.common.exception.BusinessException;
-import com.eakay.core.BaseBiz;
+import net.onebean.common.exception.BusinessException;
+import net.onebean.core.BaseBiz;
 import net.onebean.saas.portal.common.error.ErrorCodesEnum;
 import net.onebean.saas.portal.dao.TenantInfoDao;
 import net.onebean.saas.portal.model.TenantInfo;
 import net.onebean.saas.portal.service.TenantInfoService;
-import com.eakay.util.PropUtil;
-import com.eakay.util.StringUtils;
-import com.eakay.util.VelocityUtils;
+import net.onebean.util.PropUtil;
+import net.onebean.util.StringUtils;
+import net.onebean.util.VelocityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

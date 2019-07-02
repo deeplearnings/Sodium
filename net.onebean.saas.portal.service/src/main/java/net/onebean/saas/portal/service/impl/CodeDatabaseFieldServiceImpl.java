@@ -4,10 +4,10 @@ import net.onebean.saas.portal.common.error.ErrorCodesEnum;
 import net.onebean.saas.portal.dao.CodeDatabaseFieldDao;
 import net.onebean.saas.portal.model.CodeDatabaseField;
 import net.onebean.saas.portal.service.CodeDatabaseFieldService;
-import com.eakay.common.exception.BusinessException;
-import com.eakay.core.BaseBiz;
-import com.eakay.util.PropUtil;
-import com.eakay.util.StringUtils;
+import net.onebean.common.exception.BusinessException;
+import net.onebean.core.BaseBiz;
+import net.onebean.util.PropUtil;
+import net.onebean.util.StringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.stereotype.Service;
 

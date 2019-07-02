@@ -2,9 +2,9 @@ package net.onebean.saas.portal.service.impl;
 import net.onebean.saas.portal.dao.SysRoleUserDao;
 import net.onebean.saas.portal.model.SysRoleUser;
 import net.onebean.saas.portal.service.SysRoleUserService;
-import com.eakay.core.BaseSplitBiz;
-import com.eakay.core.Condition;
-import com.eakay.util.CollectionUtil;
+import net.onebean.core.BaseSplitBiz;
+import net.onebean.core.Condition;
+import net.onebean.util.CollectionUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 package net.onebean.spring;
 
 import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
-import com.eakay.core.extend.ApolloConfInitializer;
+import net.onebean.core.extend.ApolloConfInitializer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -21,10 +21,10 @@ import org.springframework.stereotype.Service;
 				"net.onebean.saas.portal.provider",
 				"net.onebean.saas.portal.common",
 				"net.onebean.saas.portal.security",
-				"com.eakay.*.**.api.**",
-				"com.eakay.core",
-				"com.eakay.config",
-				"com.eakay.component"
+				"net.onebean.*.**.api.**",
+				"net.onebean.core",
+				"net.onebean.config",
+				"net.onebean.component"
 		},
 		includeFilters = {
 				@ComponentScan.Filter(value = Service.class, type = FilterType.ANNOTATION),
@@ -40,7 +40,7 @@ import org.springframework.stereotype.Service;
 @EnableApolloConfig
 @EnableDiscoveryClient
 @EnableHystrix
-@EnableFeignClients(basePackages = "com.eakay.*.**.api.**")
+@EnableFeignClients(basePackages = "net.onebean.*.**.api.**")
 public class Main {
 
 	public static void main(String[] args) {

@@ -1,7 +1,7 @@
 package net.onebean.saas.portal.VO;
 
 import net.onebean.saas.portal.model.SysPermission;
-import com.eakay.core.BaseTree;
+import net.onebean.core.BaseTree;
 
 import java.util.List;
 

@@ -6,10 +6,10 @@ import net.onebean.saas.portal.model.CodeDatabaseTable;
 import freemarker.template.Template;
 import net.onebean.saas.portal.enumModel.CodeDatabaseTableEnum;
 import net.onebean.saas.portal.service.SysPermissionService;
-import com.eakay.util.DateUtils;
-import com.eakay.util.FreeMarkerTemplateUtils;
-import com.eakay.util.PropUtil;
-import com.eakay.util.StringUtils;
+import net.onebean.util.DateUtils;
+import net.onebean.util.FreeMarkerTemplateUtils;
+import net.onebean.util.PropUtil;
+import net.onebean.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

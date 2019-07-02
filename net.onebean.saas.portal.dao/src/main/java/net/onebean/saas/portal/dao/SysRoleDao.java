@@ -1,6 +1,6 @@
 package net.onebean.saas.portal.dao;
 
-import com.eakay.core.BaseSplitDao;
+import net.onebean.core.BaseSplitDao;
 import net.onebean.saas.portal.model.SysRole;
 import org.apache.ibatis.annotations.Param;
 

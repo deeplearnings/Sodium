@@ -1,10 +1,10 @@
 package net.onebean.saas.portal.common.thymeleaf.processor;
 
 import net.onebean.saas.portal.model.TenantInfo;
-import com.eakay.component.SpringUtil;
+import net.onebean.component.SpringUtil;
 import net.onebean.saas.portal.service.TenantInfoService;
 import net.onebean.saas.portal.service.impl.TenantInfoServiceImpl;
-import com.eakay.util.CollectionUtil;
+import net.onebean.util.CollectionUtil;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.*;

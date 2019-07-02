@@ -1,14 +1,14 @@
 package ${service_package_name}.impl;
 import org.springframework.stereotype.Service;
-import com.eakay.util.CollectionUtil;
-import com.eakay.core.BaseBiz;
-import com.eakay.core.Condition;
-import com.eakay.core.Pagination;
-import com.eakay.core.form.Parse;
+import net.onebean.util.CollectionUtil;
+import net.onebean.core.BaseBiz;
+import net.onebean.core.Condition;
+import net.onebean.core.Pagination;
+import net.onebean.core.form.Parse;
 import ${model_package_name}.${model_name};
 import ${service_package_name}.${model_name}Service;
 import ${dao_package_name}.${model_name}Dao;
-import com.eakay.util.StringUtils;
+import net.onebean.util.StringUtils;
 import ${vo_package_name}.${model_name}Tree;
 
 import java.util.ArrayList;

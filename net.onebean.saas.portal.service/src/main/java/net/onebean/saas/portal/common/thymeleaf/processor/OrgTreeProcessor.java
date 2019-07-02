@@ -1,10 +1,10 @@
 package net.onebean.saas.portal.common.thymeleaf.processor;
 
 import net.onebean.saas.portal.common.thymeleaf.base.OneBeanBaseAbstractElementTagProcessor;
-import com.eakay.component.SpringUtil;
+import net.onebean.component.SpringUtil;
 import net.onebean.saas.portal.service.SysOrganizationService;
 import net.onebean.saas.portal.service.impl.SysOrganizationServiceImpl;
-import com.eakay.util.StringUtils;
+import net.onebean.util.StringUtils;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.*;

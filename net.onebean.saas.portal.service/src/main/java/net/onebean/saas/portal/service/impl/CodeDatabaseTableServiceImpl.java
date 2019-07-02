@@ -5,10 +5,10 @@ import net.onebean.saas.portal.model.CodeDatabaseField;
 import net.onebean.saas.portal.model.CodeDatabaseTable;
 import net.onebean.saas.portal.service.CodeDatabaseFieldService;
 import net.onebean.saas.portal.service.CodeDatabaseTableService;
-import com.eakay.core.BaseBiz;
-import com.eakay.core.Condition;
-import com.eakay.util.CollectionUtil;
-import com.eakay.util.PropUtil;
+import net.onebean.core.BaseBiz;
+import net.onebean.core.Condition;
+import net.onebean.util.CollectionUtil;
+import net.onebean.util.PropUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

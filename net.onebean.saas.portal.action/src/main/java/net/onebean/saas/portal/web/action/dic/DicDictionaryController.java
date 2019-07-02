@@ -2,9 +2,9 @@ package net.onebean.saas.portal.web.action.dic;
 
 
 import net.onebean.saas.portal.core.BaseController;
-import com.eakay.core.PageResult;
-import com.eakay.core.Pagination;
-import com.eakay.core.extend.Sort;
+import net.onebean.core.PageResult;
+import net.onebean.core.Pagination;
+import net.onebean.core.extend.Sort;
 import net.onebean.saas.portal.model.DicDictionary;
 import net.onebean.saas.portal.service.DicDictionaryService;
 import org.springframework.context.annotation.Description;

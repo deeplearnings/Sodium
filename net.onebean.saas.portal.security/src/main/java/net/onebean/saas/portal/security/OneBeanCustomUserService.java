@@ -1,6 +1,6 @@
 package net.onebean.saas.portal.security;
 
-import com.eakay.core.form.Parse;
+import net.onebean.core.form.Parse;
 import net.onebean.saas.portal.model.SysPermission;
 import net.onebean.saas.portal.model.SysUser;
 import net.onebean.saas.portal.service.SysPermissionService;

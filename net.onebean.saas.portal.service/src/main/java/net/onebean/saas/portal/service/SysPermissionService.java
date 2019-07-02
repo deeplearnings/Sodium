@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import net.onebean.saas.portal.model.CodeDatabaseTable;
 import net.onebean.saas.portal.model.SysPermission;
 import net.onebean.saas.portal.model.SysUser;
-import com.eakay.core.IBaseSplitBiz;
+import net.onebean.core.IBaseSplitBiz;
 import net.onebean.saas.portal.VO.MenuTree;
 
 import java.util.List;

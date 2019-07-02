@@ -1,10 +1,10 @@
 package net.onebean.saas.portal.model;
 
-import com.eakay.core.extend.FiledName;
-import com.eakay.core.extend.IgnoreColumn;
-import com.eakay.core.extend.TableName;
-import com.eakay.core.model.BaseModel;
-import com.eakay.core.model.InterfaceBaseSplitModel;
+import net.onebean.core.extend.FiledName;
+import net.onebean.core.extend.IgnoreColumn;
+import net.onebean.core.extend.TableName;
+import net.onebean.core.model.BaseModel;
+import net.onebean.core.model.InterfaceBaseSplitModel;
 
 import java.sql.Timestamp;
 import java.util.List;

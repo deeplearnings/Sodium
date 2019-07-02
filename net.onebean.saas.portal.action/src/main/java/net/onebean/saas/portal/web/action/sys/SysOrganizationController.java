@@ -1,10 +1,10 @@
 package net.onebean.saas.portal.web.action.sys;
 
 
-import com.eakay.core.PageResult;
-import com.eakay.core.Pagination;
-import com.eakay.core.extend.Sort;
-import com.eakay.core.form.Parse;
+import net.onebean.core.PageResult;
+import net.onebean.core.Pagination;
+import net.onebean.core.extend.Sort;
+import net.onebean.core.form.Parse;
 import net.onebean.saas.portal.VO.OrgTree;
 import net.onebean.saas.portal.core.BaseSplitController;
 import net.onebean.saas.portal.model.SysOrganization;
@@ -12,7 +12,7 @@ import net.onebean.saas.portal.model.SysUser;
 import net.onebean.saas.portal.security.SpringSecurityUtil;
 import net.onebean.saas.portal.service.SysOrganizationService;
 import net.onebean.saas.portal.service.SysUserService;
-import com.eakay.util.CollectionUtil;
+import net.onebean.util.CollectionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Description;
 import org.springframework.security.access.prepost.PreAuthorize;

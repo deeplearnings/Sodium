@@ -1,8 +1,8 @@
 package ${action_package_name}.${mapping};
 
-import com.eakay.core.PageResult;
-import com.eakay.core.Pagination;
-import com.eakay.core.extend.Sort;
+import net.onebean.core.PageResult;
+import net.onebean.core.Pagination;
+import net.onebean.core.extend.Sort;
 import BaseController;
 import ${model_package_name}.${model_name};
 import ${service_package_name}.${model_name}Service;

@@ -1,7 +1,7 @@
 package net.onebean.saas.portal.web.action.demo;
 
 
-import com.eakay.util.DateUtils;
+import net.onebean.util.DateUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;

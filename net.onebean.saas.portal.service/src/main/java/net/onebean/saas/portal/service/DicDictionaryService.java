@@ -1,6 +1,6 @@
 package net.onebean.saas.portal.service;
 import net.onebean.saas.portal.model.DicDictionary;
-import com.eakay.core.IBaseBiz;
+import net.onebean.core.IBaseBiz;
 
 public interface DicDictionaryService extends IBaseBiz<DicDictionary> {
     /**

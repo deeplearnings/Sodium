@@ -1,6 +1,6 @@
 package net.onebean.saas.portal.dao;
 
-import com.eakay.core.BaseDao;
+import net.onebean.core.BaseDao;
 import net.onebean.saas.portal.model.TenantInfo;
 import org.apache.ibatis.annotations.Param;
 

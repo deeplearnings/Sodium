@@ -2,8 +2,8 @@ package net.onebean.saas.portal.common.thymeleaf.processor;
 
 import net.onebean.saas.portal.common.dictionary.DictionaryUtils;
 import net.onebean.saas.portal.model.DicDictionary;
-import com.eakay.util.CollectionUtil;
-import com.eakay.util.StringUtils;
+import net.onebean.util.CollectionUtil;
+import net.onebean.util.StringUtils;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.*;

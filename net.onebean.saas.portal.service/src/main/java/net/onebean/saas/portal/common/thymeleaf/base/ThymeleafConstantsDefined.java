@@ -1,6 +1,6 @@
 package net.onebean.saas.portal.common.thymeleaf.base;
 
-import com.eakay.util.PropUtil;
+import net.onebean.util.PropUtil;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 

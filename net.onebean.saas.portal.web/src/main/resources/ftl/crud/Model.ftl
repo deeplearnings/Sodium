@@ -1,16 +1,16 @@
 package ${model_package_name};
-import com.eakay.core.extend.FiledName;
-import com.eakay.core.extend.TableName;
-import com.eakay.core.model.BaseModel;
+import net.onebean.core.extend.FiledName;
+import net.onebean.core.extend.TableName;
+import net.onebean.core.model.BaseModel;
 <#if generateType == 'tree'>
-import com.eakay.core.extend.IgnoreColumn;
+import net.onebean.core.extend.IgnoreColumn;
 </#if>
 <#if is_split_table == true>
-import com.eakay.core.model.InterfaceBaseSplitModel;
+import net.onebean.core.model.InterfaceBaseSplitModel;
 <#elseif is_split_table == false && logically_delete == true>
-import com.eakay.core.model.InterfaceBaseDeletedModel;
+import net.onebean.core.model.InterfaceBaseDeletedModel;
 <#else>
-import com.eakay.core.model.InterfaceBaseModel;
+import net.onebean.core.model.InterfaceBaseModel;
 </#if>
 
 <#if fieldArr?exists>

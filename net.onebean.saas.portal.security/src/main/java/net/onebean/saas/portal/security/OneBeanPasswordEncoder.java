@@ -1,6 +1,6 @@
 package net.onebean.saas.portal.security;
 
-import com.eakay.util.PropUtil;
+import net.onebean.util.PropUtil;
 import org.springframework.security.crypto.codec.Hex;
 import org.springframework.security.crypto.codec.Utf8;
 import org.springframework.security.crypto.keygen.BytesKeyGenerator;

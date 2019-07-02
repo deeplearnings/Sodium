@@ -1,7 +1,7 @@
 package net.onebean.saas.portal.service;
 
 import net.onebean.saas.portal.model.SysUser;
-import com.eakay.core.IBaseSplitBiz;
+import net.onebean.core.IBaseSplitBiz;
 
 import java.util.List;
 

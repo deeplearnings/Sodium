@@ -2,7 +2,7 @@ package net.onebean.saas.portal.common.dictionary;
 
 import net.onebean.saas.portal.model.DicDictionary;
 import net.onebean.saas.portal.service.DicDictionaryService;
-import com.eakay.util.CollectionUtil;
+import net.onebean.util.CollectionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

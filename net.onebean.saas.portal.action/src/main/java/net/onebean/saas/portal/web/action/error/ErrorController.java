@@ -2,7 +2,7 @@ package net.onebean.saas.portal.web.action.error;
 
 import net.onebean.saas.portal.web.action.login.LoginController;
 import net.onebean.saas.portal.service.TenantInfoService;
-import com.eakay.util.StringUtils;
+import net.onebean.util.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;

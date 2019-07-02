@@ -1,6 +1,6 @@
 package net.onebean.saas.portal.web.action.upload;
 
-import com.eakay.util.PropUtil;
+import net.onebean.util.PropUtil;
 import net.onebean.component.aliyun.AliyunOssUtil;
 import net.onebean.component.aliyun.CkEditerUploadCallBackVo;
 import net.onebean.component.aliyun.UploadCallBackVo;

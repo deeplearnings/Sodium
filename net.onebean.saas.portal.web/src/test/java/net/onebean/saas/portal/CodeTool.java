@@ -1,6 +1,6 @@
 package net.onebean.saas.portal;
 
-import com.eakay.tool.*;
+import net.onebean.tool.*;
 
 public class CodeTool {
 

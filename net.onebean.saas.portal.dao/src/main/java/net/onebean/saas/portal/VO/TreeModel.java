@@ -1,6 +1,6 @@
 package net.onebean.saas.portal.VO;
 
-import com.eakay.core.BaseTree;
+import net.onebean.core.BaseTree;
 
 import java.util.List;
 

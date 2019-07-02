@@ -1,8 +1,8 @@
 package net.onebean.saas.portal.service.impl;
 
-import com.eakay.common.exception.BusinessException;
-import com.eakay.core.BaseSplitBiz;
-import com.eakay.core.form.Parse;
+import net.onebean.common.exception.BusinessException;
+import net.onebean.core.BaseSplitBiz;
+import net.onebean.core.form.Parse;
 import net.onebean.saas.portal.VO.OrgTree;
 import net.onebean.saas.portal.common.dataPerm.DataPermUtils;
 import net.onebean.saas.portal.common.error.ErrorCodesEnum;
@@ -11,8 +11,8 @@ import net.onebean.saas.portal.model.SysOrganization;
 import net.onebean.saas.portal.model.SysUser;
 import net.onebean.saas.portal.service.SysOrganizationService;
 import net.onebean.saas.portal.service.SysUserService;
-import com.eakay.util.CollectionUtil;
-import com.eakay.util.StringUtils;
+import net.onebean.util.CollectionUtil;
+import net.onebean.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

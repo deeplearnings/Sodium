@@ -1,10 +1,10 @@
 package net.onebean.saas.portal.security;
 
 import ch.qos.logback.classic.Logger;
-import com.eakay.core.error.GetTenantInfoException;
+import net.onebean.core.error.GetTenantInfoException;
 import net.onebean.saas.portal.model.SysPermission;
 import net.onebean.saas.portal.service.SysPermissionService;
-import com.eakay.util.StringUtils;
+import net.onebean.util.StringUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;

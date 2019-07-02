@@ -5,7 +5,7 @@ import net.onebean.saas.portal.model.SysRole;
 import net.onebean.saas.portal.model.SysUser;
 import net.onebean.saas.portal.service.SysOrganizationService;
 import net.onebean.saas.portal.service.SysRoleService;
-import com.eakay.util.StringUtils;
+import net.onebean.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

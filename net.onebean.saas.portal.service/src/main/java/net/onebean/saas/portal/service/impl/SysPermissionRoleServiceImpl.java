@@ -2,7 +2,7 @@ package net.onebean.saas.portal.service.impl;
 import net.onebean.saas.portal.dao.SysPermissionRoleDao;
 import net.onebean.saas.portal.model.SysPermissionRole;
 import net.onebean.saas.portal.service.SysPermissionRoleService;
-import com.eakay.core.BaseSplitBiz;
+import net.onebean.core.BaseSplitBiz;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
