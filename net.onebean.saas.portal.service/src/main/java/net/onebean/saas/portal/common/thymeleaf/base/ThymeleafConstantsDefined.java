@@ -20,7 +20,7 @@ public class ThymeleafConstantsDefined {
     private void configureThymeleafStaticVars(ThymeleafViewResolver viewResolver) {
         if(viewResolver != null) {
             Map<String, Object> vars = new HashMap<>();
-            vars.put("oss_ctx", PropUtil.getInstance().getConfig("server.oss.context-path",PropUtil.PUBLIC_CONF_ALIYUN_OSS));
+            vars.put("oss_ctx", PropUtil.getInstance().getConfig("server.oss.context-path",PropUtil.PUBLIC_CONF_ALIYUN));
             vars.put("ctx", PropUtil.getInstance().getConfig("server.context-path",PropUtil.DEFLAULT_NAME_SPACE));
             viewResolver.setStaticVariables(vars);
         }

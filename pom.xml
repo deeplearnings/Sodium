@@ -15,7 +15,7 @@
 
 
     <packaging>pom</packaging>
-    <name>saas.portal</name>
+    <name>Sodium</name>
     <description>SaaS系统管理后台</description>
 
     <properties>

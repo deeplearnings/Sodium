@@ -1,11 +1,11 @@
 package net.onebean.saas.portal.web.action.upload;
 
-import net.onebean.util.PropUtil;
 import net.onebean.component.aliyun.AliyunOssUtil;
 import net.onebean.component.aliyun.CkEditerUploadCallBackVo;
 import net.onebean.component.aliyun.UploadCallBackVo;
-import net.onebean.component.aliyun.image.ImageUtil;
-import net.onebean.component.aliyun.image.ImageZipUtil;
+import net.onebean.util.ImageUtil;
+import net.onebean.util.ImageZipUtil;
+import net.onebean.util.PropUtil;
 import org.apache.commons.io.FileUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -34,7 +34,7 @@ public class UpLoadFileController {
     @RequestMapping("filebrowserurl")
     @ResponseBody
     public CkEditerUploadCallBackVo filebrowserBrowseUrl(@RequestParam("upload") MultipartFile file, HttpServletRequest request, CkEditerUploadCallBackVo vo) throws Exception{
-        String contentType = file.getOriginalFilename().substring(file.getOriginalFilename().indexOf(".")+1,file.getOriginalFilename().length());
+        String contentType = file.getOriginalFilename().substring(file.getOriginalFilename().indexOf(".")+1);
         String beforeImagePath = ImageUtil.imageName()+"."+contentType;
         String afterImagePath = ImageUtil.imageName()+"."+contentType;
         contentType = AliyunOssUtil.contentType_map.get(contentType);
@@ -48,12 +48,12 @@ public class UpLoadFileController {
         }
         String ossPath;
         if(allPath.contains("\\")){
-            ossPath = allPath.substring(allPath.indexOf("\\upload\\")+1,allPath.length()).replace("\\", "/");
+            ossPath = allPath.substring(allPath.indexOf("\\upload\\")+1).replace("\\", "/");
         }else{
-            ossPath = allPath.substring(allPath.indexOf("/upload/")+1,allPath.length());
+            ossPath = allPath.substring(allPath.indexOf("/upload/")+1);
         }
-        String bucketName =  PropUtil.getInstance().getConfig("aliyun.oss.bucketName",PropUtil.PUBLIC_CONF_ALIYUN_OSS);
-        String ossHost =  PropUtil.getInstance().getConfig("aliyun.oss.host",PropUtil.PUBLIC_CONF_ALIYUN_OSS);
+        String bucketName =  PropUtil.getInstance().getConfig("aliyun.oss.bucketName",PropUtil.PUBLIC_CONF_ALIYUN);
+        String ossHost =  PropUtil.getInstance().getConfig("aliyun.oss.host",PropUtil.PUBLIC_CONF_ALIYUN);
         AliyunOssUtil.uploadFile(bucketName,ossPath,allPath,contentType);
         vo.setUploaded(1);
         vo.setFileName(afterImagePath);
@@ -70,11 +70,11 @@ public class UpLoadFileController {
      */
     @RequestMapping("uploadmultipartfile")
     @ResponseBody
-    public UploadCallBackVo uploadMultipartFile(MultipartFile file, HttpServletRequest request, UploadCallBackVo vo) throws Exception{
+    public UploadCallBackVo uploadMultipartFile(MultipartFile file, HttpServletRequest request, UploadCallBackVo vo){
         Map<String,Object> data = new HashMap<>();
         try {
-            String ossHost = PropUtil.getInstance().getConfig("aliyun.oss.host",PropUtil.PUBLIC_CONF_ALIYUN_OSS);
-            String contentType = file.getOriginalFilename().substring(file.getOriginalFilename().indexOf(".")+1,file.getOriginalFilename().length());
+            String ossHost = PropUtil.getInstance().getConfig("aliyun.oss.host",PropUtil.PUBLIC_CONF_ALIYUN);
+            String contentType = file.getOriginalFilename().substring(file.getOriginalFilename().indexOf(".")+1);
             String beforeImagePath = ImageUtil.imageName()+"."+contentType;
             String afterImagePath = ImageUtil.imageName()+"."+contentType;
             contentType = AliyunOssUtil.contentType_map.get(contentType);
@@ -88,11 +88,11 @@ public class UpLoadFileController {
             }
             String ossPath;
             if(allPath.contains("\\")){
-                ossPath = allPath.substring(allPath.indexOf("\\upload\\")+1,allPath.length()).replace("\\", "/");
+                ossPath = allPath.substring(allPath.indexOf("\\upload\\")+1).replace("\\", "/");
             }else{
-                ossPath = allPath.substring(allPath.indexOf("/upload/")+1,allPath.length());
+                ossPath = allPath.substring(allPath.indexOf("/upload/")+1);
             }
-            String bucketName =  PropUtil.getInstance().getConfig("aliyun.oss.bucketName",PropUtil.PUBLIC_CONF_ALIYUN_OSS);
+            String bucketName =  PropUtil.getInstance().getConfig("aliyun.oss.bucketName",PropUtil.PUBLIC_CONF_ALIYUN);
             AliyunOssUtil.uploadFile(bucketName,ossPath,allPath,contentType);
             File uploadFile = new File(allPath);
             if(uploadFile.exists() && uploadFile.isDirectory()){
@@ -120,9 +120,9 @@ public class UpLoadFileController {
      */
     @RequestMapping("downfile")
     public ResponseEntity<byte[]> uploadMultipartFile(@RequestParam("store")String store, HttpServletRequest request) throws Exception{
-        String filename = store.substring(store.lastIndexOf("/"),store.length()).replace("/","");
-        String bucketName = PropUtil.getInstance().getConfig("aliyun.oss.bucketName",PropUtil.PUBLIC_CONF_ALIYUN_OSS);
-        String ossHost = PropUtil.getInstance().getConfig("aliyun.oss.host",PropUtil.PUBLIC_CONF_ALIYUN_OSS);
+        String filename = store.substring(store.lastIndexOf("/")).replace("/","");
+        String bucketName = PropUtil.getInstance().getConfig("aliyun.oss.bucketName",PropUtil.PUBLIC_CONF_ALIYUN);
+        String ossHost = PropUtil.getInstance().getConfig("aliyun.oss.host",PropUtil.PUBLIC_CONF_ALIYUN);
         String key = store.replace(ossHost,"");
         String localPath =  request.getServletContext().getRealPath("/dowmload/");
         String filePath = localPath+key;
@@ -149,7 +149,7 @@ public class UpLoadFileController {
     private String zipImage(String beforePath,String afterPath){
         File before = new File(beforePath);
         File after = new File(afterPath);
-        ImageZipUtil.zipImageFile(before,after,ImageUtil.getImgWidth(before),ImageUtil.getImgHeight(before),Float.valueOf(PropUtil.getInstance().getConfig("aliyun.oss.zipimg.limit.quality",PropUtil.PUBLIC_CONF_ALIYUN_OSS)));
+        ImageZipUtil.zipImageFile(before,after,ImageUtil.getImgWidth(before), ImageUtil.getImgHeight(before));
         if(before.exists() && before.isDirectory()){
             before.deleteOnExit();
         }
