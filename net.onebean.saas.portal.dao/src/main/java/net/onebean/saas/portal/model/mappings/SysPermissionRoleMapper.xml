@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.onebean.saas.portal.dao.SysPermissionRoleDao" >
+    <select id="getRolePremissionByRoleId" parameterType="long" resultType="net.onebean.saas.portal.model.SysPermissionRole">
+        SELECT pr.* FROM `sys_permission_role_${tableSuffix}` pr
+         <where>
+             pr.`role_id` = ${roleId}
+             and pr.is_deleted = '0'
+         </where>
+    </select>
+
+    <delete id="deteleByRoleId" parameterType="long">
+        update sys_permission_role_${tableSuffix} set is_deleted = '1'
+          <where>
+              `role_id` = ${roleId}
+          </where>
+    </delete>
+
+    <delete id="deteleByPermissionId" parameterType="long">
+        update sys_permission_role_${tableSuffix} set is_deleted = '1'
+        <where>
+            `permission_id` = ${permissionId}
+        </where>
+    </delete>
+
+
+    <insert id="insertBatch" parameterType="java.util.ArrayList">
+        insert into sys_permission_role_${tableSuffix} (permission_id,role_id) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.permissionId},#{item.roleId})
+        </foreach>
+    </insert>
+</mapper>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.onebean.saas.portal.dao.SysOrganizationDao" >
+
+    <!-- 一对多查询关联  -->
+    <resultMap type="net.onebean.saas.portal.model.SysOrganization" id="defaultResultMap">
+        <id property="id" column="id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="isRoot" column="is_root"/>
+        <result property="orgName" column="org_name"/>
+        <result property="remark" column="remark"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <!--异步查找子节点,每次查找一级-->
+    <select id="findChildAsync" resultType="net.onebean.saas.portal.VO.OrgTree" parameterType="long">
+        <bind name="pattern" value="'%'+_parameter.dp.orgId+'%'" />
+        SELECT o.id,o.org_name as title,IF( EXISTS(SELECT o1.id FROM sys_organization_${tableSuffix} o1  WHERE o1.parent_id = o.id) = 1 ,"folder","item") AS TYPE
+            FROM sys_organization_${tableSuffix} o
+                LEFT JOIN sys_user_${tableSuffix} u ON o.`id` = u.`org_id`
+          <where>
+              <choose>
+                  <when test="parentId != null">
+                      o.parent_id = ${parentId}
+                  </when>
+                  <when test="parentId == null and dp.hasDatePerm">
+                      o.`parent_ids` NOT LIKE #{pattern}
+                  </when>
+                  <otherwise>
+                      o.is_root = 1
+                  </otherwise>
+              </choose>
+
+              <if test="dp.hasDatePerm">
+                  ${dp.sql}
+              </if>
+              and o.is_deleted = '0'
+          </where>
+
+    </select>
+
+    <select id="getParentOrgIds" parameterType="long" resultType="string">
+        SELECT getParentOrgIds_${tableSuffix}(${childId});
+    </select>
+
+    <select id="findByUserId" parameterType="long" resultType="net.onebean.saas.portal.model.SysOrganization">
+        SELECT o.* FROM sys_organization_${tableSuffix} o LEFT JOIN sys_user_${tableSuffix} u ON o.`id` = u.`org_id`
+         <where>
+             u.`id` = ${userId}
+             and o.is_deleted = '0'
+             and u.is_deleted = '0'
+         </where>
+    </select>
+
+    <select id="findDeleteId" parameterType="string" resultType="string">
+        SELECT id FROM sys_organization_${tableSuffix} WHERE FIND_IN_SET(#{id},parent_ids) OR id = #{id}
+    </select>
+
+    <delete id="deleteSelfAndChildById" parameterType="long">
+        update sys_organization_${tableSuffix} set is_deleted = '1'
+        WHERE FIND_IN_SET(#{id},parent_ids) OR id = #{id}
+    </delete>
+
+    <select id="findChildOrderNextNum" parameterType="long" resultType="int">
+        SELECT p.sort + 1 FROM sys_organization_${tableSuffix} p
+        <where>
+            p.parent_id = #{parentId} ORDER BY p.sort DESC LIMIT 1;
+        </where>
+    </select>
+
+</mapper>

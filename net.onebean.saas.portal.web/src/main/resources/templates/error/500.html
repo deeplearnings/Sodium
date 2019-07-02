@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="public/head :: onLoadHead(500)">
+</head>
+<body ddata-type="widgets">
+
+<div class="am-g tpl-g">
+    <!-- 内容区域 -->
+    <div class="tpl-content-wrapper none-margin">
+        <div class="row-content am-cf">
+            <div class="widget am-cf">
+                <div class="widget-body">
+                    <div class="tpl-page-state">
+                        <div class="tpl-page-state-title am-text-center tpl-error-title">500</div>
+                        <div class="tpl-error-title-info">Server Internal Error</div>
+                        <div class="tpl-page-state-content tpl-error-content">
+                            <p>服务器异常</p>
+                            <th:block th:if="${errorCode}">
+                                <p>错误码 : <span class="error-font" th:value="${errorCode}">324523434</span></p>
+                            </th:block>
+
+                            <button type="button" class="am-btn am-btn-secondary am-radius tpl-error-btn" onclick="goUrl('/')">返回主页</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<css th:replace="public/css :: onLoadCSS"></css>
+<js th:replace="public/js :: onLoadJS"></js>
+</body>
+</html>

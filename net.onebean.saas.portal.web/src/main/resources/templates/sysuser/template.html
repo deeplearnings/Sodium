@@ -1,0 +1,13 @@
+<script id="tpl-sysRoleList" type="text/html" th:fragment="sysRoleListTemp">
+    {{each $data as data}}
+    {{if data != null}}
+    <label class="am-checkbox">
+        <input type="checkbox" value="{{data.ruid}}" name="roleList" data-am-ucheck> {{data.chName}}
+    </label>
+    {{else}}
+    <label class="am-checkbox">
+        <input type="checkbox" value="" data-am-ucheck disabled> 暂无数据
+    </label>
+    {{/if}}
+    {{/each}}
+</script>

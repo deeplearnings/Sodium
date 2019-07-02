@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>net.onebean</groupId>
+        <artifactId>onebean.boot.stater</artifactId>
+        <version>2.0.0.RELEASE</version>
+    </parent>
+
+    <artifactId>net.onebean.saas.portal</artifactId>
+    <version>1.0.0.SNAPSHOT</version>
+
+
+    <packaging>pom</packaging>
+    <name>saas.portal</name>
+    <description>SaaS系统管理后台</description>
+
+    <properties>
+        <net.onebean.saas.portal.dao.version>${child.model.version}</net.onebean.saas.portal.dao.version>
+        <net.onebean.saas.portal.service.version>${child.model.version}</net.onebean.saas.portal.service.version>
+        <net.onebean.saas.portal.security.version>${child.model.version}</net.onebean.saas.portal.security.version>
+        <net.onebean.saas.portal.action.version>${child.model.version}</net.onebean.saas.portal.action.version>
+        <net.onebean.saas.portal.web.version>${child.model.version}</net.onebean.saas.portal.web.version>
+        <net.onebean.core.version>${core.version}</net.onebean.core.version>
+    </properties>
+
+    <modules>
+        <module>net.onebean.saas.portal.dao</module>
+        <module>net.onebean.saas.portal.service</module>
+        <module>net.onebean.saas.portal.security</module>
+        <module>net.onebean.saas.portal.action</module>
+        <module>net.onebean.saas.portal.web</module>
+    </modules>
+
+</project>

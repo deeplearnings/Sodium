@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="public/head :: onLoadHead(用户列表)">
+
+</head>
+<body data-type="widgets">
+<div class="am-g tpl-g">
+    <!-- 模态提示组件 -->
+    <div th:include="public/tips :: Tips"></div>
+    <!-- 数据选择模态组件 -->
+    <div th:include="public/dataBind :: RuBindTips" class="am-popup"  id="data-bind-modal"></div>
+    <!-- 内容区域 -->
+    <div class="tpl-content-wrapper none-margin">
+        <div class="row-content am-cf">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="widget am-cf">
+                        <div class="widget-head am-cf">
+                            <th:block th:include="public/breadCrumbs :: breadCrumbsTempl"/>
+                        </div>
+
+                        <div class="widget-body am-fr">
+                            <form class="am-form tpl-form-border-form tpl-form-border-br paramFrom" onsubmit="return false;" >
+                                <div class="am-form-group">
+                                    <label class="am-u-sm-1 am-form-label line-hight-10">用户名 :</label>
+                                    <div class="am-u-sm-3 am-u-end line-hight-10">
+                                        <input type="text" class="tpl-form-input paramInput" param-pattern="username@string@like$"  placeholder="请输入用户名">
+                                    </div>
+
+                                    <label class="am-u-sm-1 am-form-label line-hight-10">用户类型 :</label>
+                                    <div class="am-u-sm-3 am-u-end line-hight-10">
+                                        <dic:code  code="YHLX" param-pattern="userType@string@eq$"/>
+                                    </div>
+                                </div>
+
+                                <label class="am-u-sm-12 am-u-md-6 am-u-lg-2 am-u-lg-offset-2 am-form-label">排序规则 :</label>
+                                <div class="am-u-sm-12 am-u-md-6 am-u-lg-2">
+                                    <div class="am-form-group tpl-table-list-select">
+                                        <select data-am-selected="{btnSize: 'sm'}" id="orderBySelector">
+                                            <option value="id-asc" selected>ID升序</option>
+                                            <option value="id-desc">ID降序</option>
+                                            <option value="id,username-asc">用户名升序</option>
+                                            <option value="username-desc">用户名降序</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <label class="am-u-sm-12 am-u-md-6 am-u-lg-2 am-form-label">每页数量/条 :</label>
+                                <div class="am-u-sm-12 am-u-md-6 am-u-lg-2">
+                                    <div class="am-form-group tpl-table-list-select">
+                                        <select data-am-selected="{btnSize: 'sm'}" id="limitSelector">
+                                            <option value="5">5</option>
+                                            <option value="10" selected>10</option>
+                                            <option value="30">30</option>
+                                            <option value="50">50</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="am-u-sm-12 am-u-md-6 am-u-lg-2">
+                                    <div class="am-form-group" style="float: right">
+                                        <div class="am-btn-toolbar">
+                                            <div class="am-btn-group am-btn-group-xs">
+                                                <th:block sec:authorize="hasPermission('$everyone','PERM_USER_ADD')">
+                                                    <button type="button" class="am-btn am-btn-default am-btn-success" onclick="routingPage('/sysuser/add','新增用户')"><span class="am-icon-plus"></span> 新增</button>
+                                                </th:block>
+                                                <button type="button" class="am-btn am-btn-default am-btn-secondary query-button"><span class="am-icon-search"></span> 查询</button>
+                                                <button type="button"  class="am-btn am-btn-default am-btn-warning reset-button"><span class="am-icon-archive"></span> 重置</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <div class="am-u-sm-12">
+                                <table width="100%" class="am-table am-table-compact am-table-bordered am-table-radius am-table-striped tpl-table-black" id="example-r">
+                                    <thead>
+                                    <tr>
+                                        <th>用户名</th>
+                                        <th>真实姓名</th>
+                                        <th>邮箱</th>
+                                        <th>工号</th>
+                                        <th>手机号码</th>
+                                        <th>用户类型</th>
+                                        <th>是否锁定</th>
+                                        <th>创建时间</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="dataTable">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="am-u-lg-12 am-cf">
+                                <div class="am-fr" id="pagination">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<css th:replace="public/css :: onLoadCSS"></css>
+<js th:replace="public/js :: onLoadJS"></js>
+<script th:src="@{/system_assets/js/typeahead/bloodhound.min.js}" type="text/javascript"></script>
+<script th:src="@{/system_assets/js/typeahead/typeahead.jquery.js}" type="text/javascript"></script>
+<script th:src="@{/system_assets/js/typeahead/amazeui.tagsinput.min.js}" type="text/javascript"></script>
+<script th:src="@{/assets/js/sysuser/sysuser.js}" type="text/javascript"></script>
+<script th:inline="javascript">
+    $(function () {
+        initDataTable();
+    });
+
+    function initDataTable(){
+        var pageSize = $("#limitSelector").val();
+        var currentPage = $("#tpl-pagination").attr("currentPage");
+        var orderBy = $("#orderBySelector").val().split('-')[0];
+        var sort = $("#orderBySelector").val().split('-')[1];
+        var param = {orderBy: orderBy, sort: sort, currentPage: currentPage, pageSize: pageSize, conditionList: formatQueryFromParam()};
+        doGet("/sysuser/list",param,function (res) {
+            $('#dataTable').html(template('tpl-sysuser', res.data));
+            $('#pagination').html(template('tpl-pagination', res.pagination));
+        })
+    }
+
+</script>
+
+<script id="tpl-sysuser" type="text/html">
+    {{each $data as data}}
+    <tr  class={{if $index%2==0}} "gradeX" {{else}} "even gradeC" {{/if}} >
+    <td> <a href="javascript:;" onclick="routingPage('/sysuser/view/{{data.id}}','查看用户')">{{data.username}}</a> </td>
+    <td>{{data.realName}}</td>
+    <td>{{data.email}}</td>
+    <td>{{data.number}}</td>
+    <td>{{data.mobile}}</td>
+    <td>{{data.userType}}</td>
+    <td>{{data.isLock}}</td>
+    <td>{{data.createTimeStr}}</td>
+    {{set userType = data.userTypeOriginal}}
+    <td>
+        <div class="tpl-table-black-operation">
+
+            <th:block sec:authorize="hasPermission('$everyone','PERM_USER_EDIT')">
+                {{if userType != 'root'}}
+                <a href="javascript:;" onclick="routingPage('/sysuser/edit/{{data.id}}','编辑用户')">
+                    <i class="am-icon-pencil"></i> 编辑
+                </a>
+                {{/if}}
+            </th:block>
+
+            <th:block sec:authorize="hasPermission('$everyone','PERM_USER_DELETE')">
+                {{if userType != 'root'}}
+                <a href="javascript:;" data-url="/sysuser/delete/{{data.id}}" class="tpl-table-black-operation-del list-del-button">
+                    <i class="am-icon-trash" ></i> 删除
+                </a>
+                {{/if}}
+            </th:block>
+
+            <th:block sec:authorize="hasPermission('$everyone','PERM_USER_BIND_ROLE')">
+                {{if userType != 'root'}}
+                <a href="javascript:;" class="tpl-table-black-operation-warn" onclick="modalRU({{data.id}},'{{data.realName}}')">
+                    <i class="am-icon-users" ></i> 绑定角色
+                </a>
+                {{/if}}
+            </th:block>
+
+        </div>
+    </td>
+    </tr>
+    {{/each}}
+</script>
+
+<script id="tpl-sysRoleList" type="text/html" th:replace="sysuser/template :: sysRoleListTemp"></script>
+<script id="tpl-pagination" type="text/html" th:replace="public/pagination :: paginationTemplate"></script>
+</body>
+</html>

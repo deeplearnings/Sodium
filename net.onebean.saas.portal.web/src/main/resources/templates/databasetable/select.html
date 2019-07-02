@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="public/head :: onLoadHead(首页)">
+
+</head>
+<body data-type="widgets">
+<div class="am-g tpl-g">
+    <!-- 模态提示组件 -->
+    <div th:include="public/tips :: Tips"></div>
+
+    <!-- 内容区域 -->
+    <div class="tpl-content-wrapper none-margin">
+        <div class="row-content am-cf">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="widget am-cf">
+                        <div class="widget-head am-cf">
+                            <th:block th:include="public/breadCrumbs :: breadCrumbsTempl"/>
+                        </div>
+                        <div class="widget-body am-fr">
+                            <form class="am-form tpl-form-border-form tpl-form-border-br" id="DataFrom">
+
+
+                                <div class="am-form-group">
+                                    <label for="tableName" class="am-u-sm-3 am-form-label">表名 <span class="tpl-form-line-small-title">Text</span></label>
+                                    <div class="am-u-sm-9">
+                                        <select data-am-selected="{btnSize: 'sm'}" name="tableName" id="tableName">
+                                            <option value=" ">未选择</option>
+                                            <option th:each="table:${databaseList}" th:value="${table}" th:text="${table}"></option>
+                                        </select>
+                                        <br/>
+                                        <small>点击选择数据库表</small><br/>
+                                    </div>
+                                </div>
+
+                                <div class="am-form-group">
+                                    <div class="am-u-sm-9 am-u-sm-push-3">
+                                        <button type="submit" class="am-btn am-btn-primary tpl-btn-bg-color-success" >  下一步</button>
+                                        <button type="button" class="am-btn am-btn-danger" onClick="routingPage('/databasetable/preview/','数据库模型')">返回</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="am-u-lg-12 am-cf">
+                                <div class="am-fr" id="pagination">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<css th:replace="public/css :: onLoadCSS"></css>
+<js th:replace="public/js :: onLoadJS"></js>
+<script type="text/javascript" >
+    $(function () {
+        initDataTable()
+    });
+
+    function initDataTable(){
+        $("#DataFrom").validate({
+            ignore: "",
+            rules: {
+                tableName:{
+                    notEmpty:true
+                }
+            },
+            submitHandler: function(form) { //验证成功时调用
+                var param = $('#DataFrom').serializeJson();
+                var url = "/databasetable/isrepeattable/";
+                var completeHandler = function (data) {
+                    if(data.flag){
+                        routingPage("/databasetable/add/"+param.tableName,'添加数据库模型');
+                    }else{
+                        alert(data.msg);
+                    }
+                };
+                doPost(url,param,completeHandler);
+            }
+        });
+    }
+
+
+
+</script>
+
+</body>
+</html>

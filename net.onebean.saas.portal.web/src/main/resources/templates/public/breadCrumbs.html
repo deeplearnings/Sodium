@@ -1,0 +1,7 @@
+<th:block th:fragment="breadCrumbsTempl">
+    <ol class="am-breadcrumb onebean-bread-crumbs-group">
+        <th:block th:each="b:${breadCrumbs}">
+            <li><a href="javascript:;" th:attr="data-url=${b.breadCrumbsUrl}" th:text="${b.breadCrumbsTitle}"></a></li>
+        </th:block>
+    </ol>
+</th:block>

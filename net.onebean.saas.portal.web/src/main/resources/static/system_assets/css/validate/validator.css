@@ -1,0 +1,19 @@
+@charset "UTF-8";
+.mblack
+{
+  padding-top: 4px;
+  padding-left: 8px;
+  vertical-align: top;
+  white-space: nowrap;
+}
+.error {
+  background: url(../../img/validator/false.png) no-repeat 0px 5px;
+  font-weight: bold;
+  padding: 0px 0 0 18px;
+  color: #EA5200;
+  margin-right: 20px;
+  font-size: 86%;
+}
+.checked {
+  background:url("../../img/validator/true.png") no-repeat center center;
+}

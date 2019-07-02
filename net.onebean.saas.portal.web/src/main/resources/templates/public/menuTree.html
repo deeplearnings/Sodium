@@ -1,0 +1,58 @@
+<!-- 树模板 -->
+<script id="menuTreeTipsTempl" type="text/html" th:fragment="menuTreeTips">
+    <div class="am-popup-inner">
+        <div class="am-popup-hd">
+            <h4 class="am-popup-title">...</h4>
+            <span data-am-modal-close
+                  class="am-close">&times;</span>
+        </div>
+        <div class="am-popup-bd" style="background: none!important;">
+            <ul class="am-tree am-tree-folder-select" role="tree" id="tree-template">
+                <li class="am-tree-branch am-hide" data-template="treebranch" role="treeitem" aria-expanded="false">
+                    <div class="am-tree-branch-header">
+                        <button class="am-tree-icon am-tree-icon-caret am-icon-caret-right"><span class="am-sr-only">Open</span></button>
+                        <button class="am-tree-branch-name">
+                            <span class="am-tree-icon am-tree-icon-folder"></span>
+                            <span class="am-tree-label"></span>
+                        </button>
+                    </div>
+                    <ul class="am-tree-branch-children" role="group"></ul>
+                    <div class="am-tree-loader" role="alert">Loading...</div>
+                </li>
+                <li class="am-tree-item am-hide" data-template="treeitem" role="treeitem">
+                    <button class="am-tree-item-name">
+                        <span class="am-tree-icon am-tree-icon-item"></span>
+                        <span class="am-tree-label"></span>
+                    </button>
+                </li>
+            </ul>
+            <div class="am-form-group">
+                <div class="am-u-sm-9 am-u-sm-push-3 tree-button-group">
+                    <button type="button" class="am-btn am-btn-success tree-button" onClick="menuTreeSelectAction({{$data.businessInPutId}})">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<!-- 树模板 -->
+
+
+<script type="text/javascript" th:fragment="menuTreeTipsJs">
+
+
+    /*模态机构树*/
+    function modalmenuTree(selfId,businessInPutId) {
+        var $treeTips = $('#treeTips');
+        $treeTips.html(template('menuTreeTipsTempl',{businessInPutId:$(businessInPutId).prop('id')}));
+        initTreeAsyncSingleSelect("请选择菜单",selfId,"/syspremission/menutree");
+        treeTipsModal($treeTips);
+    }
+
+    /*树选择事件 获取选中值*/
+    function menuTreeSelectAction(businessInPutId){
+        businessInPutId = $(businessInPutId).prop('id');
+        $('#'+businessInPutId+'').val($('#tree-template').tree("selectedItems")[0].id);
+        $('#menuTreeSelectorInput').val($('#tree-template').tree("selectedItems")[0].title);
+        $('#treeTips').modal('close');
+    }
+</script>

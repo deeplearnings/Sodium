@@ -1,0 +1,177 @@
+/*标签页*/
+.am-tabs-nav .am-icon-close~a {
+    padding-right: 25px!important;
+}
+.am-tabs-nav .am-icon-close {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    color: #888;
+    cursor: pointer;
+    z-index: 100;
+}
+.am-tabs-bd{
+    border: none;
+}
+.none-margin{
+    margin-left: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.tree-span-title{
+    margin-left: 20px;
+}
+.tree-button-group{
+    position: absolute !important;
+    bottom: 0;
+    margin-bottom: 10px;
+}
+.tree-button{
+    float: right;
+}
+.margin-top-10{
+    margin-top: 10px;
+}
+.margin-top-20{
+    margin-top: 20px;
+}
+.am-form .am-tagsinput {
+    min-width: 100% !important;
+}
+.onebean-select-group{
+    border:1px solid #ccc;
+    padding:0 10px 0 10px;
+    max-height: 250px;
+    overflow: auto;
+}
+
+.twitter-typeahead .tt-query,
+.twitter-typeahead .tt-hint {
+    margin-bottom: 0;
+}
+/*>>>>>>>>>typeahead.js<<<<<<<<<<<<<*/
+.twitter-typeahead .tt-hint
+{
+    display: none;
+}
+
+.tt-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    list-style: none;
+    font-size: 14px;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 0;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    background-clip: padding-box;
+}
+.tt-selectable {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.428571429;
+    color: #333333;
+    white-space: nowrap;
+    margin: 0;
+}
+.tt-selectable:hover,
+.tt-selectable:focus{
+    color: #ffffff;
+    text-decoration: none;
+    outline: 0;
+    background-color: #428bca;
+}
+/*>>>>>>>>>typeahead.js<<<<<<<<<<<<<*/
+
+/*>>>>>>>>>标签导航<<<<<<<<<<<<<*/
+.onebean-nav-head{
+    margin-top: 1px;
+    line-height: 1.8;
+}
+.onebean-nav-tabs{
+    display: -webkit-box;
+    border: none !important;
+    width: 100%;
+    margin-top: 1px;
+}
+.am-tabs-border{
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+}
+.onebean-nav-button{
+    line-height: inherit;
+    padding: 8.5px 15px;
+}
+.onebean-nav-buttons{
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 100;
+}
+.onebean-nav-pages{
+    z-index: 0;
+}
+.closer-bar{
+    padding: 0 !important;
+}
+.closer-bar-button{
+    width: 100%;
+}
+.closer-bar-select-box{
+    line-height: inherit;
+    padding: 4.9px 15px;
+}
+::-webkit-scrollbar
+{
+    width: 0px;
+}
+.onebean-frame{
+    padding: 0!important;
+}
+/*>>>>>>>>>标签导航<<<<<<<<<<<<<*/
+.onebean-upload-box{
+    width: 300px
+}
+.onebean-upload-img{
+    width:100%;
+}
+.theme-black .am-table-striped>tbody>tr:nth-child(odd):hover td , .theme-black .am-table-striped>tbody>tr:nth-child(even):hover td{
+    background: #2b3035;
+    cursor: pointer;
+}
+.theme-white .am-table-striped>tbody>tr:nth-child(odd):hover td , .theme-white .am-table-striped>tbody>tr:nth-child(even):hover td{
+    background: #eee;
+    cursor: pointer;
+}
+/*alert top*/
+.onebean-confirm-tips{
+    z-index: 1301!important;
+}
+.onebean-alert-tips{
+    z-index: 1301!important;
+}
+
+.onebean-bread-crumbs-group{
+    margin: 0;
+    padding: 0;
+    float: left;
+}
+.hidden{
+    display: none;
+}
+.error-font{
+    font-weight: bold;
+    color: #EA5200;
+    font-size: 86%;
+}

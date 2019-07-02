@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="public/head :: onLoadHead(用户管理)">
+</head>
+<body ddata-type="widgets">
+<div class="am-g tpl-g">
+    <!-- 模态提示组件 -->
+    <div th:include="public/tips :: Tips"></div>
+    <css th:replace="public/css :: onLoadCSS"></css>
+    <js th:replace="public/js :: onLoadJS"></js>
+    <!-- 内容区域 -->
+    <div class="tpl-content-wrapper none-margin">
+        <div class="row-content am-cf">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                            <div class="row">
+                                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                                    <div class="widget am-cf">
+                                        <div class="widget-head am-cf">
+                                            <th:block th:include="public/breadCrumbs :: breadCrumbsTempl"/>
+                                        </div>
+                                        <div class="widget-body am-fr">
+                                            <form class="am-form tpl-form-border-form tpl-form-border-br" id="DataFrom">
+                                                <input type="hidden" name="id" id="entityId" th:value="${entity.id}">
+                                                <div class="am-form-group">
+                                                    <label for="tableName" class="am-u-sm-3 am-form-label">表名 <span class="tpl-form-line-small-title">Text</span></label>
+                                                    <div class="am-u-sm-9">
+                                                        <input type="text" class="tpl-form-input" name="tableName" id="tableName" placeholder="请输入表名" disabled="disabled" th:value="${entity.tableName}">
+                                                        <small th:unless="${view}">数据库表名</small>
+                                                    </div>
+                                                </div>
+
+                                                <div class="am-form-group">
+                                                    <label for="author" class="am-u-sm-3 am-form-label">作者名 <span class="tpl-form-line-small-title">Text</span></label>
+                                                    <div class="am-u-sm-9">
+                                                        <input type="text" class="tpl-form-input" name="author" id="author" placeholder="请输入用户名" th:disabled="${view}" th:value="${entity.author}">
+                                                        <small th:unless="${view}">作者名,可包含汉字英文</small>
+                                                    </div>
+                                                </div>
+
+                                                <div class="am-form-group">
+                                                    <label for="description" class="am-u-sm-3 am-form-label">功能注释 <span class="tpl-form-line-small-title">Text</span></label>
+                                                    <div class="am-u-sm-9">
+                                                        <input type="text" class="tpl-form-input" name="description" id="description" placeholder="请输入功能注释" th:disabled="${view}" th:value="${entity.description}">
+                                                        <small th:unless="${view}">功能注释,可包含汉字英文</small>
+                                                    </div>
+                                                </div>
+
+                                                <div class="am-form-group">
+                                                    <label for="logicallyDelete" class="am-u-sm-3 am-form-label">是否逻辑删除 <span class="tpl-form-line-small-title">SelectBox</span></label>
+                                                    <div class="am-u-sm-9">
+                                                        <input type="checkbox" data-am-switch data-size="xs" data-on-color="success" data-off-color="default" data-off-text="否" data-on-text="是"
+                                                               th:checked="${entity.logicallyDelete eq '1'}" th:disabled="${view}" name="logicallyDelete" id="logicallyDelete"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="am-form-group">
+                                                    <label for="isSplitTable" class="am-u-sm-3 am-form-label">是否分表 <span class="tpl-form-line-small-title">SelectBox</span></label>
+                                                    <div class="am-u-sm-9">
+                                                        <input type="checkbox" data-am-switch data-size="xs" data-on-color="success" data-off-color="default" data-off-text="否" data-on-text="是"
+                                                               th:checked="${entity.isSplitTable eq '1'}" th:disabled="${view}" name="isSplitTable" id="isSplitTable"/>
+                                                        <br/>
+                                                        <small th:unless="${view}">已包含逻辑删除</small>
+                                                    </div>
+                                                </div>
+
+                                                <div class="am-form-group hidden tablePrefix-filed">
+                                                    <label for="tablePrefix" class="am-u-sm-3 am-form-label">分表前缀 <span class="tpl-form-line-small-title">Text</span></label>
+                                                    <div class="am-u-sm-9">
+                                                        <input type="text" class="tpl-form-input" name="tablePrefix" id="tablePrefix" placeholder="请输入分表前缀" th:disabled="${view}" th:value="${entity.tablePrefix}">
+                                                        <small th:unless="${view}">分表前缀,只能包含英文并以下划线结尾</small>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="am-form-group">
+                                                    <label for="generateType" class="am-u-sm-3 am-form-label">代码生成风格 <span class="tpl-form-line-small-title">SelectBox</span></label>
+                                                    <div class="am-u-sm-9">
+                                                        <dic:code name="generateType" id="generateType" code="SCDMFG" disabledOption="tree,child" th:attr="value=${entity.generateType},disabled=${view}"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="am-form-group">
+                                                    <label for="generateScope" class="am-u-sm-3 am-form-label">生成代码范围 <span class="tpl-form-line-small-title">SelectBox</span></label>
+                                                    <div class="am-u-sm-9">
+                                                        <dic:code name="generateScope" id="generateScope" code="SCDMFW" th:attr="value=${entity.generateScope},disabled=${view}"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="am-form-group hidden prem-filed">
+                                                    <label for="description" class="am-u-sm-3 am-form-label">菜单图标 <span class="tpl-form-line-small-title">Text</span></label>
+                                                    <div class="am-u-sm-9">
+                                                        <picker:icon name="menuIcon" id="menuIcon" th:attr="disabled=${view},value=${entity.menuIcon}"/>
+                                                        <small th:unless="${view}">点击选择图标</small>
+                                                    </div>
+                                                </div>
+
+                                                <div class="am-form-group hidden prem-filed">
+                                                    <label for="description" class="am-u-sm-3 am-form-label">权限标识 <span class="tpl-form-line-small-title">Text</span></label>
+                                                    <div class="am-u-sm-9">
+                                                        <input type="text" class="tpl-form-input" name="premName" id="premName" placeholder="请输入权限标识" th:disabled="${view}" th:value="${entity.premName}">
+                                                        <small th:unless="${view}">只限英文,及部分特殊符号</small>
+                                                    </div>
+                                                </div>
+
+                                                <div class="am-form-group hidden prem-filed">
+                                                    <label for="parentMenuId" class="am-u-sm-3 am-form-label">上级菜单 <span class="tpl-form-line-small-title">Tree</span></label>
+                                                    <div class="am-u-sm-9"  th:with="pid=(${entity.parentMenuId} != null)?${entity.parentMenuId}:1">
+                                                        <input type="hidden" class="treeValue" name="parentMenuId" id="parentMenuId" th:value="${pid}">
+                                                        <tree:menu th:attr="disabled=${view},pid=${pid},businessInPutId='parentMenuId'"/>
+                                                        <small th:unless="${view}">从菜单树上选择一个菜单作为父级</small>
+                                                    </div>
+                                                </div>
+
+                                                <div class="am-form-group">
+                                                    <div class="am-u-sm-9 am-u-sm-push-3">
+                                                        <th:block sec:authorize="hasPermission('$everyone','PERM_CODE_DATABASE_MODEL_GENERATE')">
+                                                            <button type="button" class="am-btn am-btn-success" th:if="${view}" onclick="generatedCode()">生成代码</button>
+                                                        </th:block>
+
+                                                        <th:block sec:authorize="hasPermission('$everyone','PERM_CODE_DATABASE_MODEL_SAVE')">
+                                                            <button type="submit" class="am-btn am-btn-primary tpl-btn-bg-color-success" th:unless="${view}">提交</button>
+                                                        </th:block>
+
+                                                        <th:block sec:authorize="hasPermission('$everyone','PERM_CODE_DATABASE_MODEL_EDIT')">
+                                                            <button type="button" class="am-btn am-btn-warning" th:onclick="'routingPage(\'/databasetable/edit/'+${entity.id}+'\',\'编辑数据库模型\')'" th:if="${view}">编辑</button>
+                                                        </th:block>
+                                                        <button type="button" class="am-btn am-btn-danger" onClick="routingPage('/databasetable/preview/')">返回</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+
+                                        </div>
+                                        <hr data-am-widget="divider" class="am-divider am-divider-default" />
+                                        <div class="widget-head am-cf">
+                                            <div class="widget-title am-fl">数据库-表字段</div>
+                                        </div>
+                                        <div class="widget-body am-fr">
+                                            <div class="am-u-sm-12">
+                                                <form class="tpl-form-border-form" id="ChildDataFrom">
+                                                    <table width="100%" class="am-table am-table-compact am-table-bordered am-table-radius am-table-striped tpl-table-black "
+                                                           id="example-r">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>列名</th>
+                                                            <th>数据类型</th>
+                                                            <th>注释</th>
+                                                            <th>排序字段</th>
+                                                            <th>页面控件类型</th>
+                                                            <th>页面校验表达式</th>
+                                                            <th>是否为列表搜索条件</th>
+                                                            <th>搜索条件操作符</th>
+                                                            <th>操作</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <th:block th:each="data:${fieldList}" th:with="sort=(${data.sort} != null)?${data.sort}:${dataStat.index}">
+                                                            <th:block th:if="${data.columnName != 'id'}">
+                                                                <tr  class="onebean-line-tr" >
+                                                                    <td><input type="text" class="tpl-form-input onebean-child-list-item" th:value="${data.columnName}" th:disabled="${view}" name="columnName"></td>
+                                                                    <td><input type="text" class="tpl-form-input onebean-child-list-item" th:value="${data.databaseType}"  disabled="disabled" name="databaseType"></td>
+                                                                    <td><input type="text" class="tpl-form-input onebean-child-list-item" th:value="${data.annotation}" th:disabled="${view}" name="annotation"></td>
+                                                                    <td><input type="text" class="tpl-form-input onebean-child-list-item" th:value="${sort}" th:disabled="${view}" name="sort" ></td>
+                                                                    <td><dic:code inChildList="true" code="YMKJLX" name="pageType" th:attr="value=${data.pageType},disabled=${view}"/></td>
+                                                                    <td><dic:code inChildList="true" multiple="true" code="YMJYGZ" name="pageValidate"  th:attr="value=${data.pageValidate},disabled=${view}"/></td>
+                                                                    <td><dic:code inChildList="true" code="SF" name="isQueryParam"  th:attr="value=${data.isQueryParam},disabled=${view}"/></td>
+                                                                    <td><dic:code inChildList="true" code="YMCXTJCZF" name="queryOperator" th:attr="value=${data.queryOperator},disabled=${view}"/></td>
+                                                                    <td>
+                                                                        <div class="tpl-table-black-operation">
+                                                                            <a href="javascript:;" class="tpl-table-black-operation-del del-line-btn">
+                                                                                <i class="am-icon-trash" ></i> 删除
+                                                                            </a>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </th:block>
+                                                        </th:block>
+                                                        </tbody>
+                                                    </table>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script th:src="@{/assets/js/databasetable/databasetable.js}" type="text/javascript"></script>
+<script th:inline="javascript">
+    $(function () {
+        validateFrom();
+        initPageOptional();
+        initSplitTableOptional();
+    });
+
+    $('body').on('switchChange.bootstrapSwitch', '#isSplitTable',function(event,state){
+        var $logicallyDelete = $('#logicallyDelete');
+        if (state){
+            var $isLogicallyDelete = $logicallyDelete.val();
+            $logicallyDelete.bootstrapSwitch('state', false);
+            $logicallyDelete.bootstrapSwitch('disabled', true);
+        }else{
+            $logicallyDelete.bootstrapSwitch('disabled', false);
+        }
+    });
+
+
+
+    var initPageOptional = function() {
+        if ($('#generateScope').val() === "page"){
+            $('.prem-filed').removeClass('hidden');
+        }else{
+            $('.prem-filed').addClass('hidden');
+        }
+    };
+
+    var initSplitTableOptional =  function(event, state) {
+        if (state){
+            $('.tablePrefix-filed').removeClass('hidden');
+        }else{
+            $('.tablePrefix-filed').addClass('hidden');
+        }
+    };
+
+
+    $('body').on('change','#generateScope',initPageOptional);
+    $('body').on('switchChange.bootstrapSwitch','#isSplitTable',initSplitTableOptional);
+
+
+    /**
+     * 校验登录表单
+     * @returns void
+     */
+    function validateFrom(){
+        $("#DataFrom").validate({
+            rules: {
+                premName:{
+                    premissionName:true
+                },
+                tablename:{
+                    required:true,
+                    minlength: 4,
+                    maxlength:50,
+                    noChinese:true
+                },
+                author:{
+                    required:true,
+                    minlength: 4,
+                    maxlength:50
+                },
+                description:{
+                    required:true,
+                    minlength: 4,
+                    maxlength:50
+                },
+                tablePrefix:{
+                    tablePrefix:true
+                }
+            },
+            submitHandler: function(form) { //验证成功时调用
+                var disIputs = $('input[disabled=disabled]');
+                $(disIputs).removeAttr("disabled");
+                var parent = $('#DataFrom').serializeJson();
+                var param = $('#ChildDataFrom').serializeChildListJson(parent);
+                var url = "/databasetable/save";
+                var completeHandler = function (data) {
+                    routingPage('/databasetable/preview/','数据库模型');
+                };
+                doPost(url,{entity:param},completeHandler)
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.onebean.saas.portal.dao.SysPermissionDao" >
+
+    <sql id="SysPermissionDefaultColumn">
+        p.`id`,p.`name`,p.`descritpion`,p.`url`,p.`parent_ids`,p.`parent_id`,p.`sort`,p.`remark`,p.`menu_type`,p.`is_root`,p.`icon`,p.`create_time`,p.`update_time`,p.`is_deleted`,p.`operator_id`,p.`operator_name`
+    </sql>
+
+     <select id="findByUserId" parameterType="string" resultType="net.onebean.saas.portal.model.SysPermission">
+          select
+            <include refid="SysPermissionDefaultColumn"/>
+            from sys_user_${tableSuffix} u
+            LEFT JOIN sys_role_user_${tableSuffix} sru on u.id= sru.sys_user_id
+            LEFT JOIN sys_role_${tableSuffix} r on sru.sys_role_id=r.id
+            LEFT JOIN sys_permission_role_${tableSuffix} spr on spr.role_id=r.id
+            LEFT JOIN sys_permission_${tableSuffix} p on p.id =spr.permission_id
+            where u.id=#{userId} and r.is_lock = '0' and u.is_lock = '0'
+             and p.is_deleted = '0'
+             and spr.is_deleted = '0'
+             and sru.is_deleted = '0'
+             and r.is_deleted = '0'
+             and u.is_deleted = '0'
+     </select>
+
+    <!-- 一对多查询关联  -->
+    <resultMap type="net.onebean.saas.portal.model.SysPermission" id="defaultResultMap">
+        <id property="id" column="id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="name" column="name"/>
+        <result property="descritpion" column="descritpion"/>
+        <result property="url" column="url"/>
+        <result property="remark" column="remark"/>
+        <result property="sort" column="sort"/>
+        <result property="menuType" column="menu_type"/>
+        <result property="icon" column="icon"/>
+    </resultMap>
+
+    <!--异步查找子节点,每次查找一级-->
+    <select id="findChildAsync" resultType="net.onebean.saas.portal.VO.MenuTree" parameterType="long">
+        SELECT o.id,o.descritpion as title,IF( EXISTS(SELECT o1.id FROM sys_permission_${tableSuffix} o1  WHERE o1.parent_id = o.id) = 1 ,"folder","item") AS TYPE FROM sys_permission_${tableSuffix} o
+        <where>
+            <choose>
+                <when test="parentId != null">
+                    o.parent_id = ${parentId}
+                </when>
+                <otherwise>
+                    o.is_root = 1
+                </otherwise>
+            </choose>
+            and o.is_deleted = '0'
+        </where>
+    </select>
+
+
+    <select id="getParentMenuIds" parameterType="long" resultType="string">
+        SELECT getParentMenuIds_${tableSuffix}(${childId});
+    </select>
+
+
+    <!--根据ID删除所有子节点-->
+    <delete id="deleteSelfAndChildById" parameterType="long">
+        update sys_permission_${tableSuffix} set is_deleted = '1'
+        WHERE FIND_IN_SET(#{id},parent_ids) OR id = #{id}
+    </delete>
+
+    <select id="findChildOrderNextNum" parameterType="long" resultType="int">
+        SELECT p.sort + 1 FROM sys_permission_${tableSuffix} p
+        <where>
+            p.parent_id = #{parentId} ORDER BY p.sort DESC LIMIT 1;
+        </where>
+    </select>
+
+
+</mapper>

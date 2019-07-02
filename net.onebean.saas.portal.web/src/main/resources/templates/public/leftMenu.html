@@ -1,0 +1,65 @@
+<!-- 侧边导航栏 -->
+<div th:fragment="leftMenu">
+    <js th:replace="public/js :: onLoadJS"></js>
+    <!-- 用户信息 -->
+    <div class="tpl-sidebar-user-panel">
+        <div class="tpl-user-panel-slide-toggleable">
+            <div class="tpl-user-panel-profile-picture" th:with="hasIcon=${current_sys_user.icon != null && current_sys_user.icon != ''}">
+                <img th:src="${current_sys_user.icon}" th:if="${hasIcon}">
+                <img th:src="@{/system_assets/img/default_icon.jpg}" th:if="${hasIcon == false}">
+            </div>
+            <span class="user-panel-logged-in-text">
+                <i class='am-icon-circle-o am-text-success tpl-user-panel-status-icon'></i>
+                <span>[[${current_sys_user.realName}]]</span>
+            </span>
+            <a href="javascript:;" onclick="routingPage('/sysuser/setting/','账号设置')" class="tpl-user-panel-action-link">
+                <span class="am-icon-pencil"></span> 账号设置
+            </a>
+        </div>
+    </div>
+    <!-- 菜单 -->
+    <ul class="sidebar-nav" id="sysMenu">
+    </ul>
+
+    <script type="text/javascript">
+        $(function(){
+            doGet("/syspremission/allpermissiontree",{},function (res) {
+                $('#sysMenu').html(template('sys-menu-templ', res.data));
+            })
+        })
+    </script>
+
+    <script type="text/html" id="sys-menu-templ">
+        <li class="sidebar-nav-heading">Business<span class="sidebar-nav-heading-info">业务</span></li>
+        <li class="sidebar-nav-link">
+            <a href="javascript: void(0)" data-url="/index" onclick="openNewTab(this)" data-name="首页" id="indexMenuBtn">
+                <i class="am-icon-home sidebar-nav-link-logo"></i> 首页
+            </a>
+            <a href="javascript: void(0)"  id="hideMenu" class="hidden" onclick="openNewTab(this)"></a>
+        </li>
+        {{each $data as data}}
+        <li class="sidebar-nav-link parent-menu">
+            <a href="javascript:;" class="sidebar-nav-sub-title">
+                <i class="{{data.icon}} sidebar-nav-link-logo"></i> {{data.descritpion}}
+                <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico"></span>
+            </a>
+            <ul class="sidebar-nav sidebar-nav-sub">
+                {{include 'sys-menu-templ-child' data.childList}}
+            </ul>
+        </li>
+        {{/each}}
+    </script>
+
+
+    <script type="text/html" id="sys-menu-templ-child">
+        {{each $data as data}}
+        <li class="sidebar-nav-link">
+            <a href="javascript: void(0)" data-url="{{data.url}}" onclick="openNewTab(this)" data-name="{{data.descritpion}}">
+                <span class="{{data.icon}} sidebar-nav-link-logo"></span> {{data.descritpion}}
+            </a>
+        </li>
+        {{/each}}
+    </script>
+</div>
+<!-- 侧边导航栏 -->
+

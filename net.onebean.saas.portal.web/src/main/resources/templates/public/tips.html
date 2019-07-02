@@ -1,0 +1,41 @@
+<div th:fragment="Tips">
+    <!-- 错误提示 -->
+    <div class="am-modal am-modal-alert" id="alert-modal">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd alert-modal-title"></div>
+            <div class="am-modal-bd alert-modal-message"> </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn alert-modal-button"></span>
+            </div>
+        </div>
+    </div>
+    <!-- 错误提示 -->
+
+
+    <!-- 删除提示 -->
+    <div class="am-modal am-modal-confirm" id="confirm-modal">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd confirm-modal-title"></div>
+            <div class="am-modal-bd confirm-modal-message"></div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn confirm-modal-btn-cancel" data-am-modal-cancel></span>
+                <span class="am-modal-btn confirm-modal-btn-confirm" data-am-modal-confirm></span>
+            </div>
+        </div>
+    </div>
+    <!-- 删除提示 -->
+
+
+    <!-- loading -->
+    <div class="am-modal am-modal-loading am-modal-no-btn" tabindex="-1" id="loading-modal">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">正在载入...</div>
+            <div class="am-modal-bd">
+                <span class="am-icon-spinner am-icon-spin"></span>
+            </div>
+        </div>
+    </div>
+    <!-- loading -->
+
+    <div class="am-popup" id="treeTips"></div>
+</div>

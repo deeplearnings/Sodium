@@ -1,0 +1,18 @@
+<script type="text/javascript" th:fragment="iconPickerJs">
+    $(function(){
+        initIconPicker();
+    });
+    function initIconPicker() {
+        var  theme = ($('body').attr('class')=='theme-black')?'fip-inverted':'fip-grey';
+        doGet('/system_assets/js/icon/icon.json',{},function (res) {
+            res = res.substr(1,res.length-2);
+            $('.oneBean-icon-picker').fontIconPicker({
+                theme:theme,
+                source: res.split(","),
+                emptyIcon: true,
+                emptyIconValue:'null',
+                hasSearch: true
+            });
+        })
+    }
+</script>

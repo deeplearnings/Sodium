@@ -1,0 +1,88 @@
+<!-- 机构用户联动树 -->
+<script id="orgTreeLinkageUserTempl" type="text/html" th:fragment="orgTreeLinkageUserTips">
+    <div class="am-popup-inner onebean-am-popup-inner">
+        <div class="am-popup-hd">
+            <h4 class="am-popup-title">...</h4>
+            <span data-am-modal-close
+                  class="am-close">&times;</span>
+        </div>
+        <div class="am-popup-bd" style="background: none!important;">
+
+            <ul class="am-tree am-tree-folder-select" role="tree" id="tree-template">
+                <li class="am-tree-branch am-hide" data-template="treebranch" role="treeitem" aria-expanded="false">
+                    <div class="am-tree-branch-header">
+                        <button class="am-tree-icon am-tree-icon-caret am-icon-caret-right"><span class="am-sr-only">Open</span></button>
+                        <button class="am-tree-branch-name">
+                            <span class="am-tree-icon am-tree-icon-folder"></span>
+                            <span class="am-tree-label"></span>
+                        </button>
+                    </div>
+                    <ul class="am-tree-branch-children" role="group"></ul>
+                    <div class="am-tree-loader" role="alert">Loading...</div>
+                </li>
+                <li class="am-tree-item am-hide" data-template="treeitem" role="treeitem">
+                    <button class="am-tree-item-name">
+                        <span class="am-tree-icon am-tree-icon-item"></span>
+                        <span class="am-tree-label"></span>
+                    </button>
+                </li>
+            </ul>
+
+            <div class="am-form-group">
+                <div class="am-u-sm-9 am-u-sm-push-3 tree-button-group">
+                    <small>请先点击机构来选取用户 :</small>
+                    <select id="linkageDataSelector">
+                        <option value="  ">该机构下无用户</option>
+                    </select>
+                    <button type="button" class="am-btn am-btn-success tree-button" onClick="orgTreeLinkageUserSelectAction({{$data.businessInPutId}})">保存</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</script>
+<!-- 机构用户联动树 -->
+
+<!-- 机构用户联动树 option-->
+<script id="userOptinTempl" type="text/html" th:fragment="orgTreeLinkageUserOptionTips">
+    {{if $data.length > 0}}
+    <option value="  ">请选择</option>
+    {{each $data as data}}
+    <option value="{{data.id}}">{{data.realName}}</option>
+    {{/each}}
+    {{else}}
+    <option value="  ">该机构下无用户</option>
+    {{/if}}
+</script>
+<!-- 机构用户联动树 option-->
+
+
+<script type="text/javascript" th:fragment="orgTreeLinkageUserTreeTipsJs">
+
+    /*模态机构用户关联树*/
+    function modalOrgUserTree(selfId,businessInPutId) {
+        var $treeTips = $('#treeTips');
+        $treeTips.html(template('orgTreeLinkageUserTempl',{businessInPutId:$(businessInPutId).prop('id')}));
+        $('#linkageDataSelector').selected({dropUp:1});
+        initTreeAsyncSingleSelect("请从机构上选择用户",selfId,"/sysorg/orgtree");
+        treeTipsModal($treeTips);
+    }
+
+    /* 选中机构后联动查询用户*/
+    $('body').on('selected.tree.amui','#tree-template',function(){
+        var url = "/sysuser/finduserbyorgid/";
+        var orgId = $(this).tree('selectedItems')[0].id;
+        var param = {orgId:orgId};
+        doGet(url,param,function(res){
+            $('#linkageDataSelector').html(template('userOptinTempl', res.data))
+        })
+    })
+
+    /*选中用户事件*/
+    function orgTreeLinkageUserSelectAction(businessInPutId) {
+        businessInPutId = $(businessInPutId).prop('id');
+        $('#'+businessInPutId+'').val($('#linkageDataSelector').val());//隐藏的业务input
+        $('#orgLinkageUserTreeSelector').val($('#linkageDataSelector').find("option:selected").text());//UI赋值
+        $('#treeTips').modal('close');//关闭模态框
+    }
+</script>

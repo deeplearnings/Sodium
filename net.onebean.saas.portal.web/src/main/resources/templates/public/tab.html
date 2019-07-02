@@ -1,0 +1,57 @@
+<!--标签头模板-->
+<script id="tpl-onebean-tab" type="text/html"  th:fragment="oenbean-tabTemplate">
+    <li>
+        <span class="am-icon-close"></span>
+        <a href="javascript: void(0)" data-url="{{url}}" data-name="{{name}}">{{name}}</a>
+    </li>
+</script>
+<!--标签头模板-->
+
+<!-- 内容区域 -->
+<div class="tpl-content-wrapper" th:fragment="onebean-main-content">
+    <div class="am-tabs am-cf onebean-nav-head" data-am-tabs="{noSwipe: 1}" id="onebean-frame-container">
+
+        <ul class="onebean-nav-tabs am-nav am-tabs-nav am-nav-tabs">
+            <li>
+                <a href="javascript: void(0)" data-url="/index" data-name="首页">首页</a>
+            </li>
+        </ul>
+        <div class="am-tabs-border"></div>
+        <div class="am-btn-toolbar onebean-nav-buttons">
+            <div class="am-btn-group am-btn-group-xs">
+                <button type="button" class="am-btn am-btn-default am-btn-primary onebean-nav-button" onclick="checkBarLeft()">
+                    <span class="am-icon-backward"></span>
+                </button>
+                <button type="button" class="am-btn am-btn-secondary onebean-nav-button" onclick="checkBarRight()">
+                    <span class="am-icon-forward"></span>
+                </button>
+                <div class="am-dropdown" data-am-dropdown>
+                    <button class="am-btn am-btn-danger am-dropdown-toggle closer-bar-select-box" data-am-dropdown-toggle>关闭操作
+                        <span class="am-icon-caret-down"></span>
+                    </button>
+                    <ul class="am-dropdown-content closer-bar">
+                        <li>
+                            <button type="button" class="am-btn am-btn-secondary closer-bar-button" onclick="emptyTabs(this)">
+                                <span class="am-icon-times">&nbsp;&nbsp;&nbsp;关闭全部</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="am-btn am-btn-success closer-bar-button" onclick="closeCurrentTabs(this)">
+                                <span class="am-icon-times-circle">&nbsp;&nbsp;&nbsp;关闭当前</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="am-btn am-btn-warning closer-bar-button" onclick="closeOtherTabs(this)">
+                                <span class="am-icon-times-circle-o">&nbsp;&nbsp;&nbsp;关闭其他</span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="am-tabs-bd onebean-nav-pages">
+            <iframe width="100%" class='am-tab-panel onebean-frame' onload='reHeightonebeanFrame(this)' th:src="${ctx}+'/index'"></iframe>
+        </div>
+    </div>
+</div>

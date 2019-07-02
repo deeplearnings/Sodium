@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="public/head :: onLoadHead(文件上传控件)">
+</head>
+<body ddata-type="widgets">
+<css th:replace="public/css :: onLoadCSS"></css>
+<js th:replace="public/js :: onLoadJS"></js>
+<div class="am-g tpl-g">
+    <!-- 模态提示组件 -->
+    <div th:include="public/tips :: Tips"></div>
+    <!-- 内容区域 -->
+    <div class="tpl-content-wrapper none-margin">
+
+        <div class="container-fluid am-cf">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                    <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 树选择器控件 <small>Amaze UI</small></div>
+                    <p class="page-header-description">0neBean 树形树状展示,选取控件,支持树状数据和扁平数据联动。</p>
+                </div>
+                <div class="am-u-lg-3 tpl-index-settings-button">
+                    <button type="button" class="page-header-button"><span class="am-icon-paint-brush"></span> 设置</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row-content am-cf">
+            <div class="row">
+
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="widget am-cf">
+                        <div class="widget-body am-fr">
+
+                            <form class="am-form tpl-form-border-form tpl-form-border-br" id="DataFrom">
+
+                                <div class="am-form-group">
+                                    <label for="orgId" class="am-u-sm-3 am-form-label">机构树 <span class="tpl-form-line-small-title">Tree</span></label>
+                                    <div class="am-u-sm-9">
+                                        <input type="hidden" name="orgId" id="orgId">
+                                        <tree:org th:attr="businessInPutId='orgId'"/>
+                                        <small>从机构树上选择一个机构</small>
+                                    </div>
+                                </div>
+
+                                <div class="am-form-group">
+                                    <label for="parentId" class="am-u-sm-3 am-form-label">菜单树 <span class="tpl-form-line-small-title">Tree</span></label>
+                                    <div class="am-u-sm-9">
+                                        <input type="hidden" name="parentId" id="parentId">
+                                        <tree:menu th:attr="businessInPutId='parentId'"/>
+                                        <small >从菜单树上选择一个菜单作为父级</small>
+                                    </div>
+                                </div>
+
+                                <div class="am-form-group">
+                                    <label for="sysUserId" class="am-u-sm-3 am-form-label">机构用户联动树 <span class="tpl-form-line-small-title">Tree</span></label>
+                                    <div class="am-u-sm-9">
+                                        <input type="hidden" name="sysUserId" id="sysUserId">
+                                        <tree:org-user th:attr="businessInPutId='sysUserId'"/>
+                                        <small>从机构树上选择一个用户</small>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>x`
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

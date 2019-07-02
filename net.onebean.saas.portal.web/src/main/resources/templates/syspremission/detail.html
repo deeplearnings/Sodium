@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
+<head th:replace="public/head :: onLoadHead(机构管理)">
+</head>
+<body ddata-type="widgets">
+
+<div class="am-g tpl-g">
+    <!-- 模态提示组件 -->
+    <div th:include="public/tips :: Tips"></div>
+    <css th:replace="public/css :: onLoadCSS"></css>
+    <js th:replace="public/js :: onLoadJS"></js>
+    <!-- 内容区域 -->
+    <div class="tpl-content-wrapper none-margin">
+        <div class="row-content am-cf">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                            <div class="row">
+                                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                                    <div class="widget am-cf">
+                                        <div class="widget-head am-cf">
+                                            <th:block th:include="public/breadCrumbs :: breadCrumbsTempl"/>
+                                        </div>
+                                        <div class="widget-body am-fr">
+
+                                            <form class="am-form tpl-form-border-form tpl-form-border-br" id="DataFrom">
+                                                <input type="hidden" name="id" id="entityId" th:value="${entity.id}">
+                                                <input type="hidden" name="isRoot" th:value="${entity.isRoot}">
+
+                                                <div class="am-form-group">
+                                                    <label for="parentId" class="am-u-sm-3 am-form-label">上级菜单 <span class="tpl-form-line-small-title">Tree</span></label>
+                                                    <div class="am-u-sm-9"  th:with="pid=(${entity.parentId} != null or ${entity.isRoot} == 1)?${entity.parentId}:1">
+                                                        <input type="hidden" class="treeValue" name="parentId" id="parentId" th:value="${pid}">
+                                                        <tree:menu  th:attr="disabled=(${view} or ${entity.id} == 1),pid=${pid},selfId=${entity.id},businessInPutId='parentId'"  th:unless="${add}"/>
+                                                        <tree:menu th:attr="pid=${pid},businessInPutId='parentId'" th:if="${add}"/>
+                                                        <small th:unless="${view}">从菜单树上选择一个菜单作为父级</small>
+                                                    </div>
+                                                </div>
+
+                                                <div class="am-form-group">
+                                                    <label for="name" class="am-u-sm-3 am-form-label">权限标识 <span class="tpl-form-line-small-title">Text</span></label>
+                                                    <div class="am-u-sm-9">
+                                                        <input type="text" class="tpl-form-input" name="name" id="name" placeholder="请输入菜单权限标识" th:disabled="${view}" th:value="${entity.name}">
+                                                        <small th:unless="${view}">只限英文,及部分特殊符号</small>
+                                                    </div>
+                                                </div>
+
+                                                <div class="am-form-group">
+                                                    <label for="icon" class="am-u-sm-3 am-form-label">图标 <span class="tpl-form-line-small-title">Icon</span></label>
+                                                    <div class="am-u-sm-9">
+                                                        <picker:icon name="icon" id="icon" th:attr="disabled=${view},value=${entity.icon}"/>
+                                                        <small th:unless="${view}">点击选择图标</small>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="am-form-group">
+                                                    <label for="descritpion" class="am-u-sm-3 am-form-label">菜单名称 <span class="tpl-form-line-small-title">Text</span></label>
+                                                    <div class="am-u-sm-9">
+                                                        <input type="text" class="tpl-form-input" name="descritpion" id="descritpion" placeholder="请输入菜单名称" th:disabled="${view}" th:value="${entity.descritpion}">
+                                                        <small th:unless="${view}">可包含汉字英文</small>
+                                                    </div>
+                                                </div>
+
+                                                <div class="am-form-group">
+                                                    <label for="url" class="am-u-sm-3 am-form-label">菜单链接 <span class="tpl-form-line-small-title">Text</span></label>
+                                                    <div class="am-u-sm-9">
+                                                        <input type="text" class="tpl-form-input" name="url" id="url" placeholder="请输入菜单链接" th:disabled="${view}" th:value="${entity.url}">
+                                                        <small th:unless="${view}"><span id="urlTips">(选填) </span>只限英文,及部分特殊符号</small>
+                                                    </div>
+                                                </div>
+
+                                                <div class="am-form-group">
+                                                    <label for="menuType" class="am-u-sm-3 am-form-label">菜单类型 <span class="tpl-form-line-small-title">SelectBox</span></label>
+                                                    <div class="am-u-sm-9">
+                                                        <dic:code name="menuType" id="menuType" code="CDLX" th:attr="value=${entity.menuType},disabled=${view}"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="am-form-group">
+                                                    <label for="sort" class="am-u-sm-3 am-form-label">排序字段 <span class="tpl-form-line-small-title">Number</span></label>
+                                                    <div class="am-u-sm-9">
+                                                        <input type="number" class="tpl-form-input" name="sort" id="sort" placeholder="请输入菜单排序字段" th:disabled="${view}" th:value="${entity.sort}">
+                                                        <small th:unless="${view}">只限数字</small>
+                                                    </div>
+                                                </div>
+
+                                                <div class="am-form-group">
+                                                    <label for="remark" class="am-u-sm-3 am-form-label">备注</label>
+                                                    <div class="am-u-sm-9">
+                                                        <textarea class="" rows="10" id="remark" name="remark" placeholder="请输入备注"  th:disabled="${view}" th:text="${entity.remark}"></textarea>
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div class="am-form-group">
+                                                    <div class="am-u-sm-9 am-u-sm-push-3">
+                                                        <th:block sec:authorize="hasPermission('$everyone','PERM_PREMISSION_SAVE')">
+                                                            <button type="submit" class="am-btn am-btn-primary tpl-btn-bg-color-success" th:unless="${view}">提交</button>
+                                                        </th:block>
+                                                        <th:block sec:authorize="hasPermission('$everyone','PERM_PREMISSION_EDIT')">
+                                                            <button type="button" class="am-btn am-btn-warning" th:onclick="'routingPage(\'/syspremission/edit/'+${entity.id}+'\',\'编辑权限\')'" th:if="${view}">编辑</button>
+                                                        </th:block>
+                                                        <button type="button" class="am-btn am-btn-danger" onClick="routingPage('/syspremission/preview/')">返回</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script th:inline="javascript">
+    $(function () {
+        validateFrom();
+        initUrlValidate();
+    });
+    /*初始化url字段校验规则*/
+    var initUrlValidate = function(){
+        var $url = $("#url");
+        var $rulesTemp = {maxlength:50,noChinese:true, remote: {/*菜单去重*/
+                type: "post",
+                url: "[(${ctx})]/syspremission/isrepeat",
+                data: {
+                    reg:function () {return trim($("#url").val())},
+                    id:function () {return trim($("#entityId").val())}
+                },
+                dataFilter: function(res) {
+                    res = JSON.parse(res);
+                    return res.flag;
+                }}};
+        $url.rules("remove");
+        try {
+            var temp = $(this).val() === 'menu';
+        }catch (e) {
+            temp = false;
+        }
+        if(temp){
+            $rulesTemp.required=true;
+            $('#urlTips').hide();
+            $url.rules("add", $rulesTemp);
+        }else{
+            $('#urlTips').show();
+            $('#url-error').remove();
+            $url.rules("add", $rulesTemp);
+        }
+    };
+    $('body').on('change','#menuType',initUrlValidate);
+
+    /**
+     * 校验登录表单
+     * @returns void
+     */
+    function validateFrom(){
+        var validator = $("#DataFrom").validate({
+            ignore: "",
+            rules: {
+                menuTree:{
+                    treeRequired:true
+                },
+                name: {
+                    required:true,
+                    maxlength:50,
+                    premissionName:true,
+                    remote: {/*菜单去重*/
+                        type: "post",
+                        url: "[(${ctx})]/syspremission/isrepeat",
+                        data: {
+                            reg:function () {return trim($("#name").val())},
+                            id:function () {return trim($("#entityId").val())}
+                        },
+                        dataFilter: function(res) {
+                            res = JSON.parse(res);
+                            return res.flag;
+                        }}
+                },
+                url:{
+
+                },
+                descritpion:{
+                    required:true,
+                    maxlength:50
+                },
+                sort:{
+                    required:true,
+                    positiveNumber:true,
+                    number:true
+                },
+                remark:{
+                    maxlength:255
+                }
+
+            },
+            submitHandler: function(form) { //验证成功时调用
+                var param = $('#DataFrom').serializeJson();
+                var url = "/syspremission/save";
+                var completeHandler = function (data) {
+                    routingPage('/syspremission/preview/','权限管理');
+                };
+                doPost(url,param,completeHandler)
+            },
+            messages: {
+                url: {
+                    remote: "不能与已存在的菜单链接重复!"
+                },
+                name: {
+                    remote: "不能与已存在的权限标识重复!"
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

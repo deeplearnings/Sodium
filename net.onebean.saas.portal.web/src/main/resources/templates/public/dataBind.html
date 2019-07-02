@@ -1,0 +1,44 @@
+<!-- role-user数据绑定 -->
+<div class="am-popup" id="data-bind-modal" th:fragment="RuBindTips">
+    <div class="am-popup-inner">
+        <div class="am-popup-hd">
+            <h4 class="am-popup-title data-bind-title">为用户:XXX 绑定角色</h4>
+            <span data-am-modal-close
+                  class="am-close">&times;</span>
+        </div>
+        <div class="am-popup-bd">
+            <div class="am-form">
+
+                <div class="am-form-group">
+                    <div class="am-u-sm-12">
+                        <label for="input-sg">输入开始搜索</label>
+                    </div>
+                    <div class="am-u-sm-12">
+                        <input id="input-sg" type="text"/>
+                    </div>
+                </div>
+
+                <div class="am-form-group">
+                    <div class="am-u-sm-3 margin-top-20">
+                        <button type="button" class="am-btn am-btn-secondary" onClick="addRU()">加入选定角色</button>
+                    </div>
+                </div>
+
+                <div class="am-form-group">
+                    <div class="am-u-sm-12 margin-top-20">
+                        <h3>当前角色:</h3>
+                        <div class="onebean-select-group" id="rolesList" data-uid>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="am-form-group">
+                    <div class="am-u-sm-3 margin-top-20">
+                        <button type="button" class="am-btn am-btn-danger" onClick="removeRU()">移出选定角色</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- role-user数据绑定 -->
