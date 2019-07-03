@@ -31,7 +31,7 @@ import org.springframework.stereotype.Service;
 				@ComponentScan.Filter(value = Component.class, type = FilterType.ANNOTATION)
 		})
 @ComponentScan(
-		basePackages = {"net.onebean.sodium.web.**"},
+		basePackages = {"net.onebean.**.web.**"},
 		includeFilters = {
 				@ComponentScan.Filter(value = Controller.class, type = FilterType.ANNOTATION),
 		})

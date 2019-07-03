@@ -12,11 +12,11 @@
 
     <artifactId>net.onebean.sodium</artifactId>
     <version>1.0.0.SNAPSHOT</version>
-
-
     <packaging>pom</packaging>
+
     <name>Sodium</name>
     <description>SaaS系统管理后台</description>
+    <url>https://github.com/0nebean/Sodium</url>
 
     <properties>
         <net.onebean.sodium.dao.version>${child.model.version}</net.onebean.sodium.dao.version>

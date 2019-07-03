@@ -4,7 +4,6 @@ import net.onebean.component.aliyun.AliyunOssUtil;
 import net.onebean.component.aliyun.CkEditerUploadCallBackVo;
 import net.onebean.component.aliyun.UploadCallBackVo;
 import net.onebean.util.ImageUtil;
-import net.onebean.util.ImageZipUtil;
 import net.onebean.util.PropUtil;
 import org.apache.commons.io.FileUtils;
 import org.springframework.http.HttpHeaders;
@@ -149,7 +148,7 @@ public class UpLoadFileController {
     private String zipImage(String beforePath,String afterPath){
         File before = new File(beforePath);
         File after = new File(afterPath);
-        ImageZipUtil.zipImageFile(before,after,ImageUtil.getImgWidth(before), ImageUtil.getImgHeight(before));
+        ImageUtil.zipImageFile(before,after,ImageUtil.getImgWidth(before), ImageUtil.getImgHeight(before));
         if(before.exists() && before.isDirectory()){
             before.deleteOnExit();
         }
