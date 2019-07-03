@@ -10,7 +10,7 @@
         <version>2.0.0.RELEASE</version>
     </parent>
 
-    <artifactId>net.onebean.saas.portal</artifactId>
+    <artifactId>net.onebean.sodium</artifactId>
     <version>1.0.0.SNAPSHOT</version>
 
 
@@ -19,20 +19,20 @@
     <description>SaaS系统管理后台</description>
 
     <properties>
-        <net.onebean.saas.portal.dao.version>${child.model.version}</net.onebean.saas.portal.dao.version>
-        <net.onebean.saas.portal.service.version>${child.model.version}</net.onebean.saas.portal.service.version>
-        <net.onebean.saas.portal.security.version>${child.model.version}</net.onebean.saas.portal.security.version>
-        <net.onebean.saas.portal.action.version>${child.model.version}</net.onebean.saas.portal.action.version>
-        <net.onebean.saas.portal.web.version>${child.model.version}</net.onebean.saas.portal.web.version>
+        <net.onebean.sodium.dao.version>${child.model.version}</net.onebean.sodium.dao.version>
+        <net.onebean.sodium.service.version>${child.model.version}</net.onebean.sodium.service.version>
+        <net.onebean.sodium.security.version>${child.model.version}</net.onebean.sodium.security.version>
+        <net.onebean.sodium.action.version>${child.model.version}</net.onebean.sodium.action.version>
+        <net.onebean.sodium.web.version>${child.model.version}</net.onebean.sodium.web.version>
         <net.onebean.core.version>${core.version}</net.onebean.core.version>
     </properties>
 
     <modules>
-        <module>net.onebean.saas.portal.dao</module>
-        <module>net.onebean.saas.portal.service</module>
-        <module>net.onebean.saas.portal.security</module>
-        <module>net.onebean.saas.portal.action</module>
-        <module>net.onebean.saas.portal.web</module>
+        <module>net.onebean.sodium.dao</module>
+        <module>net.onebean.sodium.service</module>
+        <module>net.onebean.sodium.security</module>
+        <module>net.onebean.sodium.action</module>
+        <module>net.onebean.sodium.web</module>
     </modules>
 
 </project>

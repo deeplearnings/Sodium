@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.onebean.sodium.dao.DicDictionaryDao" >
+
+
+    <select id="findGroupOrderNextNum" parameterType="string" resultType="int">
+        SELECT d.sort + 1 FROM `dic_dictionary` d
+        <where>
+            CODE = #{code} ORDER BY d.sort DESC LIMIT 1;
+        </where>
+    </select>
+</mapper>
