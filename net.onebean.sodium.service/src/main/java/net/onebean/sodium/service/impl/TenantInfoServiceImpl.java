@@ -25,7 +25,9 @@ import java.util.List;
 public class TenantInfoServiceImpl extends BaseBiz<TenantInfo, TenantInfoDao> implements TenantInfoService {
 
     private static final Logger logger = LoggerFactory.getLogger(TenantInfoServiceImpl.class);
-    private static final String templateFileKey = "inti.tenant.sql.vm.file.path";
+
+
+    private static final String TEMPLATE_FILE = "vm/tenant/initTenantInfo.vm";
 
 
 
@@ -47,7 +49,7 @@ public class TenantInfoServiceImpl extends BaseBiz<TenantInfo, TenantInfoDao> im
      * @return sql
      */
     private String mergeTemplate(String tenantId) {
-        String templateFile = PropUtil.getInstance().getConfig(templateFileKey, PropUtil.DEFLAULT_NAME_SPACE);
+        String templateFile = PropUtil.getInstance().getConfig(TEMPLATE_FILE, PropUtil.DEFLAULT_NAME_SPACE);
         JSONObject param = new JSONObject();
         param.put("tenantId",tenantId);
         return VelocityUtils.generateStringFromVelocity(param,templateFile);
