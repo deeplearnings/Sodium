@@ -1,7 +1,7 @@
 package net.onebean.sodium.service;
 
 import net.onebean.sodium.model.SysPermissionRole;
-import net.onebean.core.IBaseSplitBiz;
+import net.onebean.core.base.IBaseSplitBiz;
 
 import java.util.List;
 

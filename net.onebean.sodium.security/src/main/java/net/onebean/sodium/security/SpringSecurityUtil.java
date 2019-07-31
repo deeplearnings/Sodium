@@ -2,12 +2,14 @@ package net.onebean.sodium.security;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import net.onebean.component.SpringUtil;
-import net.onebean.core.Condition;
-import net.onebean.core.Pagination;
 import net.onebean.sodium.model.SysUser;
 import net.onebean.sodium.service.SysUserService;
 import net.onebean.sodium.service.impl.SysUserServiceImpl;
+import net.onebean.component.SpringUtil;
+import net.onebean.core.query.Condition;
+import net.onebean.core.query.Pagination;
+import net.onebean.util.StringUtils;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -15,6 +17,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Optional;
 import java.util.Random;
 
 /**
@@ -34,7 +37,10 @@ public class SpringSecurityUtil {
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             HttpSession session = request.getSession();
             SecurityContextImpl securityContext = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
-            String username = ((UserDetails)securityContext.getAuthentication().getPrincipal()).getUsername();
+            String username =  Optional.ofNullable(securityContext).map(SecurityContextImpl::getAuthentication).map(Authentication::getPrincipal).map(s -> (UserDetails)s).map(UserDetails::getUsername).orElse("");
+            if (StringUtils.isEmpty(username)){
+                return null;
+            }
             Condition condition = Condition.parseModelCondition("username@string@eq");
             condition.setValue(username);
             SysUserService sysUserService = SpringUtil.getBean(SysUserServiceImpl.class);

@@ -2,7 +2,7 @@ package net.onebean.sodium.service.impl;
 import net.onebean.sodium.dao.SysPermissionRoleDao;
 import net.onebean.sodium.model.SysPermissionRole;
 import net.onebean.sodium.service.SysPermissionRoleService;
-import net.onebean.core.BaseSplitBiz;
+import net.onebean.core.base.BaseSplitBiz;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

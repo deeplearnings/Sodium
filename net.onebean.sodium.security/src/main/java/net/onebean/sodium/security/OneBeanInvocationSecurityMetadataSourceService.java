@@ -1,11 +1,8 @@
 package net.onebean.sodium.security;
 
-import ch.qos.logback.classic.Logger;
-import net.onebean.core.error.GetTenantInfoException;
 import net.onebean.sodium.model.SysPermission;
 import net.onebean.sodium.service.SysPermissionService;
 import net.onebean.util.StringUtils;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
@@ -15,7 +12,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * 资源初始化拦截器,
@@ -30,8 +30,6 @@ public class OneBeanInvocationSecurityMetadataSourceService implements FilterInv
 
     private HashMap<String, Collection<ConfigAttribute>> map =null;
 
-    private final static Logger logger = (Logger) LoggerFactory.getLogger(OneBeanInvocationSecurityMetadataSourceService.class);
-
     /**
      * 加载资源，初始化资源变量
      */
@@ -39,14 +37,7 @@ public class OneBeanInvocationSecurityMetadataSourceService implements FilterInv
         map = new HashMap<>();
         Collection<ConfigAttribute> array;
         ConfigAttribute cfg;
-        List<SysPermission> list;
-        try {
-            list = sysPermissionService.findAll();
-        } catch (GetTenantInfoException e) {
-            logger.info("eureka heartbeat sending now");
-            return;
-        }
-        for(SysPermission permission : list) {
+        for(SysPermission permission : sysPermissionService.findAll()) {
             array = new ArrayList<>();
             cfg = new SecurityConfig(permission.getName());
             array.add(cfg);

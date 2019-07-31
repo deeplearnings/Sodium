@@ -1,13 +1,13 @@
 package net.onebean.sodium.service;
 
-import net.onebean.core.IBaseSplitBiz;
-import net.onebean.sodium.VO.OrgTree;
+import net.onebean.core.base.IBaseSplitBiz;
+import net.onebean.sodium.vo.OrgTree;
 import net.onebean.sodium.model.SysOrganization;
 import net.onebean.sodium.model.SysUser;
 
 import java.util.List;
 
-public interface SysOrganizationService extends IBaseSplitBiz <SysOrganization> {
+public interface SysOrganizationService extends IBaseSplitBiz<SysOrganization> {
     /**
      * 查找所有子节点
      * @author 0neBean
@@ -49,4 +49,10 @@ public interface SysOrganizationService extends IBaseSplitBiz <SysOrganization> 
      * @return
      */
     Integer findChildOrderNextNum(Long parentId);
+    /**
+     * 删除机构
+     * @param id 主键
+     * @return bool
+     */
+    Boolean deleteOrg(Object id);
 }

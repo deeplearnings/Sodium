@@ -3,13 +3,13 @@ package net.onebean.sodium.core;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import net.onebean.core.ConditionMap;
-import net.onebean.core.IBaseSplitBiz;
-import net.onebean.core.ListPageQuery;
-import net.onebean.core.Pagination;
+import net.onebean.core.base.IBaseSplitBiz;
 import net.onebean.core.extend.Sort;
 import net.onebean.core.form.Parse;
 import net.onebean.core.model.BaseIncrementIdModel;
+import net.onebean.core.query.ConditionMap;
+import net.onebean.core.query.ListPageQuery;
+import net.onebean.core.query.Pagination;
 import net.onebean.sodium.common.dictionary.DictionaryUtils;
 import net.onebean.sodium.model.SysUser;
 import net.onebean.sodium.security.SpringSecurityUtil;
@@ -17,6 +17,8 @@ import net.onebean.util.CollectionUtil;
 import net.onebean.util.DateUtils;
 import net.onebean.util.ReflectionUtils;
 import net.onebean.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +35,8 @@ import java.util.stream.Collectors;
  * @param <S>
  */
 public abstract  class BaseSplitController<M extends  BaseIncrementIdModel,S extends IBaseSplitBiz<M>> {
+
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      *
@@ -218,7 +222,7 @@ public abstract  class BaseSplitController<M extends  BaseIncrementIdModel,S ext
         query.setConditions(map);
         query.setPagination(page);
         query.setSort(sort);
-        dataList = baseService.find(query,dp);
+        dataList = baseService.find(dp,query);
     }
 
     /**

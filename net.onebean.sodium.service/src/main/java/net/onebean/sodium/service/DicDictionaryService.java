@@ -1,6 +1,7 @@
 package net.onebean.sodium.service;
+
+import net.onebean.core.base.IBaseBiz;
 import net.onebean.sodium.model.DicDictionary;
-import net.onebean.core.IBaseBiz;
 
 public interface DicDictionaryService extends IBaseBiz<DicDictionary> {
     /**

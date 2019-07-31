@@ -3,13 +3,13 @@ package net.onebean.sodium.core;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import net.onebean.core.ConditionMap;
-import net.onebean.core.IBaseBiz;
-import net.onebean.core.ListPageQuery;
-import net.onebean.core.Pagination;
+import net.onebean.core.base.IBaseBiz;
 import net.onebean.core.extend.Sort;
 import net.onebean.core.form.Parse;
 import net.onebean.core.model.BaseIncrementIdModel;
+import net.onebean.core.query.ConditionMap;
+import net.onebean.core.query.ListPageQuery;
+import net.onebean.core.query.Pagination;
 import net.onebean.sodium.common.dictionary.DictionaryUtils;
 import net.onebean.sodium.model.SysUser;
 import net.onebean.sodium.security.SpringSecurityUtil;
@@ -17,11 +17,14 @@ import net.onebean.util.CollectionUtil;
 import net.onebean.util.DateUtils;
 import net.onebean.util.ReflectionUtils;
 import net.onebean.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -31,7 +34,9 @@ import java.util.stream.Collectors;
  * @param <M>
  * @param <S>
  */
-public abstract  class BaseController <M extends  BaseIncrementIdModel,S extends IBaseBiz<M>> {
+public abstract  class BaseController<M extends  BaseIncrementIdModel,S extends IBaseBiz<M>> {
+
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      *
@@ -186,6 +191,23 @@ public abstract  class BaseController <M extends  BaseIncrementIdModel,S extends
         return dataListParam;
     }
 
+
+    /**
+     * 装载数据
+     * @param sort 排序参数
+     * @param page 分页参数
+     * @param dp 权限sql
+     * @param conditionStr 字符串拼接的表达式
+     */
+    protected void initData(Sort sort, Pagination page, String conditionStr, Map<String,Object> dp){
+        ListPageQuery query = new ListPageQuery();
+        ConditionMap map = new ConditionMap();
+        map.parseModelCondition(conditionStr);
+        query.setConditions(map);
+        query.setPagination(page);
+        query.setSort(sort);
+        dataList = baseService.find(dp,query);
+    }
 
     /**
      * 装载数据

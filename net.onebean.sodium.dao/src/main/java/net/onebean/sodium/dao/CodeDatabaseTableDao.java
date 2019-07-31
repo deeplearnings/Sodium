@@ -1,5 +1,6 @@
 package net.onebean.sodium.dao;
-import net.onebean.core.BaseDao;
+
+import net.onebean.core.base.BaseDao;
 import net.onebean.sodium.model.CodeDatabaseTable;
 import org.apache.ibatis.annotations.Param;
 

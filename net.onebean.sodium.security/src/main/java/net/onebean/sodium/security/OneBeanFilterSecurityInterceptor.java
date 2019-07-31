@@ -35,14 +35,13 @@ public class OneBeanFilterSecurityInterceptor extends AbstractSecurityIntercepto
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+
         FilterInvocation fi = new FilterInvocation(request, response, chain);
         invoke(fi);
     }
 
 
-
-
-    private void invoke(FilterInvocation fi) throws IOException, ServletException {
+    public void invoke(FilterInvocation fi) throws IOException, ServletException {
         InterceptorStatusToken token = super.beforeInvocation(fi);
         try {
             //执行下一个拦截器

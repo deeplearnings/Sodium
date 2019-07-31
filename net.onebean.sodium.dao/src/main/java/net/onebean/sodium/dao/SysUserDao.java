@@ -1,12 +1,12 @@
 package net.onebean.sodium.dao;
 
-import net.onebean.core.BaseSplitDao;
+import net.onebean.core.base.BaseSplitDao;
 import net.onebean.sodium.model.SysUser;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface SysUserDao extends BaseSplitDao <SysUser> {
+public interface SysUserDao extends BaseSplitDao<SysUser> {
     /**
      *根据用户名查询出用户及其拥有的所有的角色
      * @param username 用户名

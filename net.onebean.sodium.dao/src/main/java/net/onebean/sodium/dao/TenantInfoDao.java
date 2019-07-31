@@ -1,6 +1,6 @@
 package net.onebean.sodium.dao;
 
-import net.onebean.core.BaseDao;
+import net.onebean.core.base.BaseDao;
 import net.onebean.sodium.model.TenantInfo;
 import org.apache.ibatis.annotations.Param;
 

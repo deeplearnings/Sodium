@@ -1,42 +1,43 @@
 package net.onebean.sodium.web.action.sys;
 
 
-import net.onebean.core.PageResult;
-import net.onebean.core.Pagination;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import net.onebean.core.base.BasePaginationRequest;
+import net.onebean.core.base.BasePaginationResponse;
+import net.onebean.core.base.BaseResponse;
+import net.onebean.core.error.BusinessException;
 import net.onebean.core.extend.Sort;
-import net.onebean.core.form.Parse;
-import net.onebean.sodium.VO.OrgTree;
+import net.onebean.core.query.Pagination;
+import net.onebean.sodium.common.error.ErrorCodesEnum;
 import net.onebean.sodium.core.BaseSplitController;
 import net.onebean.sodium.model.SysOrganization;
 import net.onebean.sodium.model.SysUser;
 import net.onebean.sodium.security.SpringSecurityUtil;
 import net.onebean.sodium.service.SysOrganizationService;
-import net.onebean.sodium.service.SysUserService;
-import net.onebean.util.CollectionUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import net.onebean.sodium.vo.InitTreeReq;
+import net.onebean.sodium.vo.OrgTree;
+import net.onebean.util.DateUtils;
 import org.springframework.context.annotation.Description;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Optional;
 
 /**
  * 机构管理
+ *
  * @author 0neBean
  */
 @Controller
 @RequestMapping("/sysorg")
-public class SysOrganizationController extends BaseSplitController <SysOrganization,SysOrganizationService> {
+public class SysOrganizationController extends BaseSplitController<SysOrganization, SysOrganizationService> {
 
-    @Autowired
-    private SysUserService sysUserService;
     /**
      * 预览列表页面
+     *
      * @return view
      */
     @RequestMapping("preview")
@@ -48,155 +49,211 @@ public class SysOrganizationController extends BaseSplitController <SysOrganizat
 
     /**
      * 新增页面
-     * @param model modelAndView
+     *
+     * @param model  modelAndView
      * @param entity 实体
      * @return view
      */
     @RequestMapping("add")
     @Description(value = "新增页面")
     @PreAuthorize("hasPermission('$everyone','PERM_ORG_ADD')")
-    public String add(Model model,SysOrganization entity) {
-        model.addAttribute("add",true);
-        model.addAttribute("entity",entity);
+    public String add(Model model, SysOrganization entity) {
+        model.addAttribute("add", true);
+        model.addAttribute("entity", entity);
         return getView("detail");
     }
 
     /**
      * 查看页面
+     *
      * @param model modelAndView
-     * @param id 主键
+     * @param id    主键
      * @return view
      */
     @RequestMapping("view/{id}")
     @Description(value = "查看页面")
     @PreAuthorize("hasPermission('$everyone','PERM_ORG_VIEW')")
-    public String view(Model model,@PathVariable("id")Object id){
-        model.addAttribute("entity",baseService.findById(id));
-        model.addAttribute("view",true);
+    public String view(Model model, @PathVariable("id") Object id) {
+        model.addAttribute("entity", baseService.findById(id));
+        model.addAttribute("view", true);
         return getView("detail");
     }
 
     /**
      * 编辑页面
+     *
      * @param model modelAndView
-     * @param id 主键
+     * @param id    主键
      * @return view
      */
     @RequestMapping("edit/{id}")
     @Description(value = "编辑页面")
     @PreAuthorize("hasPermission('$everyone','PERM_ORG_EDIT')")
-    public String edit(Model model,@PathVariable("id")Object id) {
-        model.addAttribute("entity",baseService.findById(id));
-        model.addAttribute("edit",true);
+    public String edit(Model model, @PathVariable("id") Object id) {
+        model.addAttribute("entity", baseService.findById(id));
+        model.addAttribute("edit", true);
         return getView("detail");
     }
 
     /**
      * 保存
-     * @param entity 实体
-     * @param result 结果集
-     * @return PageResult<SysOrganization>
      */
     @RequestMapping("save")
-    @Description(value = "保存")
     @ResponseBody
+    @SuppressWarnings("unchecked")
     @PreAuthorize("hasPermission('$everyone','PERM_ORG_SAVE')")
-    public PageResult<SysOrganization> save(SysOrganization entity, PageResult<SysOrganization> result) {
-        entity = loadOperatorData(entity);
-        baseService.save(entity);
-        result.getData().add(entity);
-        return result;
+    public BaseResponse<SysOrganization> add(@RequestBody SysOrganization entity) {
+        logger.info("access" + DateUtils.getNowyyyy_MM_dd_HH_mm_ss());
+        BaseResponse<SysOrganization> response = new BaseResponse<>();
+        try {
+            logger.debug("method add entity = " + JSON.toJSONString(entity, SerializerFeature.WriteMapNullValue));
+            entity = loadOperatorData(entity);
+            baseService.save(entity);
+            response = BaseResponse.ok(entity);
+        } catch (BusinessException e) {
+            response.setErrCode(e.getCode());
+            response.setErrMsg(e.getMsg());
+            logger.info("method add BusinessException ex = ", e);
+        } catch (Exception e) {
+            response.setErrCode(ErrorCodesEnum.OTHER.code());
+            response.setErrMsg(ErrorCodesEnum.OTHER.msg());
+            logger.error("method add catch Exception e = ", e);
+        }
+        return response;
     }
+
     /**
      * 列表数据
-     * @param sort 排序参数
-     * @param page 分页参数
-     * @param result 结果集
-     * @param cond 表达式
-     * @return PageResult<SysOrganization>
+     *
+     * @param request 参数体
+     * @return BasePaginationResponse<CodeDatabaseTable>
      */
     @RequestMapping("list")
     @ResponseBody
+    @SuppressWarnings("unchecked")
     @PreAuthorize("hasPermission('$everyone','PERM_ORG_LIST')")
-    public PageResult<SysOrganization> list (Sort sort, Pagination page, PageResult<SysOrganization> result,
-                                             @RequestParam(value = "conditionList",required = false) String cond){
-        initData(sort,page,cond);
-        result.setData(dataList);
-        result.setPagination(page);
-        return result;
+    public BasePaginationResponse<SysOrganization> list(@RequestBody BasePaginationRequest<String> request) {
+        logger.info("access" + DateUtils.getNowyyyy_MM_dd_HH_mm_ss());
+        BasePaginationResponse<SysOrganization> response = new BasePaginationResponse<>();
+        try {
+            logger.debug("method list request = " + JSON.toJSONString(request, SerializerFeature.WriteMapNullValue));
+            String cond = Optional.ofNullable(request).map(BasePaginationRequest::getData).orElse("");
+            Pagination page = Optional.ofNullable(request).map(BasePaginationRequest::getPage).orElse(new Pagination());
+            Sort sort = Optional.ofNullable(request).map(BasePaginationRequest::getSort).orElse(new Sort(Sort.DESC, "id"));
+            initData(sort, page, cond);
+            response = BasePaginationResponse.ok(dataList, page);
+        } catch (BusinessException e) {
+            response.setErrCode(e.getCode());
+            response.setErrMsg(e.getMsg());
+            logger.info("method list BusinessException ex = ", e);
+        } catch (Exception e) {
+            response.setErrCode(ErrorCodesEnum.OTHER.code());
+            response.setErrMsg(ErrorCodesEnum.OTHER.msg());
+            logger.error("method list catch Exception e = ", e);
+        }
+        return response;
     }
 
+
     /**
-     * 根据ID删除
+     * 删除数据库模型及其关联字段
      * @param id 主键
-     * @param result 结果集
-     * @return PageResult<SysOrganization>
+     * @return PageResult<Boolean>
      */
-    @RequestMapping("delete/{id}")
+    @RequestMapping(value = "delete/{id}")
+    @Description(value = "删除")
     @ResponseBody
+    @SuppressWarnings("unchecked")
     @PreAuthorize("hasPermission('$everyone','PERM_ORG_DELETE')")
-    public PageResult<SysOrganization> delete(@PathVariable("id")Object id, PageResult<SysOrganization> result) {
-        result.setFlag(true);
-        if (CollectionUtil.isNotEmpty(sysUserService.findUserByOrgID(id))){
-            result.setFlag(false);
-            result.setMsg("该机构关联了用户不能删除!");
+    public BaseResponse<Boolean> delete(@PathVariable("id") Object id) {
+        logger.info("method delete access" + DateUtils.getNowyyyy_MM_dd_HH_mm_ss());
+        BaseResponse<Boolean> response = new BaseResponse<>();
+        try {
+            logger.debug("method delete id = " + JSON.toJSONString(id, SerializerFeature.WriteMapNullValue));
+            response = BaseResponse.ok(baseService.deleteOrg(id));
+        } catch (BusinessException e) {
+            response.setErrCode(e.getCode());
+            response.setErrMsg(e.getMsg());
+            logger.info("method delete BusinessException ex = ", e);
+        } catch (Exception e) {
+            response.setErrCode(ErrorCodesEnum.OTHER.code());
+            response.setErrMsg(ErrorCodesEnum.OTHER.msg());
+            logger.error("method delete catch Exception e = ", e);
         }
-        if(!baseService.deleteSelfAndChildById(Parse.toLong(id))){
-            result.setFlag(false);
-            result.setMsg("该机构下级机构关联了用户不能删除!");
-        }
-        return result;
+        return response;
     }
+
 
     /**
      * 查出一级节点
-     * @param page 分页参数
-     * @param result 结果集
-     * @param parentId 父id
-     * @param selfId 自身id
-     * @return PageResult<OrgTree>
+     * @return BasePaginationResponse<OrgTree>
      */
     @RequestMapping("orgtree")
     @ResponseBody
     @PreAuthorize("hasPermission('$everyone','PERM_ORG_TREE')")
-    public PageResult<OrgTree> orgTree(Pagination page,PageResult<OrgTree> result,
-                                       @RequestParam(value = "parentId",required = false) Long parentId,
-                                       @RequestParam(value = "selfId",required = false) Long selfId){
-        SysUser currentUser = SpringSecurityUtil.getCurrentLoginUser();
-        result.setData(baseService.findChildAsync(parentId,selfId,currentUser));
-        result.setPagination(page);
-        return result;
+    @SuppressWarnings("unchecked")
+    public BasePaginationResponse<OrgTree> orgTree(@RequestBody BasePaginationRequest<InitTreeReq> request) {
+        logger.info("method orgTree access" + DateUtils.getNowyyyy_MM_dd_HH_mm_ss());
+        BasePaginationResponse<OrgTree> response = new BasePaginationResponse<>();
+        try {
+            logger.debug("method orgTree request = " + JSON.toJSONString(request, SerializerFeature.WriteMapNullValue));
+            SysUser currentUser = SpringSecurityUtil.getCurrentLoginUser();
+            Long parentId = Optional.ofNullable(request).map(BasePaginationRequest::getData).map(InitTreeReq::getParentId).orElse(null);
+            Long selfId = Optional.ofNullable(request).map(BasePaginationRequest::getData).map(InitTreeReq::getSelfId).orElse(null);
+            response = BasePaginationResponse.ok(baseService.findChildAsync(parentId,selfId,currentUser));
+        } catch (BusinessException e) {
+            response.setErrCode(e.getCode());
+            response.setErrMsg(e.getMsg());
+            logger.info("method orgTree BusinessException ex = ", e);
+        } catch (Exception e) {
+            response.setErrCode(ErrorCodesEnum.OTHER.code());
+            response.setErrMsg(ErrorCodesEnum.OTHER.msg());
+            logger.error("method orgTree catch Exception e = ", e);
+        }
+        return response;
     }
 
     /**
      * 查出所有节点
-     * @param result 结果集
-     * @return PageResult<OrgTree>
+     * @return BasePaginationResponse<OrgTree>
      */
     @RequestMapping("allorgtree")
     @ResponseBody
+    @SuppressWarnings("unchecked")
     @PreAuthorize("hasPermission('$everyone','PERM_ORG_ALL_TREE')")
-    public PageResult<OrgTree> allorgTree(PageResult<OrgTree> result){
-        SysUser currentUser = SpringSecurityUtil.getCurrentLoginUser();
-        List<SysOrganization> list = baseService.findChildSync(currentUser);
-        result.setData(baseService.organizationToOrgTree(list,null));
-        return result;
+    public BasePaginationResponse<OrgTree> allorgTree() {
+        logger.info("method orgTree access" + DateUtils.getNowyyyy_MM_dd_HH_mm_ss());
+        BasePaginationResponse<OrgTree> response = new BasePaginationResponse<>();
+        try {
+            SysUser currentUser = SpringSecurityUtil.getCurrentLoginUser();
+            response = BasePaginationResponse.ok(baseService.organizationToOrgTree(baseService.findChildSync(currentUser), null));
+        } catch (BusinessException e) {
+            response.setErrCode(e.getCode());
+            response.setErrMsg(e.getMsg());
+            logger.info("method orgTree BusinessException ex = ", e);
+        } catch (Exception e) {
+            response.setErrCode(ErrorCodesEnum.OTHER.code());
+            response.setErrMsg(ErrorCodesEnum.OTHER.msg());
+            logger.error("method orgTree catch Exception e = ", e);
+        }
+        return response;
     }
 
     /**
      * 添加子项
-     * @param model modelAndView
+     *
+     * @param model    modelAndView
      * @param parentId 父id
-     * @param entity 实体
+     * @param entity   实体
      * @return view
      */
     @RequestMapping("addchild")
     @PreAuthorize("hasPermission('$everyone','PERM_ORG_ADD_CHILD')")
-    public String addChild(Model model, @RequestParam("parentId")Long parentId,SysOrganization entity) {
+    public String addChild(Model model, @RequestParam("parentId") Long parentId, SysOrganization entity) {
         /*获取当前最大排序值*/
         entity.setSort(baseService.findChildOrderNextNum(parentId));
-        model.addAttribute("entity",entity);
-        model.addAttribute("add",true);
+        model.addAttribute("entity", entity);
+        model.addAttribute("add", true);
         return getView("detail");
     }
 }

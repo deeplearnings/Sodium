@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="public/head :: onLoadHead(文字列表)">
-</head>
-<body ddata-type="widgets">
+<!--通用head 其中加载了css-->
+<head th:replace="public/head :: onLoadHead(文字列表)"></head>
 
+<body data-type="index">
 <div class="am-g tpl-g">
+    <!-- 通用头部 -->
+    <header th:include="public/topBar :: topBar"></header>
+    <!-- 主题选择组件 -->
+    <div th:include="public/skiner :: skiner" class="tpl-skiner"></div>
+    <!-- 公用左侧栏 -->
+    <div th:include="public/leftMenu :: leftMenu" class="left-sidebar"></div>
     <!-- 内容区域 -->
-    <div class="tpl-content-wrapper none-margin">
+    <div class=" tpl-content-wrapper">
         <div class="row-content am-cf">
             <div class="row">
                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
@@ -22,10 +28,18 @@
                                 <div class="am-form-group">
                                     <div class="am-btn-toolbar">
                                         <div class="am-btn-group am-btn-group-xs">
-                                            <button type="button" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 新增</button>
-                                            <button type="button" class="am-btn am-btn-default am-btn-secondary"><span class="am-icon-save"></span> 保存</button>
-                                            <button type="button" class="am-btn am-btn-default am-btn-warning"><span class="am-icon-archive"></span> 审核</button>
-                                            <button type="button" class="am-btn am-btn-default am-btn-danger"><span class="am-icon-trash-o"></span> 删除</button>
+                                            <button type="button" class="am-btn am-btn-default am-btn-success"><span
+                                                    class="am-icon-plus"></span> 新增
+                                            </button>
+                                            <button type="button" class="am-btn am-btn-default am-btn-secondary"><span
+                                                    class="am-icon-save"></span> 保存
+                                            </button>
+                                            <button type="button" class="am-btn am-btn-default am-btn-warning"><span
+                                                    class="am-icon-archive"></span> 审核
+                                            </button>
+                                            <button type="button" class="am-btn am-btn-default am-btn-danger"><span
+                                                    class="am-icon-trash-o"></span> 删除
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -47,13 +61,15 @@
                                 <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
                                     <input type="text" class="am-form-field ">
                                     <span class="am-input-group-btn">
-                                            <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search" type="button"></button>
+                                            <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search"
+                                                    type="button"></button>
                                         </span>
                                 </div>
                             </div>
 
                             <div class="am-u-sm-12">
-                                <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black " id="example-r">
+                                <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black "
+                                       id="example-r">
                                     <thead>
                                     <tr>
                                         <th>文章标题</th>
@@ -180,7 +196,7 @@
     </div>
 </div>
 
-<css th:replace="public/css :: onLoadCSS"></css>
+<!--加载JS-->
 <js th:replace="public/js :: onLoadJS"></js>
 </body>
 </html>

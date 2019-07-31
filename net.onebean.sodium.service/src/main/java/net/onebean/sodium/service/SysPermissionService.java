@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSONArray;
 import net.onebean.sodium.model.CodeDatabaseTable;
 import net.onebean.sodium.model.SysPermission;
 import net.onebean.sodium.model.SysUser;
-import net.onebean.core.IBaseSplitBiz;
-import net.onebean.sodium.VO.MenuTree;
+import net.onebean.core.base.IBaseSplitBiz;
+import net.onebean.sodium.vo.MenuTree;
 
 import java.util.List;
 
@@ -75,5 +75,28 @@ public interface SysPermissionService extends IBaseSplitBiz <SysPermission> {
 	 * @return Integer
 	 */
 	Integer findChildOrderNextNum(Long parentId);
+
+	/**
+	 * 删除权限
+	 * @param id 主键
+	 * @return bool
+	 */
+	Boolean delPerm(Object id);
+
+	/**
+	 * url 是否重复
+	 * @param reg 参数
+	 * @param id 主键
+	 * @return bool
+	 */
+	Boolean urlRepeat(String reg, Long id);
+
+	/**
+	 * 保存角色权限关联信息
+	 * @param premIds 权限IDs
+	 * @param roleId 角色ID
+	 * @return bool
+	 */
+	Boolean savePremissionRole(String premIds, String roleId);
 
 }

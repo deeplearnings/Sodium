@@ -1,7 +1,7 @@
 package net.onebean.sodium.service;
 
 import net.onebean.sodium.model.SysUser;
-import net.onebean.core.IBaseSplitBiz;
+import net.onebean.core.base.IBaseSplitBiz;
 
 import java.util.List;
 
@@ -24,4 +24,10 @@ public interface SysUserService extends IBaseSplitBiz <SysUser> {
      * @return int
      */
     Integer countUserByIds(List<String> orgIds);
+    /**
+     * 删除用户
+     * @param id 主键
+     * @return bool
+     */
+    Boolean deleteUser(Object id);
 }

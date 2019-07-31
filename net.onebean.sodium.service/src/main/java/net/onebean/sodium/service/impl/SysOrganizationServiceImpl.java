@@ -1,9 +1,9 @@
 package net.onebean.sodium.service.impl;
 
-import net.onebean.common.exception.BusinessException;
-import net.onebean.core.BaseSplitBiz;
+import net.onebean.core.base.BaseSplitBiz;
+import net.onebean.core.error.BusinessException;
 import net.onebean.core.form.Parse;
-import net.onebean.sodium.VO.OrgTree;
+import net.onebean.sodium.vo.OrgTree;
 import net.onebean.sodium.common.dataPerm.DataPermUtils;
 import net.onebean.sodium.common.error.ErrorCodesEnum;
 import net.onebean.sodium.dao.SysOrganizationDao;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class SysOrganizationServiceImpl extends BaseSplitBiz <SysOrganization, SysOrganizationDao> implements SysOrganizationService {
+public class SysOrganizationServiceImpl extends BaseSplitBiz<SysOrganization, SysOrganizationDao> implements SysOrganizationService {
 
     @Autowired
     private SysUserService sysUserService;
@@ -198,5 +198,16 @@ public class SysOrganizationServiceImpl extends BaseSplitBiz <SysOrganization, S
     public Integer findChildOrderNextNum(Long parentId) {
         Integer res = baseDao.findChildOrderNextNum(parentId,getTenantId());
         return (null == res)?0:res;
+    }
+
+    @Override
+    public Boolean deleteOrg(Object id) {
+        if (CollectionUtil.isNotEmpty(sysUserService.findUserByOrgID(id))) {
+            throw new BusinessException(ErrorCodesEnum.ASSOCIATED_DATA_CANNOT_BE_DELETED.code(),"该机构关联了用户不能删除!");
+        }
+        if (!this.deleteSelfAndChildById(Parse.toLong(id))) {
+            throw new BusinessException(ErrorCodesEnum.ASSOCIATED_DATA_CANNOT_BE_DELETED.code(),"该机构下级机构关联了用户不能删除!");
+        }
+        return true;
     }
 }

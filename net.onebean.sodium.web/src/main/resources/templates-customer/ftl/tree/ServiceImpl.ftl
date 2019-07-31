@@ -1,9 +1,9 @@
 package ${service_package_name}.impl;
 import org.springframework.stereotype.Service;
 import net.onebean.util.CollectionUtil;
-import net.onebean.core.BaseBiz;
-import net.onebean.core.Condition;
-import net.onebean.core.Pagination;
+import net.onebean.core.base.BaseBiz;
+import net.onebean.core.query.Condition;
+import net.onebean.core.query.Pagination;
 import net.onebean.core.form.Parse;
 import ${model_package_name}.${model_name};
 import ${service_package_name}.${model_name}Service;

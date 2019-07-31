@@ -1,7 +1,7 @@
-package net.onebean.sodium.VO;
+package net.onebean.sodium.vo;
 
 import net.onebean.sodium.model.SysOrganization;
-import net.onebean.core.BaseTree;
+import net.onebean.core.base.BaseTree;
 
 import java.util.List;
 

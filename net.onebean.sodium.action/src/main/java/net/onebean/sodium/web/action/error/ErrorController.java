@@ -1,11 +1,8 @@
 package net.onebean.sodium.web.action.error;
 
 import net.onebean.sodium.web.action.login.LoginController;
-import net.onebean.util.StringUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -18,7 +15,6 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class ErrorController {
 
-
     @RequestMapping("403")
     public String page_403(){
         return "error/403";
@@ -30,10 +26,7 @@ public class ErrorController {
     }
 
     @RequestMapping("500")
-    public String page_500(@RequestParam(value = "errorCode",required = false)String errorCode, Model model){
-        if (StringUtils.isNotEmpty(errorCode)){
-            model.addAttribute("errorCode",errorCode);
-        }
+    public String page_500(){
         return "error/500";
     }
 

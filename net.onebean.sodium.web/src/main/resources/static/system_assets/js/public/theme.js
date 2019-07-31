@@ -1,13 +1,13 @@
 var saveSelectColor = {
-    'Name': 'SelcetColor',
+    'Name': 'SelectColor',
     'Color': 'theme-black'
-}
+};
 
 
 
 // 判断用户是否已有自己选择的模板风格
-if (storageLoad('SelcetColor')) {
-    $('body').attr('class', storageLoad('SelcetColor').Color)
+if (storageLoad('SelectColor')) {
+    $('body').attr('class', storageLoad('SelectColor').Color)
 } else {
     storageSave(saveSelectColor);
     $('body').attr('class', 'theme-black')

@@ -1,15 +1,21 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
-<head th:replace="public/head :: onLoadHead(首页)">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!--通用head 其中加载了css-->
+<head th:replace="public/head :: onLoadHead(首页)"></head>
 
-</head>
 <body data-type="index">
 <div class="am-g tpl-g">
+    <!-- 通用头部 -->
+    <header th:include="public/topBar :: topBar"></header>
+    <!-- 主题选择组件 -->
+    <div th:include="public/skiner :: skiner" class="tpl-skiner"></div>
+    <!-- 公用左侧栏 -->
+    <div th:include="public/leftMenu :: leftMenu" class="left-sidebar"></div>
     <!-- 模态提示组件 -->
     <div th:include="public/tips :: Tips"></div>
 
     <!-- 内容区域 -->
-    <div class="tpl-content-wrapper onebean-frame-index">
+    <div class="tpl-content-wrapper">
 
         <div class="container-fluid am-cf">
             <div class="row">
@@ -19,16 +25,19 @@
                     </div>
                     <p class="page-header-description">Amaze UI 含近 20 个 CSS 组件、20 余 JS 组件，更有多个包含不同主题的 Web 组件。</p>
 
-                    <p class="page-header-description" sec:authorize="hasRole('ROLE_USER')">ROLE_USER</p>
-                    <p class="page-header-description" sec:authorize="hasRole('ROLE_ADMIN')">ROLE_ADMIN</p>
-                    <p class="page-header-description" sec:authorize-url = "/system/setting">/system/setting</p>
-                    <p class="page-header-description" sec:authorize-url = "/sysuser/preview">/sysuser/preview</p>
-                    <p class="page-header-description" sec:authorize="isAuthenticated()">登录才能查看</p>
-                    <p class="page-header-description" sec:authentication="name"></p>
-                    <p class="page-header-description" sec:authorize="hasPermission('$everyone','PERM_HOME')">hasPermission-PERM_HOME</p>
-                    <p class="page-header-description" sec:authorize="hasPermission('$everyone','PERM_SYSTEM_SETTING')">hasPermission-PERM_SYSTEM_SETTING</p>
-                    <p class="page-header-description" sec:authorize="hasPermission('$everyone','PERM_USER_SETTING')">hasPermission-PERM_USER_SETTING</p>
-                    <p class="page-header-description" sec:authorize="hasPermission('abel','/')">hasPermission-abel</p>
+                    <!--<p class="page-header-description" sec:authorize="hasRole('ROLE_USER')">ROLE_USER</p>-->
+                    <!--<p class="page-header-description" sec:authorize="hasRole('ROLE_ADMIN')">ROLE_ADMIN</p>-->
+                    <!--<p class="page-header-description" sec:authorize-url="/system/setting">/system/setting</p>-->
+                    <!--<p class="page-header-description" sec:authorize-url="/sysuser/preview">/sysuser/preview</p>-->
+                    <!--<p class="page-header-description" sec:authorize="isAuthenticated()">登录才能查看</p>-->
+                    <!--<p class="page-header-description" sec:authentication="name"></p>-->
+                    <!--<p class="page-header-description" sec:authorize="hasPermission('$everyone','PERM_HOME')">-->
+                        <!--hasPermission-PERM_HOME</p>-->
+                    <!--<p class="page-header-description" sec:authorize="hasPermission('$everyone','PERM_SYSTEM_SETTING')">-->
+                        <!--hasPermission-PERM_SYSTEM_SETTING</p>-->
+                    <!--<p class="page-header-description" sec:authorize="hasPermission('$everyone','PERM_USER_SETTING')">-->
+                        <!--hasPermission-PERM_USER_SETTING</p>-->
+                    <!--<p class="page-header-description" sec:authorize="hasPermission('abel','/')">hasPermission-abel</p>-->
                 </div>
                 <div class="am-u-lg-3 tpl-index-settings-button">
                     <button type="button" class="page-header-button"><span class="am-icon-paint-brush"></span> 设置
@@ -274,9 +283,9 @@
     </div>
 </div>
 
-<css th:replace="public/css :: onLoadCSS"></css>
-<script th:src="@{/system_assets/js/chart/echarts.min.js}" type="text/javascript"></script>
+<!--加载JS-->
 <js th:replace="public/js :: onLoadJS"></js>
+<script th:src="@{/system_assets/js/chart/echarts.min.js}" type="text/javascript"></script>
 <script th:src="@{/system_assets/js/chart/amazeui.datatables.min.js}" type="text/javascript"></script>
 <script th:src="@{/system_assets/js/chart/dataTables.responsive.min.js}" type="text/javascript"></script>
 <script th:src="@{/system_assets/js/chart/demoChart.js}" type="text/javascript"></script>

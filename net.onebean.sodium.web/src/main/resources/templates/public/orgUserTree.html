@@ -3,8 +3,7 @@
     <div class="am-popup-inner onebean-am-popup-inner">
         <div class="am-popup-hd">
             <h4 class="am-popup-title">...</h4>
-            <span data-am-modal-close
-                  class="am-close">&times;</span>
+            <span data-am-modal-close class="am-close">&times;</span>
         </div>
         <div class="am-popup-bd" style="background: none!important;">
 
@@ -47,7 +46,7 @@
 <script id="userOptinTempl" type="text/html" th:fragment="orgTreeLinkageUserOptionTips">
     {{if $data.length > 0}}
     <option value="  ">请选择</option>
-    {{each $data as data}}
+    {{each $data data}}
     <option value="{{data.id}}">{{data.realName}}</option>
     {{/each}}
     {{else}}
@@ -65,18 +64,18 @@
         $treeTips.html(template('orgTreeLinkageUserTempl',{businessInPutId:$(businessInPutId).prop('id')}));
         $('#linkageDataSelector').selected({dropUp:1});
         initTreeAsyncSingleSelect("请从机构上选择用户",selfId,"/sysorg/orgtree");
-        treeTipsModal($treeTips);
+        $treeTips.modal('open');
     }
 
     /* 选中机构后联动查询用户*/
     $('body').on('selected.tree.amui','#tree-template',function(){
         var url = "/sysuser/finduserbyorgid/";
         var orgId = $(this).tree('selectedItems')[0].id;
-        var param = {orgId:orgId};
-        doGet(url,param,function(res){
-            $('#linkageDataSelector').html(template('userOptinTempl', res.data))
+        url = url+orgId;
+        doPost(url,{},function(res){
+            $('#linkageDataSelector').html(template('userOptinTempl', res.datas));
         })
-    })
+    });
 
     /*选中用户事件*/
     function orgTreeLinkageUserSelectAction(businessInPutId) {

@@ -1,15 +1,20 @@
-    <!DOCTYPE html>
-    <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
-    <head th:replace="public/head :: onLoadHead(角色管理)">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!--通用head 其中加载了css-->
+<head th:replace="public/head :: onLoadHead(角色管理)"></head>
 
-    </head>
-    <body data-type="widgets">
-    <div class="am-g tpl-g">
+<body data-type="index">
+<div class="am-g tpl-g">
+    <!-- 通用头部 -->
+    <header th:include="public/topBar :: topBar"></header>
+    <!-- 主题选择组件 -->
+    <div th:include="public/skiner :: skiner" class="tpl-skiner"></div>
+    <!-- 公用左侧栏 -->
+    <div th:include="public/leftMenu :: leftMenu" class="left-sidebar"></div>
     <!-- 模态提示组件 -->
     <div th:include="public/tips :: Tips"></div>
-
     <!-- 内容区域 -->
-    <div class="tpl-content-wrapper none-margin">
+    <div class=" tpl-content-wrapper">
         <div class="row-content am-cf">
             <div class="row">
                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
@@ -18,63 +23,78 @@
                             <th:block th:include="public/breadCrumbs :: breadCrumbsTempl"/>
                         </div>
                         <div class="widget-body am-fr">
-                                <form class="am-form tpl-form-border-form tpl-form-border-br paramFrom" onsubmit="return false;">
-                                    <div class="am-form-group">
-                                        <label for="name" class="am-u-sm-1 am-form-label line-hight-10">角色标识 :</label>
-                                        <div class="am-u-sm-3 am-u-end line-hight-10">
-                                            <input type="text" class="tpl-form-input paramInput" param-pattern="name@string@like$"  placeholder="请输入角色标识">
-                                        </div>
-
-                                        <label class="am-u-sm-1 am-form-label line-hight-10">角色名 :</label>
-                                        <div class="am-u-sm-3 am-u-end line-hight-10">
-                                            <input type="text" class="tpl-form-input paramInput" param-pattern="chName@string@like$" placeholder="请输入角色名">
-                                        </div>
+                            <form class="am-form tpl-form-border-form tpl-form-border-br paramFrom"
+                                  onsubmit="return false;">
+                                <div class="am-form-group">
+                                    <label for="name" class="am-u-sm-1 am-form-label line-hight-10">角色标识 :</label>
+                                    <div class="am-u-sm-3 am-u-end line-hight-10">
+                                        <input type="text" class="tpl-form-input paramInput"
+                                               param-pattern="name@string@like$" placeholder="请输入角色标识">
                                     </div>
 
-                                    <label for="username" class="am-u-sm-12 am-u-md-6 am-u-lg-2 am-u-lg-offset-2 am-form-label">排序规则 :</label>
-                                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-2">
-                                        <div class="am-form-group tpl-table-list-select">
-                                            <select data-am-selected="{btnSize: 'sm'}" id="orderBySelector">
-                                                <option value="id-asc" selected>ID升序</option>
-                                                <option value="id-desc">ID降序</option>
-                                                <option value="name-asc">角色名升序</option>
-                                                <option value="name-desc">角色名降序</option>
-                                            </select>
-                                        </div>
+                                    <label class="am-u-sm-1 am-form-label line-hight-10">角色名 :</label>
+                                    <div class="am-u-sm-3 am-u-end line-hight-10">
+                                        <input type="text" class="tpl-form-input paramInput"
+                                               param-pattern="chName@string@like$" placeholder="请输入角色名">
                                     </div>
+                                </div>
 
-
-                                    <label for="username" class="am-u-sm-12 am-u-md-6 am-u-lg-2 am-form-label">每页数量/条 :</label>
-                                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-2">
-                                        <div class="am-form-group tpl-table-list-select">
-                                            <select data-am-selected="{btnSize: 'sm'}" id="limitSelector">
-                                                <option value="5">5</option>
-                                                <option value="10" selected>10</option>
-                                                <option value="30">30</option>
-                                                <option value="50">50</option>
-                                            </select>
-                                        </div>
+                                <label for="username"
+                                       class="am-u-sm-12 am-u-md-6 am-u-lg-2 am-u-lg-offset-2 am-form-label">排序规则
+                                    :</label>
+                                <div class="am-u-sm-12 am-u-md-6 am-u-lg-2">
+                                    <div class="am-form-group tpl-table-list-select">
+                                        <select data-am-selected="{btnSize: 'sm'}" id="orderBySelector">
+                                            <option value="id-asc" selected>ID升序</option>
+                                            <option value="id-desc">ID降序</option>
+                                            <option value="name-asc">角色名升序</option>
+                                            <option value="name-desc">角色名降序</option>
+                                        </select>
                                     </div>
+                                </div>
 
-                                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-2">
-                                        <div class="am-form-group" style="float: right">
-                                            <div class="am-btn-toolbar">
-                                                <div class="am-btn-group am-btn-group-xs">
-                                                    <th:block sec:authorize="hasPermission('$everyone','PERM_ROLE_ADD')">
-                                                        <button type="button" class="am-btn am-btn-default am-btn-success" onclick="routingPage('/sysrole/add','新增角色')"><span class="am-icon-plus"></span> 新增</button>
-                                                    </th:block>
-                                                    <button type="button" class="am-btn am-btn-default am-btn-secondary query-button"><span class="am-icon-search"></span> 查询</button>
-                                                    <button type="button"  class="am-btn am-btn-default am-btn-warning reset-button"><span class="am-icon-archive"></span> 重置</button>
-                                                </div>
+
+                                <label for="username" class="am-u-sm-12 am-u-md-6 am-u-lg-2 am-form-label">每页数量/条
+                                    :</label>
+                                <div class="am-u-sm-12 am-u-md-6 am-u-lg-2">
+                                    <div class="am-form-group tpl-table-list-select">
+                                        <select data-am-selected="{btnSize: 'sm'}" id="limitSelector">
+                                            <option value="5">5</option>
+                                            <option value="10" selected>10</option>
+                                            <option value="30">30</option>
+                                            <option value="50">50</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="am-u-sm-12 am-u-md-6 am-u-lg-2">
+                                    <div class="am-form-group" style="float: right">
+                                        <div class="am-btn-toolbar">
+                                            <div class="am-btn-group am-btn-group-xs">
+                                                <th:block sec:authorize="hasPermission('$everyone','PERM_ROLE_ADD')">
+                                                    <button type="button" class="am-btn am-btn-default am-btn-success"
+                                                            onclick="routingPage('/sysrole/add','新增角色')"><span
+                                                            class="am-icon-plus"></span> 新增
+                                                    </button>
+                                                </th:block>
+                                                <button type="button"
+                                                        class="am-btn am-btn-default am-btn-secondary query-button">
+                                                    <span class="am-icon-search"></span> 查询
+                                                </button>
+                                                <button type="button"
+                                                        class="am-btn am-btn-default am-btn-warning reset-button"><span
+                                                        class="am-icon-archive"></span> 重置
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
-                                </form>
-
+                                </div>
+                            </form>
 
 
                             <div class="am-u-sm-12">
-                                <table width="100%" class="am-table am-table-compact am-table-bordered am-table-radius am-table-striped tpl-table-black "
+                                <table width="100%"
+                                       class="am-table am-table-compact am-table-bordered am-table-radius am-table-striped tpl-table-black "
                                        id="example-r">
                                     <thead>
                                     <tr>
@@ -103,63 +123,74 @@
             </div>
         </div>
     </div>
-    </div>
-    <css th:replace="public/css :: onLoadCSS"></css>
-    <js th:replace="public/js :: onLoadJS"></js>
-    <script th:src="@{/assets/js/sysrole/sysrole.js}" type="text/javascript"></script>
-    <script  th:inline="javascript">
+</div>
+<!--加载JS-->
+<js th:replace="public/js :: onLoadJS"></js>
+<script th:src="@{/assets/js/sysrole/sysrole.js}" type="text/javascript"></script>
+<script th:inline="javascript">
     $(function () {
         initDataTable()
     });
 
-    function initDataTable(){
+    function initDataTable() {
         var pageSize = $("#limitSelector").val();
         var currentPage = $("#tpl-pagination").attr("currentPage");
         var orderBy = $("#orderBySelector").val().split('-')[0];
         var sort = $("#orderBySelector").val().split('-')[1];
-        var param = {orderBy: orderBy, sort: sort, currentPage: currentPage, pageSize: pageSize, conditionList: formatQueryFromParam()};
-        doGet("/sysrole/list", param, function (res) {
-            $('#dataTable').html(template('tpl-sysrole', res.data));
-            $('#pagination').html(template('tpl-pagination', res.pagination));
+        var param = {
+            sort: {
+                orderBy: orderBy,
+                sort: sort
+            },
+            page: {
+                currentPage: currentPage,
+                pageSize: pageSize
+            },
+            data: formatQueryFromParam()
+        };
+        doPost("/sysrole/list", param, function (res) {
+            $('#dataTable').html(template('tpl-sysrole', res.datas));
+            $('#pagination').html(template('tpl-pagination', res.page));
         })
     }
 
 </script>
 <script id="tpl-sysrole" type="text/html">
-    {{each $data as data}}
-        <tr  class={{if $index%2==0}} "gradeX" {{else}} "even gradeC" {{/if}} >
-            <td> <a href="javascript:;" onclick="routingPage('/sysrole/view/{{data.id}}','查看角色')">{{data.name}}</a> </td>
-            <td>{{data.chName}}</td>
-            <td>{{data.isLock}}</td>
-            <td>{{data.dataPermissionLevel}}</td>
-            <td>{{data.createTimeStr}}</td>
-            <td>
-                <div class="tpl-table-black-operation">
-                    <th:block sec:authorize="hasPermission('$everyone','PERM_ROLE_EDIT')">
-                        <a href="javascript:;" onclick="routingPage('/sysrole/edit/{{data.id}}','编辑角色')">
-                            <i class="am-icon-pencil"></i> 编辑
-                        </a>
-                    </th:block>
+    {{each $data data}}
+    <tr class={{if $index%2==0}} "gradeX" {{else}} "even gradeC" {{/if}} >
+    <td><a href="javascript:;" onclick="routingPage('/sysrole/view/{{data.id}}','查看角色')">{{data.name}}</a></td>
+    <td>{{data.chName}}</td>
+    <td>{{data.isLock}}</td>
+    <td>{{data.dataPermissionLevel}}</td>
+    <td>{{data.createTimeStr}}</td>
+    <td>
+        <div class="tpl-table-black-operation">
+            <th:block sec:authorize="hasPermission('$everyone','PERM_ROLE_EDIT')">
+                <a href="javascript:;" onclick="routingPage('/sysrole/edit/{{data.id}}','编辑角色')">
+                    <i class="am-icon-pencil"></i> 编辑
+                </a>
+            </th:block>
 
-                    <th:block sec:authorize="hasPermission('$everyone','PERM_ROLE_DELETE')">
-                        <a href="javascript:;" data-url="/sysrole/delete/{{data.id}}" class="tpl-table-black-operation-del list-del-button">
-                            <i class="am-icon-trash" ></i> 删除
-                        </a>
-                    </th:block>
+            <th:block sec:authorize="hasPermission('$everyone','PERM_ROLE_DELETE')">
+                <a href="javascript:;" data-url="/sysrole/delete/{{data.id}}"
+                   class="tpl-table-black-operation-del list-del-button">
+                    <i class="am-icon-trash"></i> 删除
+                </a>
+            </th:block>
 
-                    <th:block sec:authorize="hasPermission('$everyone','PERM_ROLE_BIND_PREMISSION')">
-                        <a href="javascript:;" class="tpl-table-black-operation-warn" onclick="intiPrTree({{data.id}})">
-                            <i class="am-icon-leaf" ></i> 分配权限
-                        </a>
-                    </th:block>
-                </div>
-            </td>
-        </tr>
+            <th:block sec:authorize="hasPermission('$everyone','PERM_ROLE_BIND_PREMISSION')">
+                <a href="javascript:;" class="tpl-table-black-operation-warn" onclick="intiPrTree({{data.id}})">
+                    <i class="am-icon-leaf"></i> 分配权限
+                </a>
+            </th:block>
+        </div>
+    </td>
+    </tr>
     {{/each}}
 </script>
 
 <script id="tpl-pagination" type="text/html" th:replace="public/pagination :: paginationTemplate"></script>
-<script id="tpl-PrTreeTempl" type="text/html"  th:replace="sysrole/template :: PrTreeTempl"></script>
+<script id="tpl-PrTreeTempl" type="text/html" th:replace="sysrole/template :: PrTreeTempl"></script>
 <div class="am-popup" id="PrTree-tips"></div>
 </body>
 </html>

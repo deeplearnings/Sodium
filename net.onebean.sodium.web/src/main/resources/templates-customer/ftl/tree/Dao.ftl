@@ -1,6 +1,6 @@
 package ${dao_package_name};
 
-import net.onebean.core.BaseDao;
+import net.onebean.core.base.BaseDao;
 import ${model_package_name}.${model_name};
 import org.apache.ibatis.annotations.Param;
 

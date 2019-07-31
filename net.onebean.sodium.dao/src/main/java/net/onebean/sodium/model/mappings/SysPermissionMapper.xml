@@ -36,7 +36,7 @@
     </resultMap>
 
     <!--异步查找子节点,每次查找一级-->
-    <select id="findChildAsync" resultType="net.onebean.sodium.VO.MenuTree" parameterType="long">
+    <select id="findChildAsync" resultType="net.onebean.sodium.vo.MenuTree" parameterType="long">
         SELECT o.id,o.descritpion as title,IF( EXISTS(SELECT o1.id FROM sys_permission_${tableSuffix} o1  WHERE o1.parent_id = o.id) = 1 ,"folder","item") AS TYPE FROM sys_permission_${tableSuffix} o
         <where>
             <choose>

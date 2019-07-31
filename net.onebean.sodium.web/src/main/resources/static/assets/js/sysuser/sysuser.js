@@ -1,5 +1,5 @@
 function initModalRU() {
-    var $link = '/sysrole/findbyname?name=%QUERY';
+    var $link = '/sysrole/findByRoleName/%QUERY';
     /*猎犬 异步数据*/
     var rolenames = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('chName'),
@@ -8,7 +8,7 @@ function initModalRU() {
             url:$link,
             wildcard: '%QUERY'
             ,filter: function(result) {
-                return $.map(result.data, function(item) {
+                return $.map(result.datas, function(item) {
                     return {
                         chName:item.chName,
                         name:item.name,
@@ -41,9 +41,10 @@ $('body').on('close.modal.amui', '#data-bind-modal', function() {
 
 /*初始化RU列表*/
 function initRoleUserList() {
-    var userId = $('#rolesList').data("uid")
-    doGet("/sysrole/findbyuid",{userId:userId},function(res){
-        $('#rolesList').html(template('tpl-sysRoleList',res.data));
+    var userId = $('#rolesList').data("uid");
+    var $url ="/sysrole/findbyuid/"+userId;
+    doPost($url,{},function(res){
+        $('#rolesList').html(template('tpl-sysRoleList',res.datas));
     })
 }
 
@@ -61,8 +62,8 @@ function addRU() {
     var userId = $('#rolesList').data("uid");
     var $val = $('#input-sg').val();
     if($val.length>0){
-        doPost("/sysrole/addroleuser",{userId:userId,roleIds:$val},function(res){
-            if(res.flag){
+        doPost("/sysrole/addroleuser",{data:{userId:userId,roleIds:$val}},function(res){
+            if(res.errCode === '0'){
                 initRoleUserList(userId);
                 $('#input-sg').tagsinput('removeAll');
             }
@@ -80,8 +81,8 @@ function removeRU() {
         }
     });
     ids = ids.substr(0,ids.length-1);
-    doPost("/sysrole/removeroleuser",{urIds:ids},function(res){
-        if(res.flag){
+    doPost("/sysrole/removeroleuser",{data:ids},function(res){
+        if(res.errCode === '0'){
             initRoleUserList(userId);
         }
     })
@@ -99,9 +100,9 @@ function resetPassword($link){
         relatedTarget: this,
         onConfirm: function(){
             // var $link = $(this.relatedTarget).data('url');
-            doGet($link,null,function(res){
-                if(res.flag){
-                    alert("操作提示","重置密码成功!","好的");
+            doPost($link,null,function(res){
+                if(res.errCode === '0'){
+                    alert("重置密码成功!");
                 }
             })
         },

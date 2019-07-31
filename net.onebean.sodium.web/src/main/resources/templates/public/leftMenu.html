@@ -1,6 +1,5 @@
 <!-- 侧边导航栏 -->
 <div th:fragment="leftMenu">
-    <js th:replace="public/js :: onLoadJS"></js>
     <!-- 用户信息 -->
     <div class="tpl-sidebar-user-panel">
         <div class="tpl-user-panel-slide-toggleable">
@@ -23,8 +22,9 @@
 
     <script type="text/javascript">
         $(function(){
-            doGet("/syspremission/allpermissiontree",{},function (res) {
-                $('#sysMenu').html(template('sys-menu-templ', res.data));
+            doPost("/syspremission/allpermissiontree",{},function (res) {
+                $('#sysMenu').html(template('sys-menu-templ', res.datas));
+                activeMenuOnLoad();
             })
         })
     </script>
@@ -37,7 +37,7 @@
             </a>
             <a href="javascript: void(0)"  id="hideMenu" class="hidden" onclick="openNewTab(this)"></a>
         </li>
-        {{each $data as data}}
+        {{each $data data}}
         <li class="sidebar-nav-link parent-menu">
             <a href="javascript:;" class="sidebar-nav-sub-title">
                 <i class="{{data.icon}} sidebar-nav-link-logo"></i> {{data.descritpion}}
@@ -52,7 +52,7 @@
 
 
     <script type="text/html" id="sys-menu-templ-child">
-        {{each $data as data}}
+        {{each $data data}}
         <li class="sidebar-nav-link">
             <a href="javascript: void(0)" data-url="{{data.url}}" onclick="openNewTab(this)" data-name="{{data.descritpion}}">
                 <span class="{{data.icon}} sidebar-nav-link-logo"></span> {{data.descritpion}}

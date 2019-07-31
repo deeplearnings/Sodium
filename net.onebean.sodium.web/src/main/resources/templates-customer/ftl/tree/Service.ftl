@@ -1,6 +1,6 @@
 package ${service_package_name};
 
-import net.onebean.core.IBaseBiz;
+import net.onebean.core.base.IBaseBiz;
 import ${model_package_name}.${model_name};
 import ${vo_package_name}.${model_name}Tree;
 

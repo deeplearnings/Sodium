@@ -1,15 +1,20 @@
-    <!DOCTYPE html>
-    <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
-    <head th:replace="public/head :: onLoadHead(字典管理)">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!--通用head 其中加载了css-->
+<head th:replace="public/head :: onLoadHead(字典管理)"></head>
 
-    </head>
-    <body data-type="widgets">
-    <div class="am-g tpl-g">
+<body data-type="index">
+<div class="am-g tpl-g">
+    <!-- 通用头部 -->
+    <header th:include="public/topBar :: topBar"></header>
+    <!-- 主题选择组件 -->
+    <div th:include="public/skiner :: skiner" class="tpl-skiner"></div>
+    <!-- 公用左侧栏 -->
+    <div th:include="public/leftMenu :: leftMenu" class="left-sidebar"></div>
     <!-- 模态提示组件 -->
     <div th:include="public/tips :: Tips"></div>
-
     <!-- 内容区域 -->
-    <div class="tpl-content-wrapper none-margin">
+    <div class=" tpl-content-wrapper">
         <div class="row-content am-cf">
             <div class="row">
                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
@@ -18,73 +23,90 @@
                             <th:block th:include="public/breadCrumbs :: breadCrumbsTempl"/>
                         </div>
                         <div class="widget-body am-fr">
-                                <form class="am-form tpl-form-border-form tpl-form-border-br paramFrom" onsubmit="return false;">
-                                    <div class="am-form-group">
-                                        <label class="am-u-sm-1 am-form-label line-hight-10">值 :</label>
-                                        <div class="am-u-sm-3 am-u-end line-hight-10">
-                                            <input type="text" class="tpl-form-input paramInput" param-pattern="val@string@eq$"  placeholder="请输入值">
-                                        </div>
-
-                                        <label class="am-u-sm-1 am-form-label line-hight-10">描述 :</label>
-                                        <div class="am-u-sm-3 am-u-end line-hight-10">
-                                            <input type="text" class="tpl-form-input paramInput" param-pattern="dic@string@like$" placeholder="请输入描述">
-                                        </div>
-
-                                        <label class="am-u-sm-1 am-form-label line-hight-10">编码 :</label>
-                                        <div class="am-u-sm-3 am-u-end line-hight-10">
-                                            <input type="text" class="tpl-form-input paramInput" param-pattern="code@string@eq$" placeholder="请输入编码">
-                                        </div>
-
-                                        <label class="am-u-sm-1 am-form-label line-hight-10">词组描述:</label>
-                                        <div class="am-u-sm-3 am-u-end line-hight-10">
-                                            <input type="text" class="tpl-form-input paramInput" param-pattern="groupDic@string@like$" placeholder="请输入词组描述">
-                                        </div>
+                            <form class="am-form tpl-form-border-form tpl-form-border-br paramFrom"
+                                  onsubmit="return false;">
+                                <div class="am-form-group">
+                                    <label class="am-u-sm-1 am-form-label line-hight-10">值 :</label>
+                                    <div class="am-u-sm-3 am-u-end line-hight-10">
+                                        <input type="text" class="tpl-form-input paramInput"
+                                               param-pattern="val@string@eq$" placeholder="请输入值">
                                     </div>
 
-                                    <label for="orderBySelector" class="am-u-sm-12 am-u-md-6 am-u-lg-2 am-u-lg-offset-2 am-form-label">排序规则 :</label>
-                                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-2">
-                                        <div class="am-form-group tpl-table-list-select">
-                                            <select data-am-selected="{btnSize: 'sm'}" id="orderBySelector">
-                                                <option value="id-asc">ID升序</option>
-                                                <option value="id-desc">ID降序</option>
-                                                <option value="code,sort-asc" selected>排序及编码升序</option>
-                                                <option value="code,sort-desc">排序及编码降序</option>
-                                            </select>
-                                        </div>
+                                    <label class="am-u-sm-1 am-form-label line-hight-10">描述 :</label>
+                                    <div class="am-u-sm-3 am-u-end line-hight-10">
+                                        <input type="text" class="tpl-form-input paramInput"
+                                               param-pattern="dic@string@like$" placeholder="请输入描述">
                                     </div>
 
-
-                                    <label for="limitSelector" class="am-u-sm-12 am-u-md-6 am-u-lg-2 am-form-label">每页数量/条 :</label>
-                                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-2">
-                                        <div class="am-form-group tpl-table-list-select">
-                                            <select data-am-selected="{btnSize: 'sm'}" id="limitSelector">
-                                                <option value="5">5</option>
-                                                <option value="10" selected>10</option>
-                                                <option value="30">30</option>
-                                                <option value="50">50</option>
-                                            </select>
-                                        </div>
+                                    <label class="am-u-sm-1 am-form-label line-hight-10">编码 :</label>
+                                    <div class="am-u-sm-3 am-u-end line-hight-10">
+                                        <input type="text" class="tpl-form-input paramInput"
+                                               param-pattern="code@string@eq$" placeholder="请输入编码">
                                     </div>
 
-                                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-2">
-                                        <div class="am-form-group" style="float: right">
-                                            <div class="am-btn-toolbar">
-                                                <div class="am-btn-group am-btn-group-xs">
-                                                    <th:block sec:authorize="hasPermission('$everyone','PERM_DIC_ADD')">
-                                                        <button type="button" class="am-btn am-btn-default am-btn-success" onclick="routingPage('/dic/add','新增字典')"><span class="am-icon-plus"></span> 新增</button>
-                                                    </th:block>
-                                                    <button type="button" class="am-btn am-btn-default am-btn-secondary query-button"><span class="am-icon-search"></span> 查询</button>
-                                                    <button type="button"  class="am-btn am-btn-default am-btn-warning reset-button"><span class="am-icon-archive"></span> 重置</button>
-                                                </div>
+                                    <label class="am-u-sm-1 am-form-label line-hight-10">词组描述:</label>
+                                    <div class="am-u-sm-3 am-u-end line-hight-10">
+                                        <input type="text" class="tpl-form-input paramInput"
+                                               param-pattern="groupDic@string@like$" placeholder="请输入词组描述">
+                                    </div>
+                                </div>
+
+                                <label for="orderBySelector"
+                                       class="am-u-sm-12 am-u-md-6 am-u-lg-2 am-u-lg-offset-2 am-form-label">排序规则
+                                    :</label>
+                                <div class="am-u-sm-12 am-u-md-6 am-u-lg-2">
+                                    <div class="am-form-group tpl-table-list-select">
+                                        <select data-am-selected="{btnSize: 'sm'}" id="orderBySelector">
+                                            <option value="id-asc">ID升序</option>
+                                            <option value="id-desc">ID降序</option>
+                                            <option value="code,sort-asc" selected>排序及编码升序</option>
+                                            <option value="code,sort-desc">排序及编码降序</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <label for="limitSelector" class="am-u-sm-12 am-u-md-6 am-u-lg-2 am-form-label">每页数量/条
+                                    :</label>
+                                <div class="am-u-sm-12 am-u-md-6 am-u-lg-2">
+                                    <div class="am-form-group tpl-table-list-select">
+                                        <select data-am-selected="{btnSize: 'sm'}" id="limitSelector">
+                                            <option value="5">5</option>
+                                            <option value="10" selected>10</option>
+                                            <option value="30">30</option>
+                                            <option value="50">50</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="am-u-sm-12 am-u-md-6 am-u-lg-2">
+                                    <div class="am-form-group" style="float: right">
+                                        <div class="am-btn-toolbar">
+                                            <div class="am-btn-group am-btn-group-xs">
+                                                <th:block sec:authorize="hasPermission('$everyone','PERM_DIC_ADD')">
+                                                    <button type="button" class="am-btn am-btn-default am-btn-success"
+                                                            onclick="routingPage('/dic/add','新增字典')"><span
+                                                            class="am-icon-plus"></span> 新增
+                                                    </button>
+                                                </th:block>
+                                                <button type="button"
+                                                        class="am-btn am-btn-default am-btn-secondary query-button">
+                                                    <span class="am-icon-search"></span> 查询
+                                                </button>
+                                                <button type="button"
+                                                        class="am-btn am-btn-default am-btn-warning reset-button"><span
+                                                        class="am-icon-archive"></span> 重置
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
-                                </form>
-
+                                </div>
+                            </form>
 
 
                             <div class="am-u-sm-12">
-                                <table width="100%" class="am-table am-table-compact am-table-bordered am-table-radius am-table-striped tpl-table-black "
+                                <table width="100%"
+                                       class="am-table am-table-compact am-table-bordered am-table-radius am-table-striped tpl-table-black "
                                        id="example-r">
                                     <thead>
                                     <tr>
@@ -112,56 +134,68 @@
             </div>
         </div>
     </div>
-    </div>
-    <css th:replace="public/css :: onLoadCSS"></css>
-    <js th:replace="public/js :: onLoadJS"></js>
-<script type="text/javascript" >
+</div>
+<!--加载JS-->
+<js th:replace="public/js :: onLoadJS"></js>
+<script type="text/javascript">
     $(function () {
         initDataTable();
     });
 
-    function initDataTable(){
+    function initDataTable() {
         var pageSize = $("#limitSelector").val();
         var currentPage = $("#tpl-pagination").attr("currentPage");
         var orderBy = $("#orderBySelector").val().split('-')[0];
         var sort = $("#orderBySelector").val().split('-')[1];
-        var param = {orderBy: orderBy, sort: sort, currentPage: currentPage, pageSize: pageSize, conditionList: formatQueryFromParam()};
-        doGet("/dic/list", param, function (res) {
-            $('#dataTable').html(template('tpl-dic', res.data));
-            $('#pagination').html(template('tpl-pagination', res.pagination));
+        var param = {
+            sort: {
+                orderBy: orderBy,
+                sort: sort
+            },
+            page: {
+                currentPage: currentPage,
+                pageSize: pageSize
+            },
+            data: formatQueryFromParam()
+        };
+        doPost("/dic/list", param, function (res) {
+            $('#dataTable').html(template('tpl-dic', res.datas));
+            $('#pagination').html(template('tpl-pagination', res.page));
         })
 
     }
 
 </script>
 <script id="tpl-dic" type="text/html">
-    {{each $data as data}}
-        <tr  class={{if $index%2==0}} "gradeX" {{else}} "even gradeC" {{/if}} >
-            <td> <a href="javascript:;" onclick="routingPage('/dic/view/{{data.id}}','查看字典')">{{data.val}}</a> </td>
-            <td>{{data.dic}} </td>
-            <td>{{data.code}} </td>
-            <td>{{data.groupDic}} </td>
-            <td>{{data.sort}} </td>
-            <td>
-                <div class="tpl-table-black-operation">
-                    <th:block sec:authorize="hasPermission('$everyone','PERM_DIC_EDIT')">
-                        <a href="javascript:;" onclick="routingPage('/dic/edit/{{data.id}}','编辑字典')">
-                            <i class="am-icon-pencil"></i> 编辑
-                        </a>
-                    </th:block>
-                    <th:block sec:authorize="hasPermission('$everyone','PERM_DIC_DELETE')">
-                        <a href="javascript:;" data-url="/dic/delete/{{data.id}}" class="tpl-table-black-operation-del list-del-button">
-                            <i class="am-icon-trash" ></i> 删除
-                        </a>
-                    </th:block>
-                    <th:block sec:authorize="hasPermission('$everyone','PERM_DIC_GROUP')">
-                        <a href="javascript:;" class="tpl-table-black-operation-warn" onclick="routingPage('/dic/group/{{data.id}}','添加字典组项')">
-                            <i class="am-icon-plus-circle" ></i> 添加组项
-                        </a>
-                    </th:block>
-                </div>
-            </td>
-        </tr>
+    {{each $data data}}
+    <tr class={{if $index%2==0}} "gradeX" {{else}} "even gradeC" {{/if}} >
+    <td><a href="javascript:;" onclick="routingPage('/dic/view/{{data.id}}','查看字典')">{{data.val}}</a></td>
+    <td>{{data.dic}}</td>
+    <td>{{data.code}}</td>
+    <td>{{data.groupDic}}</td>
+    <td>{{data.sort}}</td>
+    <td>
+        <div class="tpl-table-black-operation">
+            <th:block sec:authorize="hasPermission('$everyone','PERM_DIC_EDIT')">
+                <a href="javascript:;" onclick="routingPage('/dic/edit/{{data.id}}','编辑字典')">
+                    <i class="am-icon-pencil"></i> 编辑
+                </a>
+            </th:block>
+            <th:block sec:authorize="hasPermission('$everyone','PERM_DIC_DELETE')">
+                <a href="javascript:;" data-url="/dic/delete/{{data.id}}"
+                   class="tpl-table-black-operation-del list-del-button">
+                    <i class="am-icon-trash"></i> 删除
+                </a>
+            </th:block>
+            <th:block sec:authorize="hasPermission('$everyone','PERM_DIC_GROUP')">
+                <a href="javascript:;" class="tpl-table-black-operation-warn"
+                   onclick="routingPage('/dic/group/{{data.id}}','添加字典组项')">
+                    <i class="am-icon-plus-circle"></i> 添加组项
+                </a>
+            </th:block>
+        </div>
+    </td>
+    </tr>
     {{/each}}
 </script>
 

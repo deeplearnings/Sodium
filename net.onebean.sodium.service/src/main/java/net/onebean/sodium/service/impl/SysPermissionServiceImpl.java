@@ -2,6 +2,10 @@ package net.onebean.sodium.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import net.onebean.core.base.BaseSplitBiz;
+import net.onebean.core.error.BusinessException;
+import net.onebean.core.form.Parse;
+import net.onebean.core.query.Condition;
 import net.onebean.sodium.common.dataPerm.DataPermUtils;
 import net.onebean.sodium.common.error.ErrorCodesEnum;
 import net.onebean.sodium.dao.SysPermissionDao;
@@ -12,11 +16,7 @@ import net.onebean.sodium.model.SysUser;
 import net.onebean.sodium.service.SysPermissionRoleService;
 import net.onebean.sodium.service.SysPermissionService;
 import net.onebean.sodium.service.SysUserService;
-import net.onebean.common.exception.BusinessException;
-import net.onebean.core.BaseSplitBiz;
-import net.onebean.core.Condition;
-import net.onebean.core.form.Parse;
-import net.onebean.sodium.VO.MenuTree;
+import net.onebean.sodium.vo.MenuTree;
 import net.onebean.util.CollectionUtil;
 import net.onebean.util.StringUtils;
 import org.apache.commons.beanutils.BeanUtils;
@@ -340,6 +340,44 @@ public class SysPermissionServiceImpl extends BaseSplitBiz<SysPermission, SysPer
 			temp.setParentId(permission.getId());
 			this.save(temp);
 		}
+	}
 
+
+
+	@Override
+	public Boolean delPerm(Object id) {
+		this.deleteSelfAndChildById(Parse.toLong(id));
+		sysPermissionRoleService.deteleByPermissionId(Parse.toLong(id));
+		return true;
+	}
+
+	@Override
+	public Boolean urlRepeat(String reg, Long id) {
+		Condition param;
+		if (reg.startsWith("PERM_")) {
+			param = Condition.parseModelCondition("name@string@eq");
+		} else {
+			param = Condition.parseModelCondition("url@string@eq");
+		}
+		param.setValue(reg);
+		List<SysPermission> list = this.find(null, param);
+		if (CollectionUtil.isEmpty(list)) {
+			return true;
+		} else {
+			if (id == null) {
+				return false;
+			} else {
+				return (list.get(0).getId().equals(id));
+			}
+		}
+	}
+
+	@Override
+	public Boolean savePremissionRole(String premIds, String roleId) {
+		sysPermissionRoleService.deteleByRoleId(Parse.toLong(roleId));
+		if (StringUtils.isNotEmpty(premIds)) {
+			sysPermissionRoleService.insertBatch(premIds, roleId);
+		}
+		return true;
 	}
 }

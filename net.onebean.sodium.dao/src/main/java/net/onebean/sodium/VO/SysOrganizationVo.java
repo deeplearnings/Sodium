@@ -1,4 +1,4 @@
-package net.onebean.sodium.VO;
+package net.onebean.sodium.vo;
 
 
 public class SysOrganizationVo {

@@ -45,7 +45,7 @@
         var $treeTips = $('#treeTips');
         $treeTips.html(template('menuTreeTipsTempl',{businessInPutId:$(businessInPutId).prop('id')}));
         initTreeAsyncSingleSelect("请选择菜单",selfId,"/syspremission/menutree");
-        treeTipsModal($treeTips);
+        $treeTips.modal('open');
     }
 
     /*树选择事件 获取选中值*/

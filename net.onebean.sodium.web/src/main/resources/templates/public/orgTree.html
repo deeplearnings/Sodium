@@ -44,7 +44,7 @@
         var $treeTips = $('#treeTips');
         $treeTips.html(template('orgTreeTipsTempl',{businessInPutId:$(businessInPutId).prop('id')}));
         initTreeAsyncSingleSelect("请选择机构",selfId,"/sysorg/orgtree");
-        treeTipsModal($treeTips);
+        $treeTips.modal('open');
     }
 
     /*树选择事件 获取选中值*/

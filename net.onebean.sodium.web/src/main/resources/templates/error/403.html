@@ -4,26 +4,21 @@
 </head>
 <body ddata-type="widgets">
 
-<div class="am-g tpl-g">
-    <!-- 内容区域 -->
-    <div class="tpl-content-wrapper none-margin">   
-        <div class="row-content am-cf">
-            <div class="widget am-cf">
-                <div class="widget-body">
-                    <div class="tpl-page-state">
-                        <div class="tpl-page-state-title am-text-center tpl-error-title">403</div>
-                        <div class="tpl-error-title-info">No Check Permissions</div>
-                        <div class="tpl-page-state-content tpl-error-content">
-                            <p>没有访问权限</p>
-                            <button type="button" class="am-btn am-btn-secondary am-radius tpl-error-btn" onclick="goBack()">返回上一步</button></div>
-                    </div>
-                </div>
+<div class="row-content am-cf">
+    <div class="widget am-cf">
+        <div class="widget-body">
+            <div class="tpl-page-state">
+                <div class="tpl-page-state-title am-text-center tpl-error-title">403</div>
+                <div class="tpl-error-title-info">No Check Permissions</div>
+                <div class="tpl-page-state-content tpl-error-content">
+                    <p>抱歉老铁,你没有权限,也犯不着查看该内容</p>
+                    <button type="button" class="am-btn am-btn-secondary am-radius tpl-error-btn" onclick="goBack()">退一步 海阔天空</button></div>
             </div>
         </div>
     </div>
 </div>
 
-<css th:replace="public/css :: onLoadCSS"></css>
+<!--加载JS-->
 <js th:replace="public/js :: onLoadJS"></js>
 </body>
 </html>

@@ -44,3 +44,4 @@ target/
 .DS_Store
 Thumbs.db
 server.jar
+logs/

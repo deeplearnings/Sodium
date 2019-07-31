@@ -2,8 +2,8 @@ package net.onebean.sodium.service.impl;
 import net.onebean.sodium.dao.SysRoleUserDao;
 import net.onebean.sodium.model.SysRoleUser;
 import net.onebean.sodium.service.SysRoleUserService;
-import net.onebean.core.BaseSplitBiz;
-import net.onebean.core.Condition;
+import net.onebean.core.base.BaseSplitBiz;
+import net.onebean.core.query.Condition;
 import net.onebean.util.CollectionUtil;
 import org.springframework.stereotype.Service;
 

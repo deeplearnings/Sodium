@@ -6,8 +6,8 @@ function prTreeSubmitAction() {
         ids+=e.id+",";
     });
     ids = ids.substr(0,ids.length-1)
-    doPost("/syspremission/savepremissionrole",{premIds:ids,roleId:roleId},function(res){
-        if(res.flag){
+    doPost("/syspremission/savepremissionrole",{data:{premIds:ids,roleId:roleId}},function(res){
+        if(res.errCode === '0'){
             $('#PrTree-tips').modal('close');
             alert("数据更新成功!");
         }
@@ -40,5 +40,5 @@ function intiPrTree(roleId) {
     var $treeTemplate = $('#PrTree-template');
     var $treeTips = $('#PrTree-tips');
     initTreeSyncMultiSelect(title,roleId,url,$treeTemplate);
-    treeTipsModal($treeTips);
+    $treeTips.modal('open');
 }

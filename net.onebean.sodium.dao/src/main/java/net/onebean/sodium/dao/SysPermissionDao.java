@@ -1,7 +1,7 @@
 package net.onebean.sodium.dao;
 
-import net.onebean.core.BaseSplitDao;
-import net.onebean.sodium.VO.MenuTree;
+import net.onebean.core.base.BaseSplitDao;
+import net.onebean.sodium.vo.MenuTree;
 import net.onebean.sodium.model.SysPermission;
 import org.apache.ibatis.annotations.Param;
 

@@ -14,11 +14,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
-
 @ComponentScan(
 		basePackages = {
 				"net.onebean.**.service",
+				"net.onebean.**.common",
+				"net.onebean.**.security",
 				"net.onebean.**.consumer",
+				"net.onebean.**.provider",
 				"net.onebean.**.provider",
 				"net.onebean.*.**.api",
 				"net.onebean.core",
@@ -50,4 +52,3 @@ public class Main {
 
 
 }
-

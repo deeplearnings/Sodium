@@ -31,6 +31,8 @@ public class OneBeanWebSecurityConfig extends WebSecurityConfigurerAdapter {
     OneBeanPermissionEvaluator permissionEvaluator;
     @Autowired
     private OneBeanPasswordEncoder oneBeanPasswordEncoder;
+    @Autowired
+    private OneBeanLoginInfoInitFilter oneBeanLoginInfoInitFilter;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -57,13 +59,13 @@ public class OneBeanWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/center")
+                .defaultSuccessUrl("/")
                 .failureHandler(myAuthenticationFailureHandler)
                 .permitAll() //登录页面用户任意访问
                 .and()
                 .headers().frameOptions().sameOrigin()//允许iframe嵌套本应用页面
                 .and().rememberMe().and()
-                .addFilterBefore(new OneBeanLoginInfoInitFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(oneBeanLoginInfoInitFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout().permitAll(); //注销行为任意访问
         http.addFilterBefore(myFilterSecurityInterceptor, FilterSecurityInterceptor.class).csrf().disable();
     }

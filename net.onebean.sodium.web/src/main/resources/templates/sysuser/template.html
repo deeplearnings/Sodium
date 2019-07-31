@@ -1,5 +1,5 @@
 <script id="tpl-sysRoleList" type="text/html" th:fragment="sysRoleListTemp">
-    {{each $data as data}}
+    {{each $data data}}
     {{if data != null}}
     <label class="am-checkbox">
         <input type="checkbox" value="{{data.ruid}}" name="roleList" data-am-ucheck> {{data.chName}}

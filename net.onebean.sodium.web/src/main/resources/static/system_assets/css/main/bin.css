@@ -170,8 +170,3 @@
 .hidden{
     display: none;
 }
-.error-font{
-    font-weight: bold;
-    color: #EA5200;
-    font-size: 86%;
-}

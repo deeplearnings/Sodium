@@ -1,92 +1,120 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="public/head :: onLoadHead(字典管理)">
-</head>
-<body ddata-type="widgets">
+<!--通用head 其中加载了css-->
+<head th:replace="public/head :: onLoadHead(字典管理)"></head>
 
+<body data-type="index">
 <div class="am-g tpl-g">
+    <!-- 通用头部 -->
+    <header th:include="public/topBar :: topBar"></header>
+    <!-- 主题选择组件 -->
+    <div th:include="public/skiner :: skiner" class="tpl-skiner"></div>
+    <!-- 公用左侧栏 -->
+    <div th:include="public/leftMenu :: leftMenu" class="left-sidebar"></div>
     <!-- 模态提示组件 -->
     <div th:include="public/tips :: Tips"></div>
 
 
     <!-- 内容区域 -->
-    <div class="tpl-content-wrapper none-margin">
+    <div class=" tpl-content-wrapper">
         <div class="row-content am-cf">
             <div class="row">
                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
 
-                            <div class="row">
+                    <div class="row">
 
-                                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
-                                    <div class="widget am-cf">
-                                        <div class="widget-head am-cf">
-                                            <th:block th:include="public/breadCrumbs :: breadCrumbsTempl"/>
+                        <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                            <div class="widget am-cf">
+                                <div class="widget-head am-cf">
+                                    <th:block th:include="public/breadCrumbs :: breadCrumbsTempl"/>
+                                </div>
+                                <div class="widget-body am-fr">
+
+                                    <form class="am-form tpl-form-border-form tpl-form-border-br" id="DataFrom">
+                                        <input type="hidden" name="id" th:value="${entity.id}">
+
+                                        <div class="am-form-group">
+                                            <label for="val" class="am-u-sm-3 am-form-label line">值 <span
+                                                    class="tpl-form-line-small-title">Text</span></label>
+                                            <div class="am-u-sm-9">
+                                                <input type="text" class="tpl-form-input" name="val" id="val"
+                                                       placeholder="请输入字典值" th:disabled="${view}"
+                                                       th:value="${entity.val}">
+                                                <small th:unless="${view}">字典项对应的值</small>
+                                            </div>
                                         </div>
-                                        <div class="widget-body am-fr">
 
-                                            <form class="am-form tpl-form-border-form tpl-form-border-br" id="DataFrom">
-                                                <input type="hidden" name="id" th:value="${entity.id}">
-
-                                                <div class="am-form-group">
-                                                    <label for="val" class="am-u-sm-3 am-form-label line">值 <span class="tpl-form-line-small-title">Text</span></label>
-                                                    <div class="am-u-sm-9">
-                                                        <input type="text" class="tpl-form-input" name="val" id="val" placeholder="请输入字典值" th:disabled="${view}" th:value="${entity.val}">
-                                                        <small th:unless="${view}">字典项对应的值</small>
-                                                    </div>
-                                                </div>
-
-                                                <div class="am-form-group">
-                                                    <label for="val" class="am-u-sm-3 am-form-label">值描述 <span class="tpl-form-line-small-title">Text</span></label>
-                                                    <div class="am-u-sm-9">
-                                                        <input type="text" class="tpl-form-input" name="dic" id="dic" placeholder="请输入字典值描述" th:disabled="${view}" th:value="${entity.dic}">
-                                                        <small th:unless="${view}">字典项对应的描述</small>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="am-form-group">
-                                                    <label for="val" class="am-u-sm-3 am-form-label">编码 <span class="tpl-form-line-small-title">Text</span></label>
-                                                    <div class="am-u-sm-9">
-                                                        <input type="text" class="tpl-form-input" name="code" id="code" placeholder="请输入字典编码" th:disabled="${view}" th:value="${entity.code}">
-                                                        <small th:unless="${view}">字典项对应的编码</small>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="am-form-group">
-                                                    <label for="val" class="am-u-sm-3 am-form-label">词组描述 <span class="tpl-form-line-small-title">Text</span></label>
-                                                    <div class="am-u-sm-9">
-                                                        <input type="text" class="tpl-form-input" name="groupDic" id="groupDic" placeholder="请输入字典词组描述" th:disabled="${view}" th:value="${entity.groupDic}">
-                                                        <small th:unless="${view}">字典项所属词组描述</small>
-                                                    </div>
-                                                </div>
-
-
-
-                                                <div class="am-form-group">
-                                                    <label for="val" class="am-u-sm-3 am-form-label">排序字段 <span class="tpl-form-line-small-title">Number</span></label>
-                                                    <div class="am-u-sm-9">
-                                                        <input type="number" class="tpl-form-input" name="sort" id="sort" placeholder="请输入字典排序字段" th:disabled="${view}" th:value="${entity.sort}">
-                                                        <small th:unless="${view}">排序字段,限数字</small>
-                                                    </div>
-                                                </div>
-
-                                                <div class="am-form-group">
-                                                    <div class="am-u-sm-9 am-u-sm-push-3">
-                                                        <th:block sec:authorize="hasPermission('$everyone','PERM_DIC_SAVE')">
-                                                            <button type="submit" class="am-btn am-btn-primary tpl-btn-bg-color-success" th:unless="${view}">提交</button>
-                                                        </th:block>
-                                                        <th:block sec:authorize="hasPermission('$everyone','PERM_DIC_EDIT')">
-                                                            <button type="button" class="am-btn am-btn-warning" th:onclick="'routingPage(\'/dic/edit/'+${entity.id}+'\',\'编辑字典\')'" th:if="${view}">编辑</button>
-                                                        </th:block>
-                                                        <button type="button" class="am-btn am-btn-danger" onClick="routingPage('/dic/preview/')">返回</button>
-                                                    </div>
-                                                </div>
-                                            </form>
+                                        <div class="am-form-group">
+                                            <label for="val" class="am-u-sm-3 am-form-label">值描述 <span
+                                                    class="tpl-form-line-small-title">Text</span></label>
+                                            <div class="am-u-sm-9">
+                                                <input type="text" class="tpl-form-input" name="dic" id="dic"
+                                                       placeholder="请输入字典值描述" th:disabled="${view}"
+                                                       th:value="${entity.dic}">
+                                                <small th:unless="${view}">字典项对应的描述</small>
+                                            </div>
                                         </div>
-                                    </div>
+
+
+                                        <div class="am-form-group">
+                                            <label for="val" class="am-u-sm-3 am-form-label">编码 <span
+                                                    class="tpl-form-line-small-title">Text</span></label>
+                                            <div class="am-u-sm-9">
+                                                <input type="text" class="tpl-form-input" name="code" id="code"
+                                                       placeholder="请输入字典编码" th:disabled="${view}"
+                                                       th:value="${entity.code}">
+                                                <small th:unless="${view}">字典项对应的编码</small>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="am-form-group">
+                                            <label for="val" class="am-u-sm-3 am-form-label">词组描述 <span
+                                                    class="tpl-form-line-small-title">Text</span></label>
+                                            <div class="am-u-sm-9">
+                                                <input type="text" class="tpl-form-input" name="groupDic" id="groupDic"
+                                                       placeholder="请输入字典词组描述" th:disabled="${view}"
+                                                       th:value="${entity.groupDic}">
+                                                <small th:unless="${view}">字典项所属词组描述</small>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="am-form-group">
+                                            <label for="val" class="am-u-sm-3 am-form-label">排序字段 <span
+                                                    class="tpl-form-line-small-title">Number</span></label>
+                                            <div class="am-u-sm-9">
+                                                <input type="number" class="tpl-form-input" name="sort" id="sort"
+                                                       placeholder="请输入字典排序字段" th:disabled="${view}"
+                                                       th:value="${entity.sort}">
+                                                <small th:unless="${view}">排序字段,限数字</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="am-form-group">
+                                            <div class="am-u-sm-9 am-u-sm-push-3">
+                                                <th:block sec:authorize="hasPermission('$everyone','PERM_DIC_SAVE')">
+                                                    <button type="submit"
+                                                            class="am-btn am-btn-primary tpl-btn-bg-color-success"
+                                                            th:unless="${view}">提交
+                                                    </button>
+                                                </th:block>
+                                                <th:block sec:authorize="hasPermission('$everyone','PERM_DIC_EDIT')">
+                                                    <button type="button" class="am-btn am-btn-warning"
+                                                            th:onclick="'routingPage(\'/dic/edit/'+${entity.id}+'\',\'编辑字典\')'"
+                                                            th:if="${view}">编辑
+                                                    </button>
+                                                </th:block>
+                                                <button type="button" class="am-btn am-btn-danger"
+                                                        onClick="routingPage('/dic/preview/')">返回
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
+                        </div>
+                    </div>
 
                 </div>
             </div>
@@ -94,51 +122,53 @@
     </div>
 </div>
 
-<css th:replace="public/css :: onLoadCSS"></css>
+<!--加载JS-->
 <js th:replace="public/js :: onLoadJS"></js>
 <script type="text/javascript">
     $(function () {
         validateFrom();
-    })
+    });
 
 
     /**
      * 校验登录表单
      * @returns void
      */
-    function validateFrom(){
+    function validateFrom() {
         $("#DataFrom").validate({
             rules: {
                 val: {
-                    required:true,
+                    required: true,
                     maxlength: 20,
-                    noChinese:true
+                    noChinese: true
                 },
-                dic:{
-                    required:true,
+                dic: {
+                    required: true,
                     maxlength: 20
                 },
-                code:{
-                    required:true,
+                code: {
+                    required: true,
                     maxlength: 20,
-                    noChinese:true
-                },groupDic:{
-                    required:true,
+                    noChinese: true
+                }, groupDic: {
+                    required: true,
                     maxlength: 20
                 },
-                sort:{
-                    required:true,
-                    positiveNumber:true,
+                sort: {
+                    required: true,
+                    positiveNumber: true,
                     maxlength: 5
                 }
             },
-            submitHandler: function(form) { //验证成功时调用
-                var url = "/dic/save"
+            submitHandler: function (form) { //验证成功时调用
+                var url = "/dic/save";
                 var param = $('#DataFrom').serializeJson();
+
                 function completeHandler(data) {
-                    routingPage('/dic/preview','字典管理');
+                    routingPage('/dic/preview', '字典管理');
                 }
-                doGet(url,param,completeHandler)
+
+                doPost(url, param, completeHandler)
             }
         });
     }

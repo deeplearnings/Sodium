@@ -1,7 +1,7 @@
 package ${action_package_name}.${mapping};
 
 import net.onebean.core.PageResult;
-import net.onebean.core.Pagination;
+import net.onebean.core.query.Pagination;
 import net.onebean.core.extend.Sort;
 import BaseController;
 import ${model_package_name}.${model_name};

@@ -3,8 +3,8 @@ package net.onebean.sodium.consumer.mq;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.rabbitmq.client.Channel;
-import net.onebean.common.exception.BusinessException;
-import net.onebean.common.model.BaseResponse;
+import net.onebean.core.base.BaseResponse;
+import net.onebean.core.error.BusinessException;
 import net.onebean.sodium.common.error.ErrorCodesEnum;
 import net.onebean.sodium.service.TenantInfoService;
 import net.onebean.tenant.mngt.api.model.FindTtenantInfoVo;
@@ -32,7 +32,7 @@ public class DevopsInitTenantAccountConsumer {
     @Autowired
     private TennantInfoApi  tennantInfoApi;
 
-    @RabbitListener(queues = "eakay.devops.tenant.info.init.tenant.account")
+    @RabbitListener(queues = "devops.tenant.info.init.tenant.account")
     @RabbitHandler
     public void process(FindTtenantInfoVo vo, Channel channel, Message message) {
         LOGGER.info("DevopsInitAccountConsumer process access  text = "+ JSON.toJSONString(vo, SerializerFeature.WriteMapNullValue));

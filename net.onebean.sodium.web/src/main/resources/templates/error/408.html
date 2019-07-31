@@ -4,26 +4,21 @@
 </head>
 <body ddata-type="widgets">
 
-<div class="am-g tpl-g">
-    <!-- 内容区域 -->
-    <div class="tpl-content-wrapper none-margin">   
-        <div class="row-content am-cf">
-            <div class="widget am-cf">
-                <div class="widget-body">
-                    <div class="tpl-page-state">
-                        <div class="tpl-page-state-title am-text-center tpl-error-title">408</div>
-                        <div class="tpl-error-title-info">Request Timeout</div>
-                        <div class="tpl-page-state-content tpl-error-content">
-                            <p>请求超时</p>
-                            <button type="button" class="am-btn am-btn-secondary am-radius tpl-error-btn" onclick="goUrl('/')">返回主页</button></div>
-                    </div>
-                </div>
+<div class="row-content am-cf">
+    <div class="widget am-cf">
+        <div class="widget-body">
+            <div class="tpl-page-state">
+                <div class="tpl-page-state-title am-text-center tpl-error-title">408</div>
+                <div class="tpl-error-title-info">Request Timeout</div>
+                <div class="tpl-page-state-content tpl-error-content">
+                    <p>一招请求去,万年无音讯,想必是被外星人劫走了</p>
+                    <button type="button" class="am-btn am-btn-secondary am-radius tpl-error-btn" onclick="goUrl('/')">返回主页</button></div>
             </div>
         </div>
     </div>
 </div>
 
-<css th:replace="public/css :: onLoadCSS"></css>
+<!--加载JS-->
 <js th:replace="public/js :: onLoadJS"></js>
 </body>
 </html>

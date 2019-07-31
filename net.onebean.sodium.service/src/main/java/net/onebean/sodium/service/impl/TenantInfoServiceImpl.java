@@ -1,15 +1,15 @@
 package net.onebean.sodium.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import net.onebean.common.exception.BusinessException;
-import net.onebean.core.BaseBiz;
+import net.onebean.core.base.BaseBiz;
+import net.onebean.core.error.BusinessException;
 import net.onebean.sodium.common.error.ErrorCodesEnum;
 import net.onebean.sodium.dao.TenantInfoDao;
 import net.onebean.sodium.model.TenantInfo;
 import net.onebean.sodium.service.TenantInfoService;
+import net.onebean.util.FreeMarkerTemplateUtils;
 import net.onebean.util.PropUtil;
 import net.onebean.util.StringUtils;
-import net.onebean.util.VelocityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class TenantInfoServiceImpl extends BaseBiz<TenantInfo, TenantInfoDao> im
     private static final Logger logger = LoggerFactory.getLogger(TenantInfoServiceImpl.class);
 
 
-    private static final String TEMPLATE_FILE = "vm/tenant/initTenantInfo.vm";
+    private static final String TEMPLATE_FILE = "templates-customer/vm/tenant/initTenantInfo.ftl";
 
 
 
@@ -52,7 +52,7 @@ public class TenantInfoServiceImpl extends BaseBiz<TenantInfo, TenantInfoDao> im
         String templateFile = PropUtil.getInstance().getConfig(TEMPLATE_FILE, PropUtil.DEFLAULT_NAME_SPACE);
         JSONObject param = new JSONObject();
         param.put("tenantId",tenantId);
-        return VelocityUtils.generateStringFromVelocity(param,templateFile);
+        return FreeMarkerTemplateUtils.generateStringFromFreeMarker(param,templateFile);
     }
 
     @Override

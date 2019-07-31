@@ -1,10 +1,10 @@
 package net.onebean.sodium.security;
 
-import net.onebean.core.form.Parse;
 import net.onebean.sodium.model.SysPermission;
 import net.onebean.sodium.model.SysUser;
 import net.onebean.sodium.service.SysPermissionService;
 import net.onebean.sodium.service.SysUserService;
+import net.onebean.core.form.Parse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,7 +13,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +33,8 @@ public class OneBeanCustomUserService implements UserDetailsService { //自定�
     SysPermissionService sysPermissionService;
 
     public UserDetails loadUserByUsername(String username) {
+        HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+        String sss = request.getRequestURI();
         SysUser user = sysUserService.findByUsername(username);
         if (user != null) {
             List<SysPermission> permissions = sysPermissionService.springSecurityFindByAdminUserId(Parse.toInt(user.getId()));

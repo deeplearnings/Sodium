@@ -1,6 +1,6 @@
 package net.onebean.sodium.service;
 import net.onebean.sodium.model.CodeDatabaseField;
-import net.onebean.core.IBaseBiz;
+import net.onebean.core.base.IBaseBiz;
 
 import java.util.List;
 

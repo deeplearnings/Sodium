@@ -1,54 +1,53 @@
 package net.onebean.sodium.web.action.sys;
 
 
-import net.onebean.sodium.common.dataPerm.DataPermUtils;
-import net.onebean.sodium.core.BaseSplitController;
-import net.onebean.core.ConditionMap;
-import net.onebean.core.ListPageQuery;
-import net.onebean.core.PageResult;
-import net.onebean.core.Pagination;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import net.onebean.core.base.BasePaginationRequest;
+import net.onebean.core.base.BasePaginationResponse;
+import net.onebean.core.base.BaseResponse;
+import net.onebean.core.error.BusinessException;
 import net.onebean.core.extend.Sort;
-import net.onebean.core.form.Parse;
+import net.onebean.core.query.Pagination;
+import net.onebean.sodium.common.dataPerm.DataPermUtils;
+import net.onebean.sodium.common.error.ErrorCodesEnum;
+import net.onebean.sodium.core.BaseSplitController;
 import net.onebean.sodium.model.SysRole;
-import net.onebean.sodium.model.SysRoleUser;
 import net.onebean.sodium.model.SysUser;
 import net.onebean.sodium.security.SpringSecurityUtil;
-import net.onebean.sodium.service.SysPermissionRoleService;
 import net.onebean.sodium.service.SysRoleService;
-import net.onebean.sodium.service.SysRoleUserService;
-import net.onebean.util.CollectionUtil;
+import net.onebean.sodium.vo.AddRoleUserReq;
+import net.onebean.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Description;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 /**
  * 角色管理
+ *
  * @author 0neBean
  */
 @Controller
 @RequestMapping("/sysrole")
-public class SysRoleController extends BaseSplitController<SysRole,SysRoleService> {
+public class SysRoleController extends BaseSplitController<SysRole, SysRoleService> {
 
-    @Autowired
-    private SysRoleUserService sysRoleUserService;
-    @Autowired
-    private SysPermissionRoleService sysPermissionRoleService;
+
     @Autowired
     private DataPermUtils dataPermUtils;
 
 
     /**
      * 预览列表页面
+     *
      * @return view
      */
     @RequestMapping("preview")
@@ -60,195 +59,249 @@ public class SysRoleController extends BaseSplitController<SysRole,SysRoleServic
 
     /**
      * 新增页面
-     * @param model modelAndView
+     *
+     * @param model  modelAndView
      * @param entity 实体
      * @return view
      */
     @RequestMapping("add")
     @Description(value = "新增页面")
     @PreAuthorize("hasPermission('$everyone','PERM_ROLE_ADD')")
-    public String add(Model model,SysRole entity) {
-        model.addAttribute("add",true);
-        model.addAttribute("entity",entity);
+    public String add(Model model, SysRole entity) {
+        model.addAttribute("add", true);
+        model.addAttribute("entity", entity);
         return getView("detail");
     }
 
     /**
      * 查看页面
+     *
      * @param model modelAndView
-     * @param id 主键
+     * @param id    主键
      * @return view
      */
     @RequestMapping("view/{id}")
     @Description(value = "查看页面")
     @PreAuthorize("hasPermission('$everyone','PERM_ROLE_VIEW')")
-    public String view(Model model,@PathVariable("id")Object id){
-        model.addAttribute("entity",baseService.findById(id));
-        model.addAttribute("view",true);
+    public String view(Model model, @PathVariable("id") Object id) {
+        model.addAttribute("entity", baseService.findById(id));
+        model.addAttribute("view", true);
         return getView("detail");
     }
 
     /**
      * 编辑页面
+     *
      * @param model modelAndView
-     * @param id 主键
+     * @param id    主键
      * @return view
      */
     @RequestMapping("edit/{id}")
     @Description(value = "编辑页面")
     @PreAuthorize("hasPermission('$everyone','PERM_ROLE_EDIT')")
-    public String edit(Model model,@PathVariable("id")Object id) {
-        model.addAttribute("entity",baseService.findById(id));
-        model.addAttribute("edit",true);
+    public String edit(Model model, @PathVariable("id") Object id) {
+        model.addAttribute("entity", baseService.findById(id));
+        model.addAttribute("edit", true);
         return getView("detail");
     }
 
     /**
      * 保存
      * @param entity 实体
-     * @param result 结果集
-     * @return PageResult<SysRole>
+     * @return BaseResponse<SysRole>
      */
     @RequestMapping("save")
-    @Description(value = "保存")
     @ResponseBody
+    @SuppressWarnings("unchecked")
     @PreAuthorize("hasPermission('$everyone','PERM_ROLE_SAVE')")
-    public PageResult<SysRole> save(SysRole entity, PageResult<SysRole> result) {
-        entity = loadOperatorData(entity);
-        baseService.save(entity);
-        result.getData().add(entity);
-        return result;
+    public BaseResponse<SysRole> add(@RequestBody SysRole entity) {
+        logger.info("access" + DateUtils.getNowyyyy_MM_dd_HH_mm_ss());
+        BaseResponse<SysRole> response = new BaseResponse<>();
+        try {
+            logger.debug("method add entity = " + JSON.toJSONString(entity, SerializerFeature.WriteMapNullValue));
+            entity = loadOperatorData(entity);
+            baseService.save(entity);
+            response = BaseResponse.ok(entity);
+        } catch (BusinessException e) {
+            response.setErrCode(e.getCode());
+            response.setErrMsg(e.getMsg());
+            logger.info("method add BusinessException ex = ", e);
+        } catch (Exception e) {
+            response.setErrCode(ErrorCodesEnum.OTHER.code());
+            response.setErrMsg(ErrorCodesEnum.OTHER.msg());
+            logger.error("method add catch Exception e = ", e);
+        }
+        return response;
     }
 
 
+
     /**
-     * 根据ID删除
+     * 删除数据库模型及其关联字段
      * @param id 主键
-     * @param result 结果集
-     * @return PageResult<SysRole>
+     * @return BaseResponse<Boolean>
      */
     @RequestMapping(value = "delete/{id}")
     @Description(value = "删除")
     @ResponseBody
+    @SuppressWarnings("unchecked")
     @PreAuthorize("hasPermission('$everyone','PERM_ROLE_DELETE')")
-    public PageResult<SysRole> delete(@PathVariable("id")Object id, PageResult<SysRole> result) {
-        if (CollectionUtil.isNotEmpty(sysRoleUserService.findbyRoleId(id))){
-            result.setFlag(false);
-            result.setMsg("该角色关联了用户，不能删除！");
-        }else{
-            baseService.deleteById(id);
-            Long roleId = Parse.toLong(id);
-            sysRoleUserService.deleteByRoleId(roleId);
-            sysPermissionRoleService.deteleByRoleId(roleId);
-            result.setFlag(true);
+    public BaseResponse<Boolean> delete(@PathVariable("id") Object id) {
+        logger.info("access" + DateUtils.getNowyyyy_MM_dd_HH_mm_ss());
+        BaseResponse<Boolean> response = new BaseResponse<>();
+        try {
+            logger.debug("method delete id = " + JSON.toJSONString(id, SerializerFeature.WriteMapNullValue));
+            response = BaseResponse.ok(baseService.deleteRole(id));
+        } catch (BusinessException e) {
+            response.setErrCode(e.getCode());
+            response.setErrMsg(e.getMsg());
+            logger.info("method delete BusinessException ex = ", e);
+        } catch (Exception e) {
+            response.setErrCode(ErrorCodesEnum.OTHER.code());
+            response.setErrMsg(ErrorCodesEnum.OTHER.msg());
+            logger.error("method delete catch Exception e = ", e);
         }
-        return result;
+        return response;
     }
 
     /**
      * 列表数据
-     * @param sort 排序参数
-     * @param page 分页参数
-     * @param result 结果集
-     * @param cond 表达式
-     * @return PageResult<SysRole>
+     *
+     * @param request 参数体
+     * @return BasePaginationResponse<CodeDatabaseTable>
      */
     @RequestMapping("list")
     @ResponseBody
+    @SuppressWarnings("unchecked")
     @PreAuthorize("hasPermission('$everyone','PERM_ROLE_LIST')")
-    public PageResult<SysRole> list (Sort sort, Pagination page, PageResult<SysRole> result
-            , @RequestParam(value = "conditionList",required = false) String cond){
-        SysUser currentUser = SpringSecurityUtil.getCurrentLoginUser();
-        String tenantId = baseService.getTenantId();
-        String join = MessageFormat.format("LEFT JOIN sys_user_{0} u on u.id = t.operator_id LEFT JOIN sys_organization_{1} o ON o.`id` = u.org_id",tenantId,tenantId);
-        initData(sort,page,cond,dataPermUtils.dataPermFilter(currentUser,"o","t",baseService.getTenantId(),join));
-        dicCoverList(null,"dic@SF$isLock","dic@SJQX$dataPermissionLevel","date@createTime$");
-        result.setData(dataList);
-        result.setPagination(page);
-        return result;
+    public BasePaginationResponse<SysRole> list(@RequestBody BasePaginationRequest<String> request) {
+        logger.info("access" + DateUtils.getNowyyyy_MM_dd_HH_mm_ss());
+        BasePaginationResponse<SysRole> response = new BasePaginationResponse<>();
+        try {
+            logger.debug("method list request = " + JSON.toJSONString(request, SerializerFeature.WriteMapNullValue));
+            String cond = Optional.ofNullable(request).map(BasePaginationRequest::getData).orElse("");
+            Pagination page = Optional.ofNullable(request).map(BasePaginationRequest::getPage).orElse(new Pagination());
+            Sort sort = Optional.ofNullable(request).map(BasePaginationRequest::getSort).orElse(new Sort(Sort.DESC, "id"));
+            SysUser currentUser = SpringSecurityUtil.getCurrentLoginUser();
+            String tenantId = baseService.getTenantId();
+            String join = MessageFormat.format("LEFT JOIN sys_user_{0} u on u.id = t.operator_id LEFT JOIN sys_organization_{1} o ON o.`id` = u.org_id",tenantId,tenantId);
+            initData(sort,page,cond,dataPermUtils.dataPermFilter(currentUser,"o","t",baseService.getTenantId(),join));
+            dicCoverList(null,"dic@SF$isLock","dic@SJQX$dataPermissionLevel","date@createTime$");
+            response = BasePaginationResponse.ok(dataList, page);
+        } catch (BusinessException e) {
+            response.setErrCode(e.getCode());
+            response.setErrMsg(e.getMsg());
+            logger.info("method list BusinessException ex = ", e);
+        } catch (Exception e) {
+            response.setErrCode(ErrorCodesEnum.OTHER.code());
+            response.setErrMsg(ErrorCodesEnum.OTHER.msg());
+            logger.error("method list catch Exception e = ", e);
+        }
+        return response;
     }
 
     /**
      * 查找用户的所有角色
-     * @param userId 用户ID
-     * @param result 结果集
-     * @return PageResult<SysRole>
      */
-    @RequestMapping("findbyuid")
+    @RequestMapping("findbyuid/{userId}")
     @ResponseBody
+    @SuppressWarnings("unchecked")
     @PreAuthorize("hasPermission('$everyone','PERM_ROLE_FIND_BY_USERID')")
-    public PageResult<SysRole> findRolesByUserId(@RequestParam("userId")Long userId,PageResult<SysRole> result){
-        result.setData(baseService.findRolesByUserId(userId));
-        return result;
+    public BasePaginationResponse<SysRole> findRolesByUserId(@PathVariable("userId") Long userId) {
+        logger.info("method findRolesByUserId access" + DateUtils.getNowyyyy_MM_dd_HH_mm_ss());
+        BasePaginationResponse<SysRole> response = new BasePaginationResponse<>();
+        try {
+            logger.debug("method findRolesByUserId userId = " + JSON.toJSONString(userId, SerializerFeature.WriteMapNullValue));
+            response = BasePaginationResponse.ok(baseService.findRolesByUserId(userId));
+        } catch (BusinessException e) {
+            response.setErrCode(e.getCode());
+            response.setErrMsg(e.getMsg());
+            logger.info("method findRolesByUserId BusinessException ex = ", e);
+        } catch (Exception e) {
+            response.setErrCode(ErrorCodesEnum.OTHER.code());
+            response.setErrMsg(ErrorCodesEnum.OTHER.msg());
+            logger.error("method findRolesByUserId catch Exception e = ", e);
+        }
+        return response;
     }
 
     /**
      * 根据角色名查找角色
-     * @param name 角色名
-     * @param page 分页信息
-     * @param result 结果集
-     * @return PageResult<SysRole>
      */
-    @RequestMapping("findbyname")
+    @RequestMapping("findByRoleName/{roleName}")
     @ResponseBody
+    @SuppressWarnings("unchecked")
     @PreAuthorize("hasPermission('$everyone','PERM_ROLE_FIND_BY_NAME')")
-    public PageResult<SysRole> findByName(@RequestParam("name")String name,Pagination page,PageResult<SysRole> result){
-        ListPageQuery query = new ListPageQuery();
-        ConditionMap map = new ConditionMap();
-        Sort sort = new Sort();
-        map.parseModelCondition(MessageFormat.format("chName@string@like${0}^isLock@string@eq${1}",name,0));
-        sort.setSort(Sort.DESC);
-        sort.setOrderBy("id");
-        query.setConditions(map);
-        query.setPagination(page);
-        query.setSort(sort);
-        result.setPagination(page);
-        result.setData(baseService.find(query));
-        return result;
+    public BasePaginationResponse<SysRole> findByRoleName(@PathVariable("roleName") String roleName) {
+        logger.info("method findByRoleName access" + DateUtils.getNowyyyy_MM_dd_HH_mm_ss());
+        BasePaginationResponse<SysRole> response = new BasePaginationResponse<>();
+        try {
+            logger.debug("method findByRoleName name = " + JSON.toJSONString(roleName, SerializerFeature.WriteMapNullValue));
+            response = BasePaginationResponse.ok(baseService.findByName(roleName));
+        } catch (BusinessException e) {
+            response.setErrCode(e.getCode());
+            response.setErrMsg(e.getMsg());
+            logger.info("method findByRoleName BusinessException ex = ", e);
+        } catch (Exception e) {
+            response.setErrCode(ErrorCodesEnum.OTHER.code());
+            response.setErrMsg(ErrorCodesEnum.OTHER.msg());
+            logger.error("method findByRoleName catch Exception e = ", e);
+        }
+        return response;
     }
 
     /**
      * 添加用户角色关联信息
-     * @param userId 用户ID
-     * @param result 结果集
-     * @param roleIds 角色IDs 用','分割的字符串
-     * @param page 分页信息
-     * @return PageResult<SysRole>
      */
     @RequestMapping("addroleuser")
     @ResponseBody
+    @SuppressWarnings("unchecked")
     @PreAuthorize("hasPermission('$everyone','PERM_ROLE_ADD_ROLE_USER')")
-    public PageResult<SysRole> addRoleUser(@RequestParam("userId")Long userId,PageResult<SysRole> result,
-                                           @RequestParam("roleIds")String roleIds,Pagination page){
-        String[] roleIdsArry = roleIds.split(",");
-        for (String s : roleIdsArry) {
-            SysRoleUser temp = new SysRoleUser(userId, Parse.toLong(s));
-            sysRoleUserService.save(temp);
+    public BaseResponse<Boolean> addRoleUser(@RequestBody BasePaginationRequest<AddRoleUserReq> request) {
+        logger.info("access" + DateUtils.getNowyyyy_MM_dd_HH_mm_ss());
+        BaseResponse<Boolean> response = new BaseResponse<>();
+        try {
+            logger.debug("method addRoleUser request = " + JSON.toJSONString(request, SerializerFeature.WriteMapNullValue));
+            Long userId = Optional.ofNullable(request).map(BasePaginationRequest::getData).map(AddRoleUserReq::getUserId).orElse(0L);
+            String roleIds = Optional.ofNullable(request).map(BasePaginationRequest::getData).map(AddRoleUserReq::getRoleIds).orElse("");
+            response = BaseResponse.ok(baseService.addRoleUser(userId,roleIds));
+        } catch (BusinessException e) {
+            response.setErrCode(e.getCode());
+            response.setErrMsg(e.getMsg());
+            logger.info("method addRoleUser BusinessException ex = ", e);
+        } catch (Exception e) {
+            response.setErrCode(ErrorCodesEnum.OTHER.code());
+            response.setErrMsg(ErrorCodesEnum.OTHER.msg());
+            logger.error("method addRoleUser catch Exception e = ", e);
         }
-        result.setFlag(true);
-        return result;
+        return response;
     }
 
     /**
      * 删除用户角色关联信息
-     * @param urIds 用户IDs 用','分割的字符串
-     * @param result 结果集
-     * @return PageResult<SysRole>
      */
     @RequestMapping("removeroleuser")
     @ResponseBody
+    @SuppressWarnings("unchecked")
     @PreAuthorize("hasPermission('$everyone','PERM_ROLE_REMOVE_ROLE_USER')")
-    public PageResult<SysRole> removeRoleUser(@RequestParam("urIds")String urIds,PageResult<SysRole> result){
-        String[] urIdsArry = urIds.split(",");
-        List <Long> ids = new ArrayList<>();
-        for (String s : urIdsArry) {
-            ids.add(Parse.toLong(s));
+    public BaseResponse<SysRole> removeRoleUser(@RequestBody BasePaginationRequest<String> request) {
+        logger.info("access" + DateUtils.getNowyyyy_MM_dd_HH_mm_ss());
+        BaseResponse<SysRole> response = new BaseResponse<>();
+        try {
+            logger.debug("method removeRoleUser request = " + JSON.toJSONString(request, SerializerFeature.WriteMapNullValue));
+            String urIds = Optional.ofNullable(request).map(BasePaginationRequest::getData).orElse("");
+            response = BaseResponse.ok(baseService.removeRoleUser(urIds));
+        } catch (BusinessException e) {
+            response.setErrCode(e.getCode());
+            response.setErrMsg(e.getMsg());
+            logger.info("method removeRoleUser BusinessException ex = ", e);
+        } catch (Exception e) {
+            response.setErrCode(ErrorCodesEnum.OTHER.code());
+            response.setErrMsg(ErrorCodesEnum.OTHER.msg());
+            logger.error("method removeRoleUser catch Exception e = ", e);
         }
-        sysRoleUserService.deleteByIds(ids);
-        result.setFlag(true);
-        return result;
+        return response;
     }
-
 
 
 }

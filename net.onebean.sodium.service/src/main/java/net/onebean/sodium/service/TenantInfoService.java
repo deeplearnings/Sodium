@@ -1,7 +1,7 @@
 package net.onebean.sodium.service;
 
 import net.onebean.sodium.model.TenantInfo;
-import net.onebean.core.IBaseBiz;
+import net.onebean.core.base.IBaseBiz;
 
 import java.util.List;
 

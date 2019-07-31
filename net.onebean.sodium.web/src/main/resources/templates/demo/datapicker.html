@@ -1,24 +1,35 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="public/head :: onLoadHead(文件上传控件)">
-</head>
-<body ddata-type="widgets">
-<css th:replace="public/css :: onLoadCSS"></css>
-<js th:replace="public/js :: onLoadJS"></js>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--通用head 其中加载了css-->
+<head th:replace="public/head :: onLoadHead(日期选择器)"></head>
+
+<body data-type="index">
 <div class="am-g tpl-g">
+    <!-- 通用头部 -->
+    <header th:include="public/topBar :: topBar"></header>
+    <!-- 主题选择组件 -->
+    <div th:include="public/skiner :: skiner" class="tpl-skiner"></div>
+    <!-- 公用左侧栏 -->
+    <div th:include="public/leftMenu :: leftMenu" class="left-sidebar"></div>
     <!-- 模态提示组件 -->
     <div th:include="public/tips :: Tips"></div>
     <!-- 内容区域 -->
-    <div class="tpl-content-wrapper none-margin">
+    <div class=" tpl-content-wrapper">
 
         <div class="container-fluid am-cf">
             <div class="row">
                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
-                    <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 精确到分钟的时间选择控件 <small>Amaze UI</small></div>
-                    <p class="page-header-description">Amaze UI 生态下精确到分钟的时间控件 <a href="http://plugins.amazeui.org/magnifier.html#project=datetimepicker&author=amazeui" target="_blank">参考API</a>。</p>
+                    <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span>
+                        精确到分钟的时间选择控件
+                        <small>Amaze UI</small>
+                    </div>
+                    <p class="page-header-description">Amaze UI 生态下精确到分钟的时间控件 <a
+                            href="http://plugins.amazeui.org/magnifier.html#project=datetimepicker&author=amazeui"
+                            target="_blank">参考API</a>。</p>
                 </div>
                 <div class="am-u-lg-3 tpl-index-settings-button">
-                    <button type="button" class="page-header-button"><span class="am-icon-paint-brush"></span> 设置</button>
+                    <button type="button" class="page-header-button"><span class="am-icon-paint-brush"></span> 设置
+                    </button>
                 </div>
             </div>
 
@@ -33,17 +44,22 @@
 
                             <form class="am-form tpl-form-border-form tpl-form-border-br" id="DataFrom">
                                 <div class="am-form-group">
-                                    <label for="createTime" class="am-u-sm-3 am-form-label">日期选择控件 <span class="tpl-form-line-small-title">Data</span></label>
+                                    <label for="createTime" class="am-u-sm-3 am-form-label">日期选择控件 <span
+                                            class="tpl-form-line-small-title">Data</span></label>
                                     <div class="am-u-sm-9">
-                                        <input type="text" class="onebean-data-picker-data" id="creat_data" name="creat_data" placeholder="请选择日期">
+                                        <input type="text" class="onebean-data-picker-data" id="creat_data"
+                                               name="creat_data" placeholder="请选择日期">
                                         <small>点击选择一个日期,返回Timestamp</small>
                                     </div>
                                 </div>
 
                                 <div class="am-form-group">
-                                    <label for="createTime" class="am-u-sm-3 am-form-label">时间选择控件 <span class="tpl-form-line-small-title">Data</span></label>
+                                    <label for="createTime" class="am-u-sm-3 am-form-label">时间选择控件 <span
+                                            class="tpl-form-line-small-title">Data</span></label>
                                     <div class="am-u-sm-9">
-                                        <input type="text" class="onebean-data-picker-time" th:attr="data-date-startDate=${startDate},data-date-endDate=${endDate}" id="createTime" name="createTime" placeholder="请选择时间">
+                                        <input type="text" class="onebean-data-picker-time"
+                                               th:attr="data-date-startDate=${startDate},data-date-endDate=${endDate}"
+                                               id="createTime" name="createTime" placeholder="请选择时间">
                                         <small>点击选择一个时间,返回string</small>
                                     </div>
                                 </div>
@@ -55,5 +71,7 @@
         </div>
     </div>
 </div>
+<!--加载JS-->
+<js th:replace="public/js :: onLoadJS"></js>
 </body>
 </html>

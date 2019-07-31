@@ -1,14 +1,14 @@
 package net.onebean.sodium.dao;
 
-import net.onebean.core.BaseSplitDao;
-import net.onebean.sodium.VO.OrgTree;
+import net.onebean.core.base.BaseSplitDao;
+import net.onebean.sodium.vo.OrgTree;
 import net.onebean.sodium.model.SysOrganization;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
 
-public interface SysOrganizationDao extends BaseSplitDao <SysOrganization> {
+public interface SysOrganizationDao extends BaseSplitDao<SysOrganization> {
 
     /**
      * 异步查找子节点,每次查找一级
