@@ -56,28 +56,7 @@ public class SysPermissionServiceImpl extends BaseSplitBiz<SysPermission, SysPer
 
 
 	public List<SysPermission> findChildSync(SysUser currentUser) {
-		String tenantId = getTenantId();
-		StringBuilder join = new StringBuilder();
-		join.append(MessageFormat.format(" LEFT JOIN sys_permission_role_{0} spr on t.id = spr.permission_id",tenantId));
-		join.append(MessageFormat.format(" LEFT JOIN sys_role_{0} r on spr.role_id = r.id",tenantId));
-		join.append(MessageFormat.format(" LEFT JOIN sys_role_user_{0} sru on sru.sys_role_id = r.id",tenantId));
-		join.append(MessageFormat.format(" LEFT JOIN sys_user_{0} u on u.id = sru.sys_user_id",tenantId));
-		join.append(MessageFormat.format(" LEFT JOIN sys_organization_{0} o on u.org_id = o.id",tenantId));
-		Map<String,Object> dp = dataPermUtils.dataPermFilter(currentUser,"o","t",tenantId,join.toString());
-		dp.put("join", join.toString());
-		if (null != dp.get("sql")){
-			StringBuilder sb = new StringBuilder();
-			String sql = dp.get("sql").toString();
-			sb.append(sql);
-			sb.append("AND   u.`id` = ");
-			sb.append(currentUser.getId());
-			sb.append(" AND spr.is_deleted = '0'");
-			sb.append(" AND r.is_deleted = '0'");
-			sb.append(" AND sru.is_deleted = '0'");
-			sb.append(" AND o.is_deleted = '0'");
-			sb.append(" AND u.is_deleted = '0'");
-			dp.put("sql",sb.toString());
-		}
+		Map<String,Object> dp = getDataPermissionSqlByCurrentLoginUser(currentUser);
 		return tree(this.findAll(dp));
 	}
 
@@ -132,9 +111,10 @@ public class SysPermissionServiceImpl extends BaseSplitBiz<SysPermission, SysPer
 
 
 
-	public List<MenuTree> findChildAsync(Long parentId,Long selfId){
+	public List<MenuTree> findChildAsync(Long parentId,Long selfId,SysUser currentUser){
 		List<MenuTree> res = new ArrayList<>();
-		List<MenuTree> list = baseDao.findChildAsync(parentId,getTenantId());
+		Map<String,Object> dp = getDataPermissionSqlByCurrentLoginUser(currentUser);
+		List<MenuTree> list = baseDao.findChildAsync(parentId,getTenantId(),dp);
 		for (MenuTree o : list) {//某些业务场景 节点不能选择自己作为父级节点,故过滤掉所有自己及以下节点
 			if (null == selfId || (Parse.toInt(o.getId()) != selfId) || selfId == 1) {
 				res.add(o);
@@ -379,5 +359,33 @@ public class SysPermissionServiceImpl extends BaseSplitBiz<SysPermission, SysPer
 			sysPermissionRoleService.insertBatch(premIds, roleId);
 		}
 		return true;
+	}
+
+
+	private Map<String ,Object> getDataPermissionSqlByCurrentLoginUser(SysUser currentUser){
+		String tenantId = getTenantId();
+		StringBuilder join = new StringBuilder();
+		join.append(MessageFormat.format(" LEFT JOIN sys_permission_role_{0} spr on t.id = spr.permission_id",tenantId));
+		join.append(MessageFormat.format(" LEFT JOIN sys_role_{0} r on spr.role_id = r.id",tenantId));
+		join.append(MessageFormat.format(" LEFT JOIN sys_role_user_{0} sru on sru.sys_role_id = r.id",tenantId));
+		join.append(MessageFormat.format(" LEFT JOIN sys_user_{0} u on u.id = sru.sys_user_id",tenantId));
+		join.append(MessageFormat.format(" LEFT JOIN sys_organization_{0} o on u.org_id = o.id",tenantId));
+		Map<String,Object> dp = dataPermUtils.dataPermFilter(currentUser,"o","t",tenantId,join.toString());
+		dp.put("join", join.toString());
+		StringBuilder sb = new StringBuilder();
+		if (null != dp.get("sql")){
+			String sql = dp.get("sql").toString();
+			sb.append(sql);
+
+		}
+		sb.append(" AND u.`id` = ");
+		sb.append(currentUser.getId());
+		sb.append(" AND spr.is_deleted = '0'");
+		sb.append(" AND r.is_deleted = '0'");
+		sb.append(" AND sru.is_deleted = '0'");
+		sb.append(" AND o.is_deleted = '0'");
+		sb.append(" AND u.is_deleted = '0'");
+		dp.put("sql",sb.toString());
+		return dp;
 	}
 }

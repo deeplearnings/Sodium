@@ -140,7 +140,10 @@
             },
             data: formatQueryFromParam()
         };
+        var currentLoginUserId = [[${current_sys_user.id}]];
+
         doPost("/sysuser/list",param,function (res) {
+            res.datas.currentLoginUserId = currentLoginUserId;
             $('#dataTable').html(template('tpl-sysuser', res.datas));
             $('#pagination').html(template('tpl-pagination', res.page));
         })
@@ -164,7 +167,7 @@
         <div class="tpl-table-black-operation">
 
             <th:block sec:authorize="hasPermission('$everyone','PERM_USER_EDIT')">
-                {{if userType != 'root'}}
+                {{if userType != 'root' && $data.currentLoginUserId != data.id}}
                 <a href="javascript:;" onclick="routingPage('/sysuser/edit/{{data.id}}','编辑用户')">
                     <i class="am-icon-pencil"></i> 编辑
                 </a>
@@ -172,7 +175,7 @@
             </th:block>
 
             <th:block sec:authorize="hasPermission('$everyone','PERM_USER_DELETE')">
-                {{if userType != 'root'}}
+                {{if userType != 'root' && $data.currentLoginUserId != data.id}}
                 <a href="javascript:;" data-url="/sysuser/delete/{{data.id}}" class="tpl-table-black-operation-del list-del-button">
                     <i class="am-icon-trash" ></i> 删除
                 </a>
@@ -180,7 +183,7 @@
             </th:block>
 
             <th:block sec:authorize="hasPermission('$everyone','PERM_USER_BIND_ROLE')">
-                {{if userType != 'root'}}
+                {{if userType != 'root' && $data.currentLoginUserId != data.id}}
                 <a href="javascript:;" class="tpl-table-black-operation-warn" onclick="modalRU({{data.id}},'{{data.realName}}')">
                     <i class="am-icon-users" ></i> 绑定角色
                 </a>

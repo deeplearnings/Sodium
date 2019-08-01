@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="public/head :: onLoadHead(首页)">
+<!--通用head 其中加载了css-->
+<head th:replace="public/head :: onLoadHead(${description}列表)"></head>
 
-</head>
-<body data-type="widgets">
+<body data-type="index">
 <div class="am-g tpl-g">
-    <!--引用通用样式-->
-    <css th:replace="public/css :: onLoadCSS"></css>
-
+    <!-- 通用头部 -->
+    <header th:include="public/topBar :: topBar"></header>
+    <!-- 主题选择组件 -->
+    <div th:include="public/skiner :: skiner" class="tpl-skiner"></div>
+    <!-- 公用左侧栏 -->
+    <div th:include="public/leftMenu :: leftMenu" class="left-sidebar"></div>
+    <!-- 模态提示组件 -->
+    <div th:include="public/tips :: Tips"></div>
     <!-- 内容区域 -->
-    <div class="tpl-content-wrapper none-margin">
+    <div class="tpl-content-wrapper">
         <div class="row-content am-cf">
             <div class="row">
                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
@@ -83,11 +88,13 @@
                                        id="example-r">
                                     <thead>
                                     <tr>
-                                    <#if field_arr?exists>
-                                        <#list field_arr as item>
-                                            <th>${item.annotation}</th>
-                                        </#list>
+                            <#if field_arr?exists>
+                                <#list field_arr as item>
+                                    <#if item.columnName != 'id' && item.columnName != 'createTime' && item.columnName != 'updateTime' && item.columnName != 'isDeleted' && item.columnName != 'operatorId'  && item.columnName != 'operatorName'>
+                                        <th>${item.annotation}</th>
                                     </#if>
+                                </#list>
+                            </#if>
                                     </tr>
                                     </thead>
                                     <tbody id="dataTable">
@@ -107,24 +114,22 @@
         </div>
     </div>
 </div>
-<!--引用通用js-->
+<!--加载JS-->
 <js th:replace="public/js :: onLoadJS"></js>
-<!-- 模态提示组件 -->
-<div th:include="public/tips :: Tips"></div>
 <script type="text/javascript" >
     $(function () {
         initDataTable()
     });
 
     function initDataTable(){
-        var pageSize = $("#limitSelector").val()
-        var currentPage = $("#tpl-pagination").attr("currentPage")
-        var orderBy = $("#orderBySelector").val().split('-')[0]
-        var sort = $("#orderBySelector").val().split('-')[1]
-        var param = {orderBy: orderBy, sort: sort, currentPage: currentPage, pageSize: pageSize, conditionList: formatQueryFromParam()}
-        doGet("/${mapping}/list",param,function (res) {
-            $('#dataTable').html(template('tpl-${mapping}', res.data));
-            $('#pagination').html(template('tpl-pagination', res.pagination))
+        var pageSize = $("#limitSelector").val();
+        var currentPage = $("#tpl-pagination").attr("currentPage");
+        var orderBy = $("#orderBySelector").val().split('-')[0];
+        var sort = $("#orderBySelector").val().split('-')[1];
+        var param = {sort: {orderBy: orderBy, sort: sort}, page: {currentPage: currentPage,pageSize: pageSize}, data: formatQueryFromParam()};
+        doPost("/${mapping}/list",param,function (res) {
+            $('#dataTable').html(template('tpl-${mapping}', res.datas));
+            $('#pagination').html(template('tpl-pagination', res.page))
         })
     }
 
@@ -134,7 +139,9 @@
     <tr  class={{if $index%2==0}} "gradeX" {{else}} "even gradeC" {{/if}} >
 <#if field_arr?exists>
     <#list field_arr as item>
-    <td><#if (item_index == 1)><a href="javascript:;" onclick="routingPage('/${mapping}/view/{{data.id}}','查看${description}')"></#if>{{data.${item.columnName}}}<#if (item_index == 1)></a></#if></td>
+        <#if item.columnName != 'id' && item.columnName != 'createTime' && item.columnName != 'updateTime' && item.columnName != 'isDeleted' && item.columnName != 'operatorId'  && item.columnName != 'operatorName'>
+            <td><#if (item_index == 1)><a href="javascript:;" onclick="routingPage('/${mapping}/view/{{data.id}}','查看${description}')"></#if>{{data.${item.columnName}}}<#if (item_index == 1)></a></#if></td>
+        </#if>
     </#list>
 </#if>
     <td>

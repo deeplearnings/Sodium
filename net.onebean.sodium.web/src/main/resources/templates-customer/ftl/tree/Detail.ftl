@@ -8,7 +8,7 @@
     <!-- 模态提示组件 -->
     <div th:include="public/tips :: Tips"></div>
     <!-- 内容区域 -->
-    <div class="tpl-content-wrapper none-margin">
+    <div class="tpl-content-wrapper">
         <div class="row-content am-cf">
             <div class="row">
                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">

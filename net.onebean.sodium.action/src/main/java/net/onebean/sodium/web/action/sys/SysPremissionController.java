@@ -208,7 +208,8 @@ public class SysPremissionController extends BaseSplitController<SysPermission, 
             logger.debug("method MenuTree request = " + JSON.toJSONString(request, SerializerFeature.WriteMapNullValue));
             Long parentId = Optional.ofNullable(request).map(BasePaginationRequest::getData).map(InitTreeReq::getParentId).orElse(null);
             Long selfId = Optional.ofNullable(request).map(BasePaginationRequest::getData).map(InitTreeReq::getSelfId).orElse(null);
-            response = BasePaginationResponse.ok(baseService.findChildAsync(parentId,selfId));
+            SysUser currentUser = SpringSecurityUtil.getCurrentLoginUser();
+            response = BasePaginationResponse.ok(baseService.findChildAsync(parentId,selfId,currentUser));
         } catch (BusinessException e) {
             response.setErrCode(e.getCode());
             response.setErrMsg(e.getMsg());

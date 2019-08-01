@@ -6,6 +6,7 @@ import net.onebean.sodium.model.SysPermission;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SysPermissionDao extends BaseSplitDao <SysPermission> {
 
@@ -18,10 +19,11 @@ public interface SysPermissionDao extends BaseSplitDao <SysPermission> {
 
     /**
      * 异步查找子节点,每次查找一级
-     * @param parentId
+     * @param parentId 父级id
+     * @param dp 数据权限sql
      * @return
      */
-    List<MenuTree> findChildAsync(@Param("parentId") Long parentId,@Param("tableSuffix")String tableSuffix);
+    List<MenuTree> findChildAsync(@Param("parentId") Long parentId,@Param("tableSuffix")String tableSuffix, @Param("dp") Map<String,Object> dp);
 
     /**
      * 根据id删除自身以及自项

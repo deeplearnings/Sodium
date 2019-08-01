@@ -1,4 +1,5 @@
 $(function () {
+    onLoadBreadCrumbs();
     initDataPicker();
     unComments('tpl-pagination');//去除分页注释
 });
@@ -105,6 +106,18 @@ function clearUploadImg(target) {
 
 }
 
+
+/**
+ * 面包屑加载
+ */
+var onLoadBreadCrumbs = function () {
+    var $link = window.location.pathname;
+    var $name = $(document).attr("title");
+    /*面包屑*/
+    var breadCrumbs = eachBreadCrumbs($link, $name, true);
+    delCookie('breadCrumbsStr');
+    setCookie('breadCrumbsStr', breadCrumbs);
+};
 
 /**
  * 从菜单新开标签
@@ -371,6 +384,7 @@ function initTreeSyncMultiSelect(title, roleId, url, $treeTemplate) {
                 } else {
                     doPost(url, {data: roleId}, function (res) {
                         callback({data: res.datas});
+                        $treeTemplate.tree('selectItemSafe', $('.selected-item'));
                     })
                 }
 
@@ -385,9 +399,10 @@ function initTreeSyncMultiSelect(title, roleId, url, $treeTemplate) {
         folderOpenIcon: 'folder-open',
         itemIcon: 'file'
     });
-    $treeTemplate.on('loaded.tree.amui', function (event, data) {
-        $treeTemplate.tree('selectItemSafe', $('.selected-item'));
-    });
+    // $treeTemplate.on('loaded.tree.amui', function (event, data) {
+    //     debugger
+    //     $treeTemplate.tree('selectItemSafe', $('.selected-item'));
+    // });
 
     $treeTemplate.on('updated.tree.amui', function (event, data) {
         var childs = $(data.item).find('.am-tree-item,.am-tree-branch');
@@ -488,28 +503,6 @@ function doPost(url, param, completeHandler) {
     })
 }
 
-// /**
-//  * Http post 同步请求
-//  * @param url 请求地址
-//  * @param param 请求参数
-//  * @param completeHandler 回调函数
-//  */
-// function doPostSync(url, param, completeHandler) {
-//     url = addCtxToUrl(url);
-//     $.AMUI.progress.start();
-//     $.ajax({
-//         url: url,
-//         async: false,
-//         type: "POST",//请求方式
-//         dataType: "json",//返回参数的类型
-//         // contentType:"utf-8",//发送请求的编码方式
-//         data: param,
-//         success: function (data) {//请求成功后调用的函数
-//             completeHandler(data);
-//             $.AMUI.progress.done();
-//         }
-//     })
-// }
 
 /**
  * Http get 请求
@@ -533,25 +526,25 @@ function doGet(url, param, completeHandler) {
     })
 }
 
-// /**
-//  * Http get html 请求
-//  * @param url 请求地址
-//  * @param param 请求参数
-//  * @param completeHandler 回调函数
-//  */
-// function doGetHtml(url, param, completeHandler) {
-//     url = addCtxToUrl(url);
-//     $.ajax({
-//         url: url,
-//         type: "GET",//请求方式
-//         dataType: "html",//返回参数的类型
-//         contentType: "utf-8",//发送请求的编码方式
-//         data: param,
-//         success: function (data) {//请求成功后调用的函数
-//             completeHandler(data);
-//         }
-//     })
-// }
+/**
+ * Http get html 请求
+ * @param url 请求地址
+ * @param param 请求参数
+ * @param completeHandler 回调函数
+ */
+function doGetHtml(url, param, completeHandler) {
+    url = addCtxToUrl(url);
+    $.ajax({
+        url: url,
+        type: "GET",//请求方式
+        dataType: "html",//返回参数的类型
+        contentType: "utf-8",//发送请求的编码方式
+        data: param,
+        success: function (data) {//请求成功后调用的函数
+            completeHandler(data);
+        }
+    })
+}
 
 
 

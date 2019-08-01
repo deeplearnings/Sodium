@@ -3,6 +3,7 @@ package net.onebean.sodium.security;
 import net.onebean.core.error.GetTenantInfoException;
 import net.onebean.util.PropUtil;
 import net.onebean.util.StringUtils;
+import org.springframework.stereotype.Service;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Service
 public class OneBeanLoginInfoInitFilter extends OncePerRequestFilter {
 
     private static final PathMatcher pathMatcher = new AntPathMatcher();

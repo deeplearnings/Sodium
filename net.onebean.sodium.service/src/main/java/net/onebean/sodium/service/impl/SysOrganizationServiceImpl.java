@@ -93,7 +93,7 @@ public class SysOrganizationServiceImpl extends BaseSplitBiz<SysOrganization, Sy
     public List<OrgTree> findChildAsync(Long parentId,Long selfId,SysUser currentUser) {
         List<OrgTree> res = new ArrayList<>();
         String tenantId = getTenantId();
-        String join = MessageFormat.format("LEFT JOIN sys_organization_{0} o ON o.`id` = t.org_id",tenantId);
+        String join = MessageFormat.format("LEFT JOIN sys_user_{0} u ON o.`id` = u.`org_id`",tenantId);
         List<OrgTree> list = baseDao.findChildAsync(parentId,getTenantId(),dataPermUtils.dataPermFilter(currentUser,"o","t",tenantId,join));
         for (OrgTree o : list) {//某些业务场景 节点不能选择自己作为父级节点,故过滤掉所有自己及以下节点
             if (null == selfId || (Parse.toInt(o.getId()) != selfId) || selfId == 1) {

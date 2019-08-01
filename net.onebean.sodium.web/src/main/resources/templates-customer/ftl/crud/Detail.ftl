@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="public/head :: onLoadHead(${description}管理)">
-</head>
-<body ddata-type="widgets">
+<!--通用head 其中加载了css-->
+<head th:replace="public/head :: onLoadHead(${description}管理)"></head>
+
+<body data-type="index">
 <div class="am-g tpl-g">
-    <!--引用通用样式-->
-    <css th:replace="public/css :: onLoadCSS"></css>
+    <!-- 通用头部 -->
+    <header th:include="public/topBar :: topBar"></header>
+    <!-- 主题选择组件 -->
+    <div th:include="public/skiner :: skiner" class="tpl-skiner"></div>
+    <!-- 公用左侧栏 -->
+    <div th:include="public/leftMenu :: leftMenu" class="left-sidebar"></div>
+    <!-- 模态提示组件 -->
+    <div th:include="public/tips :: Tips"></div>
 
     <!-- 内容区域 -->
-    <div class="tpl-content-wrapper none-margin">
+    <div class="tpl-content-wrapper">
         <div class="row-content am-cf">
             <div class="row">
                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
@@ -25,7 +32,7 @@
 
                                     <#if field_arr?exists>
                                         <#list field_arr as item>
-                                            <#if item.columnName != 'id'>
+                                            <#if item.columnName != 'id' && item.columnName != 'createTime' && item.columnName != 'updateTime' && item.columnName != 'isDeleted' && item.columnName != 'operatorId'  && item.columnName != 'operatorName'>
                                             <#if item.pageType == 'input_text'>
                                                 <div class="am-form-group">
                                                     <label for="${item.columnName}" class="am-u-sm-3 am-form-label">${item.annotation} <span class="tpl-form-line-small-title">Text</span></label>
@@ -64,16 +71,9 @@
                                             </#if>
                                             <#if item.pageType == 'input_switch'>
                                                 <div class="am-form-group">
-                                                    <label for="${item.columnName}" class="am-u-sm-3 am-form-label">${item.annotation} <span class="tpl-form-line-small-title">Switch</span></label>
+                                                    <label for="isLock" class="am-u-sm-3 am-form-label">${item.annotation} <span class="tpl-form-line-small-title">Switch</span></label>
                                                     <div class="am-u-sm-9">
-                                                        <div class="tpl-switch">
-                                                            <input type="hidden" class="hide tpl-switch-hider" value=""/>
-                                                            <input type="checkbox" class="ios-switch bigswitch tpl-switch-btn" th:checked="${'$'}{entity.${item.columnName} eq 1}" th:disabled="${r"${view}"}" name="${item.columnName}" id="${item.columnName}"/>
-                                                            <div class="tpl-switch-btn-view">
-                                                                <div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        <input type="checkbox" data-am-switch data-size="xs" data-on-color="success" data-off-color="default" th:checked="${'$'}{entity.${item.columnName} eq '1'}" th:disabled="${r"${view}"}" name="${item.columnName}" id="${item.columnName}"/>
                                                     </div>
                                                 </div>
                                             </#if>
@@ -99,18 +99,20 @@
                                                     <label for="${item.columnName}" class="am-u-sm-3 am-form-label">${item.annotation} <span class="tpl-form-line-small-title">Tree</span></label>
                                                     <div class="am-u-sm-9">
                                                         <input type="hidden" name="${item.columnName}" id="${item.columnName}">
-                                                        <tree:menu th:attr="businessInPutId='${item.columnName}'"/>
+                                                        <tree:menu th:attr="disabled=${r"${view}"},businessInPutId='${item.columnName}',pid=${r"${pid}"}"  th:unless="${r"${add}"}"/>
+                                                        <tree:menu th:attr="pid=${r"${pid}"},businessInPutId='${item.columnName}'" th:if="${r"${add}"}"/>
                                                         <small th:unless="${r"${view}"}"><#if (item.page_description??)>${item.page_description}<#else>${item.annotation}</#if></small>
                                                     </div>
                                                 </div>
                                             </#if>
                                             <#if item.pageType == 'input_org_tree'>
                                                 <div class="am-form-group">
-                                                    <label for="${item.columnName}" class="am-u-sm-3 am-form-label">${item.annotation} <span class="tpl-form-line-small-title">Tree</span></label>
-                                                    <div class="am-u-sm-9">
-                                                        <input type="hidden" name="${item.columnName}" id="${item.columnName}">
-                                                        <tree:org th:attr="businessInPutId='${item.columnName}'"/>
-                                                        <small th:unless="${r"${view}"}"><#if (item.page_description??)>${item.page_description}<#else>${item.annotation}</#if></small>
+                                                    <label for="orgId" class="am-u-sm-3 am-form-label">所属机构 <span class="tpl-form-line-small-title">Tree</span></label>
+                                                    <div class="am-u-sm-9"  th:with="pid=(${'$'}{entity.${item.columnName}} != null)?${'$'}{entity.${item.columnName}}:1">
+                                                        <input type="hidden" class="treeValue" name="${item.columnName}" id="${item.columnName}" th:value="${r"${pid}"}">
+                                                        <tree:org th:attr="disabled=${r"${view}"},businessInPutId='${item.columnName}',pid=${r"${pid}"}"  th:unless="${r"${add}"}"/>
+                                                        <tree:org th:attr="pid=${r"${pid}"},businessInPutId='${item.columnName}'" th:if="${r"${add}"}"/>
+                                                        <small th:unless="${r"${view}"}">从机构树上选择一个机构</small>
                                                     </div>
                                                 </div>
                                             </#if>
@@ -119,7 +121,8 @@
                                                     <label for="${item.columnName}" class="am-u-sm-3 am-form-label">${item.annotation} <span class="tpl-form-line-small-title">Tree</span></label>
                                                     <div class="am-u-sm-9">
                                                         <input type="hidden" name="${item.columnName}" id="${item.columnName}">
-                                                        <tree:org-user th:attr="businessInPutId='${item.columnName}'"/>
+                                                        <tree:org-user th:attr="disabled=${r"${view}"},businessInPutId='${item.columnName}',value=${'$'}{entity.${item.columnName}}"  th:unless="${r"${add}"}"/>
+                                                        <tree:org-user th:attr="businessInPutId='${item.columnName}'" th:if="${r"${add}"}"/>
                                                         <small th:unless="${r"${view}"}"><#if (item.page_description??)>${item.page_description}<#else>${item.annotation}</#if></small>
                                                     </div>
                                                 </div>
@@ -128,16 +131,16 @@
                                                 <div class="am-form-group">
                                                     <label for="${item.columnName}" class="am-u-sm-3 am-form-label">${item.annotation} <span class="tpl-form-line-small-title">Data</span></label>
                                                     <div class="am-u-sm-9">
-                                                        <input type="text" class="onebean-data-picker-data" id="${item.columnName}" name="${item.columnName}" placeholder="请选择${item.annotation}">
+                                                        <input type="text" class="onebean-data-picker-data" th:value="${'$'}{entity.${item.columnName}}" id="${item.columnName}" name="${item.columnName}" placeholder="请选择${item.annotation}">
                                                         <small th:unless="${r"${view}"}"><#if (item.page_description??)>${item.page_description}<#else>${item.annotation}</#if></small>
                                                     </div>
                                                 </div>
                                             </#if>
                                             <#if item.pageType == 'input_time_picker'>
                                                 <div class="am-form-group">
-                                                    <label for="${item.columnName}" class="am-u-sm-3 am-form-label">时间选择控件 <span class="tpl-form-line-small-title">Data</span></label>
+                                                    <label for="${item.columnName}" class="am-u-sm-3 am-form-label">${item.annotation} <span class="tpl-form-line-small-title">Time</span></label>
                                                     <div class="am-u-sm-9">
-                                                        <input type="text" class="onebean-data-picker-time" id="${item.columnName}" name="${item.columnName}" placeholder="请选择${item.annotation}">
+                                                        <input type="text" class="onebean-data-picker-time" th:value="${'$'}{entity.${item.columnName}}" id="${item.columnName}" name="${item.columnName}" placeholder="请选择${item.annotation}">
                                                         <small th:unless="${r"${view}"}"><#if (item.page_description??)>${item.page_description}<#else>${item.annotation}</#if></small>
                                                     </div>
                                                 </div>
@@ -152,7 +155,7 @@
                                                 </th:block>
 
                                                 <th:block sec:authorize="hasPermission('$everyone','${premName}_SAVE')">
-                                                    <button type="button" class="am-btn am-btn-warning" th:onclick="'routingPage(\'/${mapping}/edit/'+${r"${entity.id}"}+'\')',\'编辑\'" th:if="${r"${view}"}">编辑</button>
+                                                    <button type="button" class="am-btn am-btn-warning" th:onclick="'routingPage(\'/sysuser/edit/'+${r"${entity.id}"}+'\',\''+编辑+'\')'" th:if="${r"${view}"}">编辑</button>
                                                 </th:block>
                                                 <button type="button" class="am-btn am-btn-danger" onClick="routingPage('/${mapping}/preview/')">返回</button>
                                             </div>
@@ -168,10 +171,8 @@
     </div>
 </div>
 
-<!--引用通用js-->
+<!--加载JS-->
 <js th:replace="public/js :: onLoadJS"></js>
-<!-- 模态提示组件 -->
-<div th:include="public/tips :: Tips"></div>
 <script th:inline="javascript">
     $(function () {
         validateFrom();

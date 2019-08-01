@@ -1,7 +1,7 @@
 package ${service_package_name};
 
 <#if is_split_table == true>
-import net.onebean.core.base.IBaseSplitBiz;
+import net.onebean.core.IBaseSplitBiz;
 <#else>
 import net.onebean.core.base.IBaseBiz;
 </#if>

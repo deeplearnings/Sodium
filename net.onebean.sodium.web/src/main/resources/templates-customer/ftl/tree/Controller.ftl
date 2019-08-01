@@ -3,7 +3,7 @@ package ${action_package_name}.${mapping};
 import net.onebean.core.PageResult;
 import net.onebean.core.query.Pagination;
 import net.onebean.core.extend.Sort;
-import BaseController;
+import net.onebean.aluminium.core.BaseController;
 import ${model_package_name}.${model_name};
 import ${service_package_name}.${model_name}Service;
 import ${vo_package_name}.${model_name}Tree;

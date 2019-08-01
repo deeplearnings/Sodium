@@ -41,7 +41,7 @@
                                             <label for="orgId" class="am-u-sm-3 am-form-label">所属机构 <span class="tpl-form-line-small-title">Tree</span></label>
                                             <div class="am-u-sm-9"  th:with="pid=(${entity.orgId} != null)?${entity.orgId}:1">
                                                 <input type="hidden" class="treeValue" name="orgId" id="orgId" th:value="${pid}">
-                                                <tree:org th:attr="disabled=${view},businessInPutId='orgId',value=${entity.orgId},pid=${pid}"  th:unless="${add}"/>
+                                                <tree:org th:attr="disabled=${view},businessInPutId='orgId',pid=${pid}"  th:unless="${add}"/>
                                                 <tree:org th:attr="pid=${pid},businessInPutId='orgId'" th:if="${add}"/>
                                                 <small th:unless="${view}">从机构树上选择一个机构</small>
                                             </div>

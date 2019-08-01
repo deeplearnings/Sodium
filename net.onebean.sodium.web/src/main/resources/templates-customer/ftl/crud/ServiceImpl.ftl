@@ -1,7 +1,7 @@
 package ${service_package_name}.impl;
 import org.springframework.stereotype.Service;
 <#if is_split_table == true>
-import net.onebean.core.base.BaseSplitBiz;
+import net.onebean.core.BaseSplitBiz;
 <#else>
 import net.onebean.core.base.BaseBiz;
 </#if>

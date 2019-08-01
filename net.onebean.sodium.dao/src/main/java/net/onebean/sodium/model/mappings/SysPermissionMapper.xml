@@ -37,18 +37,26 @@
 
     <!--异步查找子节点,每次查找一级-->
     <select id="findChildAsync" resultType="net.onebean.sodium.vo.MenuTree" parameterType="long">
-        SELECT o.id,o.descritpion as title,IF( EXISTS(SELECT o1.id FROM sys_permission_${tableSuffix} o1  WHERE o1.parent_id = o.id) = 1 ,"folder","item") AS TYPE FROM sys_permission_${tableSuffix} o
+        SELECT t.id,t.descritpion as title,IF( EXISTS(SELECT o1.id FROM sys_permission_${tableSuffix} o1  WHERE o1.parent_id = t.id) = 1 ,"folder","item") AS TYPE
+        FROM sys_permission_${tableSuffix} t
+        <if test="null != dp and null != dp.hasDatePerm and dp.hasDatePerm and null != dp.join and '' != dp.join">
+            ${dp.join}
+        </if>
         <where>
             <choose>
                 <when test="parentId != null">
-                    o.parent_id = ${parentId}
+                    t.parent_id = ${parentId}
                 </when>
                 <otherwise>
-                    o.is_root = 1
+                    t.is_root = 1
                 </otherwise>
             </choose>
-            and o.is_deleted = '0'
+            <if test="null != dp and null != dp.hasDatePerm and dp.hasDatePerm and null != dp.sql and '' != dp.sql">
+                ${dp.sql}
+            </if>
+            and t.is_deleted = '0'
         </where>
+        GROUP BY t.id
     </select>
 
 

@@ -18,7 +18,9 @@
         <bind name="pattern" value="'%'+_parameter.dp.orgId+'%'" />
         SELECT o.id,o.org_name as title,IF( EXISTS(SELECT o1.id FROM sys_organization_${tableSuffix} o1  WHERE o1.parent_id = o.id) = 1 ,"folder","item") AS TYPE
             FROM sys_organization_${tableSuffix} o
-                LEFT JOIN sys_user_${tableSuffix} u ON o.`id` = u.`org_id`
+        <if test="null != dp and null != dp.hasDatePerm and dp.hasDatePerm and null != dp.join and '' != dp.join">
+            ${dp.join}
+        </if>
           <where>
               <choose>
                   <when test="parentId != null">
@@ -32,12 +34,12 @@
                   </otherwise>
               </choose>
 
-              <if test="dp.hasDatePerm">
+              <if test="null != dp and null != dp.hasDatePerm and dp.hasDatePerm and null != dp.sql and '' != dp.sql">
                   ${dp.sql}
               </if>
               and o.is_deleted = '0'
           </where>
-
+        GROUP BY o.id
     </select>
 
     <select id="getParentOrgIds" parameterType="long" resultType="string">

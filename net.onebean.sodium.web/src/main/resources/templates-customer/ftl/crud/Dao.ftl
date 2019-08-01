@@ -1,7 +1,7 @@
 package ${dao_package_name};
 
 <#if is_split_table == true>
-import net.onebean.core.base.BaseSplitDao;
+import net.onebean.core.BaseSplitDao;
 <#else>
 import net.onebean.core.base.BaseDao;
 </#if>
