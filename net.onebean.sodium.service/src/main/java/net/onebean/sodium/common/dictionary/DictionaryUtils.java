@@ -27,6 +27,9 @@ public class DictionaryUtils {
     private static Map<String,List<DicDictionary>> dictionary = new HashMap<>();
 
     public void init(){
+        if (dictionary.size() > 0){
+            return;
+        }
         List<DicDictionary> list = dicDictionaryService.findAll();
         List<DicDictionary> templist;
         if(CollectionUtil.isNotEmpty(list)){

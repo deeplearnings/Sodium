@@ -1,4 +1,4 @@
-package ${action_package_name}.${mapping};
+package net.onebean.sodium.web.action.testcode;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
@@ -11,8 +11,8 @@ import net.onebean.core.error.BusinessException;
 import net.onebean.util.DateUtils;
 import net.onebean.sodium.core.BaseController;
 import net.onebean.sodium.common.error.ErrorCodesEnum;
-import ${model_package_name}.${model_name};
-import ${service_package_name}.${model_name}Service;
+import net.onebean.sodium.model.TestCode;
+import net.onebean.sodium.service.TestCodeService;
 import org.springframework.context.annotation.Description;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,22 +23,21 @@ import java.util.Optional;
 
 
 /**
-* @author ${author}
-* @description ${description} controller
-* @date ${create_time}
+* @author 0neBean
+* @description 阿斯顿撒多 controller
+* @date 2019-08-01 13:39:40
 */
 @Controller
-@RequestMapping("${mapping}")
-public class ${model_name}Controller extends BaseController<${model_name},${model_name}Service> {
+@RequestMapping("testcode")
+public class TestCodeController extends BaseController<TestCode,TestCodeService> {
 
-    <#if generateScope == 'page'>
     /**
      * 预览列表页面
      * @return view
      */
     @RequestMapping(value = "preview")
     @Description(value = "预览列表页面")
-    @PreAuthorize("hasPermission('$everyone','${premName}_PREVIEW')")
+    @PreAuthorize("hasPermission('$everyone','PERM_DWD_PREVIEW')")
     public String preview() {
         return getView("list");
     }
@@ -52,8 +51,8 @@ public class ${model_name}Controller extends BaseController<${model_name},${mode
      */
     @RequestMapping(value = "add")
     @Description(value = "新增页面")
-    @PreAuthorize("hasPermission('$everyone','${premName}_ADD')")
-    public String add(Model model, ${model_name} entity) {
+    @PreAuthorize("hasPermission('$everyone','PERM_DWD_ADD')")
+    public String add(Model model, TestCode entity) {
         model.addAttribute("add", true);
         model.addAttribute("entity", entity);
         return getView("detail");
@@ -67,7 +66,7 @@ public class ${model_name}Controller extends BaseController<${model_name},${mode
      */
     @RequestMapping(value = "view/{id}")
     @Description(value = "查看页面")
-    @PreAuthorize("hasPermission('$everyone','${premName}_VIEW')")
+    @PreAuthorize("hasPermission('$everyone','PERM_DWD_VIEW')")
     public String view(Model model, @PathVariable("id") Object id) {
         model.addAttribute("entity", baseService.findById(id));
         model.addAttribute("view", true);
@@ -82,7 +81,7 @@ public class ${model_name}Controller extends BaseController<${model_name},${mode
      */
     @RequestMapping(value = "edit/{id}")
     @Description(value = "编辑页面")
-    @PreAuthorize("hasPermission('$everyone','${premName}_EDIT')")
+    @PreAuthorize("hasPermission('$everyone','PERM_DWD_EDIT')")
     public String edit(Model model, @PathVariable("id") Object id) {
         model.addAttribute("entity", baseService.findById(id));
         model.addAttribute("edit", true);
@@ -92,15 +91,15 @@ public class ${model_name}Controller extends BaseController<${model_name},${mode
     /**
      * 保存
      * @param entity 实体
-     * @return BaseResponse<${model_name}>
+     * @return BaseResponse<TestCode>
     */
     @RequestMapping("save")
     @ResponseBody
     @SuppressWarnings("unchecked")
-    @PreAuthorize("hasPermission('$everyone','${premName}_SAVE')")
-    public BaseResponse<${model_name}> add(@RequestBody ${model_name} entity) {
+    @PreAuthorize("hasPermission('$everyone','PERM_DWD_SAVE')")
+    public BaseResponse<TestCode> add(@RequestBody TestCode entity) {
     logger.info("method add access" + DateUtils.getNowyyyy_MM_dd_HH_mm_ss());
-    BaseResponse<${model_name}> response = new BaseResponse<>();
+    BaseResponse<TestCode> response = new BaseResponse<>();
         try {
             logger.debug("method add entity = " + JSON.toJSONString(entity, SerializerFeature.WriteMapNullValue));
             entity = loadOperatorData(entity);
@@ -122,15 +121,15 @@ public class ${model_name}Controller extends BaseController<${model_name},${mode
     /**
     * 根据ID删除
     * @param id 主键
-    * @return PageResult<${model_name}>
+    * @return PageResult<TestCode>
     */
     @RequestMapping(value = "delete/{id}")
     @Description(value = "删除")
     @ResponseBody
-    @PreAuthorize("hasPermission('$everyone','${premName}_DELETE')")
-    public BaseResponse<${model_name}> delete(@PathVariable("id") Object id) {
+    @PreAuthorize("hasPermission('$everyone','PERM_DWD_DELETE')")
+    public BaseResponse<TestCode> delete(@PathVariable("id") Object id) {
         logger.info("access" + DateUtils.getNowyyyy_MM_dd_HH_mm_ss());
-        BaseResponse<${model_name}> response = new BaseResponse<>();
+        BaseResponse<TestCode> response = new BaseResponse<>();
         try {
             logger.debug("method delete id = " + JSON.toJSONString(id, SerializerFeature.WriteMapNullValue));
             baseService.deleteById(id);
@@ -150,15 +149,15 @@ public class ${model_name}Controller extends BaseController<${model_name},${mode
     /**
     * 列表数据
     * @param request 参数体
-    * @return BasePaginationResponse<${model_name}>
+    * @return BasePaginationResponse<TestCode>
     */
     @RequestMapping("list")
     @ResponseBody
     @SuppressWarnings("unchecked")
-    @PreAuthorize("hasPermission('$everyone','${premName}_LIST')")
-    public BasePaginationResponse<${model_name}> list (@RequestBody BasePaginationRequest<String> request){
+    @PreAuthorize("hasPermission('$everyone','PERM_DWD_LIST')")
+    public BasePaginationResponse<TestCode> list (@RequestBody BasePaginationRequest<String> request){
         logger.info("access"+ DateUtils.getNowyyyy_MM_dd_HH_mm_ss());
-        BasePaginationResponse<${model_name}> response = new BasePaginationResponse<>();
+        BasePaginationResponse<TestCode> response = new BasePaginationResponse<>();
         try {
             logger.debug("method list request = "+ JSON.toJSONString(request, SerializerFeature.WriteMapNullValue));
             String cond = Optional.ofNullable(request).map(BasePaginationRequest::getData).orElse("");
@@ -178,5 +177,4 @@ public class ${model_name}Controller extends BaseController<${model_name},${mode
         return response;
     }
 
-    </#if>
 }

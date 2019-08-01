@@ -214,7 +214,7 @@
                 var param = $('#DataFrom').serializeJson();
                 var url = "/${mapping}/save";
                 var completeHandler = function (data) {
-                    routingPage('/${mapping}/preview/','${description}管理');
+                    routingPage('/${mapping}/preview/','${description}');
                 };
                 doPost(url,param,completeHandler);
             }

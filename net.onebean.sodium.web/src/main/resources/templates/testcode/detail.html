@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!--通用head 其中加载了css-->
+<head th:replace="public/head :: onLoadHead(阿斯顿撒多管理)"></head>
+
+<body data-type="index">
+<div class="am-g tpl-g">
+    <!-- 通用头部 -->
+    <header th:include="public/topBar :: topBar"></header>
+    <!-- 主题选择组件 -->
+    <div th:include="public/skiner :: skiner" class="tpl-skiner"></div>
+    <!-- 公用左侧栏 -->
+    <div th:include="public/leftMenu :: leftMenu" class="left-sidebar"></div>
+    <!-- 模态提示组件 -->
+    <div th:include="public/tips :: Tips"></div>
+
+    <!-- 内容区域 -->
+    <div class="tpl-content-wrapper">
+        <div class="row-content am-cf">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="row">
+                        <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                            <div class="widget am-cf">
+                                <div class="widget-head am-cf">
+                                    <th:block th:include="public/breadCrumbs :: breadCrumbsTempl"/>
+                                </div>
+                                <div class="widget-body am-fr">
+
+                                    <form class="am-form tpl-form-border-form tpl-form-border-br" id="DataFrom">
+                                                <input type="hidden" name="id" th:value="${entity.id}">
+
+                                                <div class="am-form-group">
+                                                    <label for="money" class="am-u-sm-3 am-form-label">金钱 <span class="tpl-form-line-small-title">Number</span></label>
+                                                    <div class="am-u-sm-9">
+                                                        <input type="number" class="tpl-form-input" name="money" id="money" placeholder="请输入金钱" th:disabled="${view}" th:value="${entity.money}">
+                                                        <small th:unless="${view}">金钱</small>
+                                                    </div>
+                                                </div>
+                                                <div class="am-form-group">
+                                                    <label for="realName" class="am-u-sm-3 am-form-label">真名 <span class="tpl-form-line-small-title">Text</span></label>
+                                                    <div class="am-u-sm-9">
+                                                        <input type="text" class="tpl-form-input" name="realName" id="realName" placeholder="请输入真名" th:disabled="${view}" th:value="${entity.realName}">
+                                                        <small th:unless="${view}">真名</small>
+                                                    </div>
+                                                </div>
+                                                <div class="am-form-group">
+                                                    <label for="endTime" class="am-u-sm-3 am-form-label">结束时间 <span class="tpl-form-line-small-title">Data</span></label>
+                                                    <div class="am-u-sm-9">
+                                                        <input type="text" class="onebean-data-picker-data" th:value="${entity.endTime}" id="endTime" name="endTime" placeholder="请选择结束时间">
+                                                        <small th:unless="${view}">结束时间</small>
+                                                    </div>
+                                                </div>
+                                                <div class="am-form-group">
+                                                    <label for="orgId" class="am-u-sm-3 am-form-label">所属机构 <span class="tpl-form-line-small-title">Tree</span></label>
+                                                    <div class="am-u-sm-9"  th:with="pid=(${entity.orgId} != null)?${entity.orgId}:1">
+                                                        <input type="hidden" class="treeValue" name="orgId" id="orgId" th:value="${pid}">
+                                                        <tree:org th:attr="disabled=${view},businessInPutId='orgId',pid=${pid}"  th:unless="${add}"/>
+                                                        <tree:org th:attr="pid=${pid},businessInPutId='orgId'" th:if="${add}"/>
+                                                        <small th:unless="${view}">从机构树上选择一个机构</small>
+                                                    </div>
+                                                </div>
+                                                <div class="am-form-group">
+                                                    <label for="pid" class="am-u-sm-3 am-form-label">上级ID <span class="tpl-form-line-small-title">Tree</span></label>
+                                                    <div class="am-u-sm-9">
+                                                        <input type="hidden" name="pid" id="pid">
+                                                        <tree:org-user th:attr="disabled=${view},businessInPutId='pid',value=${entity.pid}"  th:unless="${add}"/>
+                                                        <tree:org-user th:attr="businessInPutId='pid'" th:if="${add}"/>
+                                                        <small th:unless="${view}">上级ID</small>
+                                                    </div>
+                                                </div>
+                                                <div class="am-form-group">
+                                                    <label for="isLock" class="am-u-sm-3 am-form-label">是否锁定 <span class="tpl-form-line-small-title">Switch</span></label>
+                                                    <div class="am-u-sm-9">
+                                                        <input type="checkbox" data-am-switch data-size="xs" data-on-color="success" data-off-color="default" th:checked="${entity.isLock eq '1'}" th:disabled="${view}" name="isLock" id="isLock"/>
+                                                    </div>
+                                                </div>
+                                        <div class="am-form-group">
+                                            <div class="am-u-sm-9 am-u-sm-push-3">
+                                                <th:block sec:authorize="hasPermission('$everyone','PERM_DWD_SAVE')">
+                                                    <button type="submit" class="am-btn am-btn-primary tpl-btn-bg-color-success" th:unless="${view}">提交</button>
+                                                </th:block>
+
+                                                <th:block sec:authorize="hasPermission('$everyone','PERM_DWD_SAVE')">
+                                                    <button type="button" class="am-btn am-btn-warning" th:onclick="'routingPage(\'/sysuser/edit/'+${entity.id}+'\',\''+编辑+'\')'" th:if="${view}">编辑</button>
+                                                </th:block>
+                                                <button type="button" class="am-btn am-btn-danger" onClick="routingPage('/testcode/preview/')">返回</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--加载JS-->
+<js th:replace="public/js :: onLoadJS"></js>
+<script th:inline="javascript">
+    $(function () {
+        validateFrom();
+    });
+
+    /**
+     * 校验登录表单
+     * @returns void
+     */
+    function validateFrom(){
+        $("#DataFrom").validate({
+            rules: {
+            money:{
+                required:true
+            },
+            realName:{
+                required:true,
+                minlength:5,
+                noChinese:true
+            },
+            endTime:{
+                required:true
+            },
+            orgTree:{
+                treeRequired:true
+            },
+            orgUserTree:{
+                treeRequired:true
+            },
+            isLock:{
+            },
+            createTime:{
+            },
+            updateTime:{
+            },
+            isDeleted:{
+            },
+            operatorId:{
+            },
+            operatorName:{
+            }
+
+            },
+            submitHandler: function(form) { //验证成功时调用
+                var param = $('#DataFrom').serializeJson();
+                var url = "/testcode/save";
+                var completeHandler = function (data) {
+                    routingPage('/testcode/preview/','阿斯顿撒多');
+                };
+                doPost(url,param,completeHandler);
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

@@ -81,7 +81,7 @@
                     if(resp.datas){
                         routingPage("/databasetable/add/"+param.tableName,'添加数据库模型');
                     }else{
-                        alert(resp.errMsg);
+                        alert('不可创建的表');
                     }
                 };
                 doPost(url,param,completeHandler);

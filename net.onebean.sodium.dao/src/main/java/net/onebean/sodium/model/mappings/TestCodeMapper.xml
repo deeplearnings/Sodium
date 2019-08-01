@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--author 0neBean-->
+<!--description 阿斯顿撒多 mapper-->
+<!--date 2019-08-01 13:39:40-->
+<mapper namespace="net.onebean.sodium.dao.TestCodeDao">
+
+</mapper>

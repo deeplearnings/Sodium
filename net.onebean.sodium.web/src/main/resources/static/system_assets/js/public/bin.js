@@ -79,7 +79,7 @@ function errorCheckOnOffLine(mode, jqXHR, code) {
  * @returns {*}
  */
 function addCtxToUrl($url) {
-    var $ctx = $('title').data('ctx');
+    var $ctx = $('title').attr('data-ctx');
     if (typeof ($ctx) === "undefined") {
         $ctx = "";
     }
@@ -114,9 +114,11 @@ var onLoadBreadCrumbs = function () {
     var $link = window.location.pathname;
     var $name = $(document).attr("title");
     /*面包屑*/
-    var breadCrumbs = eachBreadCrumbs($link, $name, true);
+    var breadCrumbs = eachBreadCrumbs($link, $name, false);
     delCookie('breadCrumbsStr');
     setCookie('breadCrumbsStr', breadCrumbs);
+    var $breadCrumbsArr = getCookie('breadCrumbsStr');
+    $('.onebean-bread-crumbs-group').html(template('tpl-breadCrumbs', $breadCrumbsArr));
 };
 
 /**
@@ -124,8 +126,8 @@ var onLoadBreadCrumbs = function () {
  * @param target 触发按钮自身
  */
 var openNewTab = function (target) {
-    var $link = $(target).data('url');
-    var $name = $(target).data('name');
+    var $link = $(target).attr('data-url');
+    var $name = $(target).attr('data-name');
     /*面包屑*/
     var breadCrumbs = eachBreadCrumbs($link, $name, true);
     delCookie('breadCrumbsStr');
@@ -139,15 +141,7 @@ var openNewTab = function (target) {
  */
 function routingPage($url, $title) {
     $url = addCtxToUrl($url);
-    var $link;
-
-    var endWithNumber = /^\S+([0-9]|\/){1}$/;
-    if (endWithNumber.test($url)) {
-        var $index = $url.lastIndexOf("\/");
-        $link = $url.substring(0, $index);
-    }
-
-    var breadCrumbs = eachBreadCrumbs($link, $title, false);
+    var breadCrumbs = eachBreadCrumbs($url, $title, false);
     delCookie('breadCrumbsStr');
     setCookie('breadCrumbsStr', breadCrumbs);
     window.location.href = $url;
@@ -157,7 +151,7 @@ function routingPage($url, $title) {
  * 面包屑按钮点击事件
  */
 $('body').on('click', '.onebean-bread-crumbs-group a', function () {
-    var $url = $(this).data('url');
+    var $url = $(this).attr('data-url');
     var $title = $(this).html();
     var breadCrumbs = eachBreadCrumbs($url, $title, false);
     delCookie('breadCrumbsStr');
@@ -181,7 +175,7 @@ function activeMenuOnLoad() {
     }
     var $parents = $('.sidebar-nav').find('.sidebar-nav-link').find('a');
     $.each($parents, function (i, e) {
-        var $dataUrl = $(e).data('url');
+        var $dataUrl = $(e).attr('data-url');
         if ($dataUrl === $link) {
             var $parentsMenu = $(e).parents('.parent-menu').children('.sidebar-nav-sub-title');//父级菜单
             if ($parentsMenu.length > 0) {
@@ -469,7 +463,7 @@ $('body').on('click', '.list-del-button', function () {
                     alert(res.errMsg)
                 }
             };
-            var $link = $(this.relatedTarget).data('url');
+            var $link = $(this.relatedTarget).attr('data-url');
             doPost($link, null, completeHandler)
         },
         onCancel: function () {
@@ -639,98 +633,6 @@ function formatQueryFromParam() {
 
 
 /**
- * j-frame高度自适应
- */
-function reHeightonebeanFrame(target) {
-    var mainheight = $(target).contents().find("body").height();
-    $(target).height(mainheight);
-}
-
-/**
- * 查看tab左边的标签页
- */
-function checkBarLeft() {
-    var locker = new TapLocker();
-    locker.setIsLock(true);//锁起来
-    if (locker.getIsLock()) {
-        var marginLeftVal = (Math.abs(parseInt($('.am-nav-tabs').css('margin-left'))));//当前偏移量
-        var tabWidth = $('#onebean-frame-container').outerWidth(true);//整个tab宽度
-        var tabButtonWidth = $('.onebean-nav-buttons').outerWidth(true);//tab按钮区宽度
-        var $tab = $('#onebean-frame-container');
-        var $nav = $tab.find('.am-tabs-nav');
-        var $Jtabs = $nav.find('li');//所有tab页
-        var tabsWidthNum = 0;//遍历的tab累计宽度
-        var offsetVal = 0;//偏移值
-        var tabShowWidth = tabWidth - tabButtonWidth;//视距宽度
-        var xPoint = marginLeftVal - tabShowWidth;//去往目标的偏移量
-        var tempWidth = 0;
-        if (xPoint > 0) {
-            var $item = $Jtabs.first();
-            while (tabsWidthNum < xPoint) {//遍历tabs离目标最近的tabs的宽度
-                tempWidth = $($item).outerWidth(true);
-                tabsWidthNum += tempWidth;
-                $item = $Jtabs.next();
-            }
-            offsetVal = tabsWidthNum;//离目标最近的tabs累计宽度便是偏移量
-        } else {
-            offsetVal = 0;
-        }
-        ;
-        $('.am-nav-tabs').animate({
-            marginLeft: -offsetVal + 'px'
-        }, "fast");
-    }
-    locker.setIsLock(false);//解锁
-}
-
-/**
- * 查看tab右边的标签页
- */
-function checkBarRight() {
-    var locker = new TapLocker();
-    locker.setIsLock(true);//锁起来
-    if (locker.getIsLock()) {
-
-        var marginLeftVal = Math.abs(parseInt($('.am-nav-tabs').css('margin-left')));//左边距
-        var tabWidth = $('#onebean-frame-container').outerWidth(true);//tab栏宽度
-        var tabButtonWidth = $('.onebean-nav-buttons').outerWidth(true);//tab按钮栏宽度
-        var $tab = $('#onebean-frame-container');
-        var $nav = $tab.find('.am-tabs-nav');
-        var $Jtabs = $nav.children('li');//tabs
-        var tabsWidthSum = calSumWidth($Jtabs);//所有tabs宽度
-        var tabsWidthNum = 0;//tabs的累计宽度
-        var offsetVal = 0;//偏移值
-        var tabShowWidth = tabWidth - tabButtonWidth;//tabs的视距宽度
-        var leftLength = marginLeftVal + tabShowWidth;//最右边的tab距离最左端的偏移量
-        var $item = $Jtabs.first();
-        while (tabsWidthNum < leftLength) {//遍历tabs获取视距内最右边的tab计算出偏移量
-            var tempWidth = $($item).outerWidth(true);
-            tabsWidthNum += tempWidth;
-            offsetVal = ((marginLeftVal + tabShowWidth - tabsWidthNum) < 0)
-                ? (tabsWidthNum - tempWidth) : (tabsWidthNum + tempWidth);
-            $item = $Jtabs.next();
-        }
-        // if(true){//右边有余量的时候滚动
-        if ((tabsWidthSum - marginLeftVal - tabShowWidth) > 0) {//右边有余量的时候滚动
-            $('.am-nav-tabs').animate({
-                marginLeft: -offsetVal + 'px'
-            }, "fast");
-        }
-    }
-    locker.setIsLock(false);//解锁
-}
-
-//计算元素集合的总宽度
-function calSumWidth(target) {
-    var width = 0;
-    $.each(target, function (index, item) {
-        width += $(item).outerWidth(true);
-    });
-    return width;
-}
-
-
-/**
  * 去除字符串空格
  * @param str
  * @returns {XML|string|void}
@@ -847,6 +749,14 @@ function serializeChildFromJson(arr) {
  * @returns {Array}
  */
 function eachBreadCrumbs($url, $title, $isStartPage) {
+
+    /*拆除以斜杠结尾的url的斜杠*/
+    var endWithNumber = /^\S+[\/]{1}$/;
+    if (endWithNumber.test($url)) {
+        var $index = $url.lastIndexOf("\/");
+        $url = $url.substring(0, $index);
+    }
+
     var $temp;
     var breadCrumbs = justEachBreadCrumbs($isStartPage, $url);
     $temp = {};
@@ -888,7 +798,7 @@ function goUrl(url) {
  * @param target
  */
 function foldingChildTree(target) {
-    var pid = $(target).parents('tr').data('id');
+    var pid = $(target).parents('tr').attr('data-id');
     foldingChildTree2ed(target, pid)
 }
 
@@ -898,7 +808,7 @@ function foldingChildTree(target) {
  * @param ppid
  */
 function foldingChildTree2ed(target, ppid) {
-    var pid = $(target).parents('tr').data('id');
+    var pid = $(target).parents('tr').attr('data-id');
     var $childTrees = $('#example-r').find($('tr[data-pid=' + pid + ']'));
     var $parent = $('#example-r').find($('tr[data-id=' + pid + ']'));
     var $temp;

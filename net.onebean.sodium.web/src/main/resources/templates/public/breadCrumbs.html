@@ -2,16 +2,9 @@
     <ol class="am-breadcrumb onebean-bread-crumbs-group">
     </ol>
 
-    <script type="application/javascript">
-        $(function(){
-            var $breadCrumbsArr = getCookie('breadCrumbsStr');
-            $('.onebean-bread-crumbs-group').html(template('tpl-breadCrumbs', $breadCrumbsArr));
-        })
-    </script>
-
     <script id="tpl-breadCrumbs" type="text/html">
         {{each $data data}}
-        <li><a href="javascript:;" data-url={{data.realName}}>{{data.breadCrumbsTitle}}</a></li>
+        <li><a href="javascript:;" data-url="{{data.breadCrumbsUrl}}" >{{data.breadCrumbsTitle}}</a></li>
         {{/each}}
     </script>
 
