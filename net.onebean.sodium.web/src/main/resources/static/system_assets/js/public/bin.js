@@ -118,7 +118,10 @@ var onLoadBreadCrumbs = function () {
     delCookie('breadCrumbsStr');
     setCookie('breadCrumbsStr', breadCrumbs);
     var $breadCrumbsArr = getCookie('breadCrumbsStr');
-    $('.onebean-bread-crumbs-group').html(template('tpl-breadCrumbs', $breadCrumbsArr));
+    try {
+        $('.onebean-bread-crumbs-group').html(template('tpl-breadCrumbs', $breadCrumbsArr));
+    } catch (e) {
+    }
 };
 
 /**
