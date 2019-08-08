@@ -3,6 +3,7 @@ package net.onebean.sodium.core;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import net.onebean.core.base.BasePaginationRequest;
 import net.onebean.core.base.IBaseBiz;
 import net.onebean.core.extend.Sort;
 import net.onebean.core.form.Parse;
@@ -232,28 +233,29 @@ public abstract  class BaseController<M extends  BaseIncrementIdModel,S extends 
      * @param page 可为null
      * @return 实体
      */
-    protected M reflectionModelFormConditionMapStr(String conditionStr,Sort sort,Pagination page){
+    protected BasePaginationRequest<M> reflectionModelFormConditionMapStr(String conditionStr, Sort sort, Pagination page){
         try {
+            BasePaginationRequest<M> request = new BasePaginationRequest<>();
             ConditionMap map = new ConditionMap();
             map.parseCondition(conditionStr);
             Class clazz = Class.forName(Thread.currentThread().getStackTrace()[2].getClassName());
             JSONObject jsonObject = new JSONObject();
             for (String key : map.keySet()) {
                 String field = key.substring(0,key.indexOf("@"));
-                String value = key.substring(key.indexOf("$")+1,key.length());
+                String value = key.substring(key.indexOf("$")+1);
                 if (StringUtils.isNotEmpty(value)){
                     jsonObject.put(field,value);
                 }
             }
             if(null != sort){
-                jsonObject.put("base_sort",sort.getSort());
-                jsonObject.put("base_orderBy",sort.getOrderBy());
+                request.setSort(sort);
             }
             if(null != page){
-                jsonObject.put("base_pageSize",page.getPageSize());
-                jsonObject.put("base_currentPage",page.getCurrentPage());
+                request.setPage(page);
             }
-            return  JSON.parseObject(jsonObject.toJSONString(),ReflectionUtils.findParameterizedType(clazz,0));
+            M data =  JSON.parseObject(jsonObject.toJSONString(),ReflectionUtils.findParameterizedType(clazz,0));
+            request.setData(data);
+            return request;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
