@@ -73,5 +73,10 @@
 </div>
 <!--加载JS-->
 <js th:replace="public/js :: onLoadJS"></js>
+<script type="application/javascript">
+    $(function(){
+        initDataPicker(getTodayDataStr());
+    })
+</script>
 </body>
 </html>

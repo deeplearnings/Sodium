@@ -155,7 +155,7 @@
                                                 </th:block>
 
                                                 <th:block sec:authorize="hasPermission('$everyone','${premName}_SAVE')">
-                                                    <button type="button" class="am-btn am-btn-warning" th:onclick="'routingPage(\'/sysuser/edit/'+${r"${entity.id}"}+'\',\''+编辑+'\')'" th:if="${r"${view}"}">编辑</button>
+                                                    <button type="button" class="am-btn am-btn-warning" th:onclick="'routingPage(\'/${mapping}/edit/'+${r"${entity.id}"}+'\',\''+编辑+'\')'" th:if="${r"${view}"}">编辑</button>
                                                 </th:block>
                                                 <button type="button" class="am-btn am-btn-danger" onClick="routingPage('/${mapping}/preview/')">返回</button>
                                             </div>

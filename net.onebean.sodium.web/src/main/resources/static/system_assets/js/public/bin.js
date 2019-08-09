@@ -1,6 +1,5 @@
 $(function () {
     onLoadBreadCrumbs();
-    initDataPicker();
     unComments('tpl-pagination');//去除分页注释
 });
 
@@ -874,13 +873,13 @@ function getTodayDataStr() {
 /**
  * 初始化时间选择控件
  */
-function initDataPicker() {
+function initDataPicker(startDate) {
     $('.onebean-data-picker-data').datetimepicker({
         language: 'zh-CN',
         format: 'yyyy-mm-dd hh:ii:00',
         autoclose: true,
         todayBtn: true,
-        startDate: getTodayDataStr()
+        startDate: startDate
     });
     $('.onebean-data-picker-time').datetimepicker({
         language: 'zh-CN',
