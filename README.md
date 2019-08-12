@@ -11,16 +11,14 @@
 Introduction
 ---
 - 一言蔽之 (带有权限控制和代码生成的TMA架构SaaS结构后台管理系统)
-[SaaS租户之间数据沙箱完全隔离](https://github.com/0nebean/chemical-el/blob/master/src/main/resources/img/15.png)
+
 
 - 框架特性[(查看明细)](https://github.com/0nebean/Aluminium/wiki/%E6%A1%86%E6%9E%B6%E7%89%B9%E6%80%A7)
   - 基于[Aluminium](https://0nebean.github.io/Aluminium/)
-  - SaaS系统租户之间的数据沙箱完全隔离
-  - SaaS系统租户的超管账号由[控制台](https://baidu.com)下发，并管控账号状态
-  - 查询sql条件封装，简单的API调用实现自定义查询
-  - 灵活的结构调整,多端程序共用代码，可以实现前后台共用dao，service甚至controller
-  - 由spring security实现健壮可靠的权限控制
-  - 基于以上实现自动生成代码的功能
+  - SaaS租户之间的数据沙箱完全隔离，用户，角色，菜单等数据分表独立存储
+  - SaaS系统租户的超管账号由云外的[控制台](https://baidu.com)下发，并管控账号状态
+  - 基于Aluminium 的代码生成功能，一次生成针对所有的租户开发
+  - 基于Aluminium 的spring security权限控制层最大权限由每个SaaS租户的超管账号分配，个体权限分配互不影响
   
  
 Documentation
