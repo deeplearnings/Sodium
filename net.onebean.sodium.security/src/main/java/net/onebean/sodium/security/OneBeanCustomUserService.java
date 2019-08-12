@@ -33,8 +33,6 @@ public class OneBeanCustomUserService implements UserDetailsService { //自定�
     SysPermissionService sysPermissionService;
 
     public UserDetails loadUserByUsername(String username) {
-        HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-        String sss = request.getRequestURI();
         SysUser user = sysUserService.findByUsername(username);
         if (user != null) {
             List<SysPermission> permissions = sysPermissionService.springSecurityFindByAdminUserId(Parse.toInt(user.getId()));

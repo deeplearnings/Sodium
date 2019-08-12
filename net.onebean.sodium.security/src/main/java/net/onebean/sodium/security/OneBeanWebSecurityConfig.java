@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * spring security
@@ -29,13 +30,15 @@ public class OneBeanWebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     OneBeanPermissionEvaluator permissionEvaluator;
     @Autowired
-    private OneBeanPasswordEncoder oneBeanPasswordEncoder;
+    private OneBeanPasswordEncoder passwordEncoder;
+    @Autowired
+    private OneBeanLoginInfoInitFilter loginInfoInitFilter;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         //user Details Service验证
         //指定spring 提供密码加密类 采用SHA-256(采用随机盐+秘钥+密码)加密方式  加密后密码长度80位 随机秘钥随每次启动程序生成
-        auth.userDetailsService(customUserService).passwordEncoder(oneBeanPasswordEncoder);
+        auth.userDetailsService(customUserService).passwordEncoder(passwordEncoder);
     }
 
     @Override
@@ -61,6 +64,7 @@ public class OneBeanWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .headers().frameOptions().sameOrigin()//允许iframe嵌套本应用页面
                 .and().rememberMe().and()
+                .addFilterBefore(loginInfoInitFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout().permitAll(); //注销行为任意访问
         http.addFilterBefore(myFilterSecurityInterceptor, FilterSecurityInterceptor.class).csrf().disable();
     }
