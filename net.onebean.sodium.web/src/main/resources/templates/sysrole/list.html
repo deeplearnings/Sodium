@@ -73,7 +73,7 @@
                                             <div class="am-btn-group am-btn-group-xs">
                                                 <th:block sec:authorize="hasPermission('$everyone','PERM_ROLE_ADD')">
                                                     <button type="button" class="am-btn am-btn-default am-btn-success"
-                                                            onclick="routingPage('/sysrole/add','新增角色')"><span
+                                                            onclick="routingPage('/sysrole/add')"><span
                                                             class="am-icon-plus"></span> 新增
                                                     </button>
                                                 </th:block>
@@ -158,7 +158,7 @@
 <script id="tpl-sysrole" type="text/html">
     {{each $data data}}
     <tr class={{if $index%2==0}} "gradeX" {{else}} "even gradeC" {{/if}} >
-    <td><a href="javascript:;" onclick="routingPage('/sysrole/view/{{data.id}}','查看角色')">{{data.name}}</a></td>
+    <td><a href="javascript:;" onclick="routingPage('/sysrole/view/{{data.id}}')">{{data.name}}</a></td>
     <td>{{data.chName}}</td>
     <td>{{data.isLock}}</td>
     <td>{{data.dataPermissionLevel}}</td>
@@ -166,7 +166,7 @@
     <td>
         <div class="tpl-table-black-operation">
             <th:block sec:authorize="hasPermission('$everyone','PERM_ROLE_EDIT')">
-                <a href="javascript:;" onclick="routingPage('/sysrole/edit/{{data.id}}','编辑角色')">
+                <a href="javascript:;" onclick="routingPage('/sysrole/edit/{{data.id}}')">
                     <i class="am-icon-pencil"></i> 编辑
                 </a>
             </th:block>

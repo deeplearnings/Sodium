@@ -110,17 +110,26 @@ function clearUploadImg(target) {
  * 面包屑加载
  */
 var onLoadBreadCrumbs = function () {
-    var $link = window.location.pathname;
     var $name = $(document).attr("title");
-    /*面包屑*/
-    var breadCrumbs = eachBreadCrumbs($link, $name, false);
-    delCookie('breadCrumbsStr');
-    setCookie('breadCrumbsStr', breadCrumbs);
-    var $breadCrumbsArr = getCookie('breadCrumbsStr');
     try {
-        $('.onebean-bread-crumbs-group').html(template('tpl-breadCrumbs', $breadCrumbsArr));
+        $('.onebean-bread-crumbs-group').html(template('tpl-breadCrumbs', $name));
     } catch (e) {
     }
+};
+
+var getUrlPrefix = function ($url) {
+    if (typeof($url) != "undefined"){
+        var startWithSlash = /^\/{1}\S+$/;
+        if (startWithSlash.test($url)) {
+            $url = $url.substring(1);
+        }
+        var $index = $url.lastIndexOf("\/");
+        $url = $url.substring(0, $index);
+        if ($url.indexOf("\/") != -1){
+            $url = getUrlPrefix($url);
+        }
+    }
+    return $url;
 };
 
 /**
@@ -128,47 +137,26 @@ var onLoadBreadCrumbs = function () {
  * @param target 触发按钮自身
  */
 var openNewTab = function (target) {
-    var $link = $(target).attr('data-url');
-    var $name = $(target).attr('data-name');
-    /*面包屑*/
-    var breadCrumbs = eachBreadCrumbs($link, $name, true);
-    delCookie('breadCrumbsStr');
-    setCookie('breadCrumbsStr', breadCrumbs);
-    window.location.href = $link;
+    window.location.href = $(target).attr('data-url');
 };
 
 /**
  * 路由页面
- * @param target
  */
-function routingPage($url, $title) {
+function routingPage($url) {
     $url = addCtxToUrl($url);
-    var breadCrumbs = eachBreadCrumbs($url, $title, false);
-    delCookie('breadCrumbsStr');
-    setCookie('breadCrumbsStr', breadCrumbs);
     window.location.href = $url;
 }
 
-/**
- * 面包屑按钮点击事件
- */
-$('body').on('click', '.onebean-bread-crumbs-group a', function () {
-    var $url = $(this).attr('data-url');
-    var $title = $(this).html();
-    var breadCrumbs = eachBreadCrumbs($url, $title, false);
-    delCookie('breadCrumbsStr');
-    setCookie('breadCrumbsStr', breadCrumbs);
-    window.location.href = $url;
-});
 
 /**
  * 激活菜单选中状态
  */
 function activeMenuOnLoad() {
     var $link = window.location.pathname;
-    var $breadCrumbsArr = getCookie('breadCrumbsStr');
-    if ($breadCrumbsArr && $breadCrumbsArr.length > 1) {
-        $link = $breadCrumbsArr[0].breadCrumbsUrl;
+
+    if ($link === '/'){
+        $link = '/index'
     }
     var endWithNumber = /^\S+([0-9]|\/){1}$/;
     if (endWithNumber.test($link)) {
@@ -176,17 +164,37 @@ function activeMenuOnLoad() {
         $link = $link.substring(0, $index);
     }
     var $parents = $('.sidebar-nav').find('.sidebar-nav-link').find('a');
+    var accurate = false;
     $.each($parents, function (i, e) {
         var $dataUrl = $(e).attr('data-url');
         if ($dataUrl === $link) {
+            accurate = true;
             var $parentsMenu = $(e).parents('.parent-menu').children('.sidebar-nav-sub-title');//父级菜单
             if ($parentsMenu.length > 0) {
                 $parentsMenu.click();
+                $(e).addClass('child-menu-active');
             } else {
                 $('#indexMenuBtn').addClass('active');
             }
         }
     });
+    if(!accurate){
+        var $currentPrefix = getUrlPrefix($link);
+        $.each($parents, function (i, e) {
+            var $dataUrl = $(e).attr('data-url');
+            $dataUrl = getUrlPrefix($dataUrl);
+            if ($dataUrl === $currentPrefix) {
+                accurate = true;
+                var $parentsMenu = $(e).parents('.parent-menu').children('.sidebar-nav-sub-title');//父级菜单
+                if ($parentsMenu.length > 0) {
+                    $parentsMenu.click();
+                    $(e).addClass('child-menu-active');
+                } else {
+                    $('#indexMenuBtn').addClass('active');
+                }
+            }
+        });
+    }
 }
 
 /**
@@ -746,54 +754,6 @@ function serializeChildFromJson(arr) {
 }
 
 
-/**
- * 遍历面包屑生成json 数组
- * @returns {Array}
- */
-function eachBreadCrumbs($url, $title, $isStartPage) {
-
-    /*拆除以斜杠结尾的url的斜杠*/
-    var endWithNumber = /^\S+[\/]{1}$/;
-    if (endWithNumber.test($url)) {
-        var $index = $url.lastIndexOf("\/");
-        $url = $url.substring(0, $index);
-    }
-
-    var $temp;
-    var breadCrumbs = justEachBreadCrumbs($isStartPage, $url);
-    $temp = {};
-    $temp.breadCrumbsUrl = $url;
-    $temp.breadCrumbsTitle = $title;
-    breadCrumbs.push($temp);
-    return breadCrumbs;
-}
-
-/**
- * 遍历面包屑生成json 数组
- * @returns {Array}
- */
-function justEachBreadCrumbs($isStartPage, $url) {
-    var $breadCrumbs = [];
-    if (!$isStartPage) {
-        $breadCrumbs = getCookie("breadCrumbsStr");
-        $.each($breadCrumbs, function (i, e) {
-            if ($url === e.breadCrumbsUrl) {
-                $breadCrumbs = $breadCrumbs.slice(0, i);
-            }
-        })
-    }
-    return $breadCrumbs;
-}
-
-
-/**
- * 跳转地址
- * @param url
- */
-function goUrl(url) {
-    window.location.href = url;
-}
-
 
 /**
  * 折叠树 递归函数入口
@@ -869,6 +829,7 @@ function getTodayDataStr() {
     var dateStr = year + "-" + month + "-" + day + ' 00:00:00';
     return dateStr
 }
+
 
 /**
  * 初始化时间选择控件

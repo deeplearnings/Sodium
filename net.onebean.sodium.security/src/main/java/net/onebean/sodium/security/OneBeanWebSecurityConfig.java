@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * spring security
@@ -31,8 +30,6 @@ public class OneBeanWebSecurityConfig extends WebSecurityConfigurerAdapter {
     OneBeanPermissionEvaluator permissionEvaluator;
     @Autowired
     private OneBeanPasswordEncoder oneBeanPasswordEncoder;
-    @Autowired
-    private OneBeanLoginInfoInitFilter oneBeanLoginInfoInitFilter;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -52,9 +49,8 @@ public class OneBeanWebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         myAuthenticationFailureHandler.setDefaultFailureUrl("/error/401");
 
-        String[] unSecuredUrls = { "/system_assets/**", "/assets/**","/druid/**","/error/**"};
         http.authorizeRequests()
-                .antMatchers(unSecuredUrls).permitAll()
+                .antMatchers(OneBeanAccessWhiteList.unSecuredUrls).permitAll()
                 .anyRequest().authenticated() //任何请求,登录后可以访问
                 .and()
                 .formLogin()
@@ -65,7 +61,6 @@ public class OneBeanWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .headers().frameOptions().sameOrigin()//允许iframe嵌套本应用页面
                 .and().rememberMe().and()
-                .addFilterBefore(oneBeanLoginInfoInitFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout().permitAll(); //注销行为任意访问
         http.addFilterBefore(myFilterSecurityInterceptor, FilterSecurityInterceptor.class).csrf().disable();
     }

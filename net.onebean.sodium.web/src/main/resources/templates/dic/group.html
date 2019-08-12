@@ -99,7 +99,7 @@
                                                 </th:block>
                                                 <th:block sec:authorize="hasPermission('$everyone','PERM_DIC_EDIT')">
                                                     <button type="button" class="am-btn am-btn-warning"
-                                                            th:onclick="'routingPage(\'/dic/edit/'+${entity.id}+'\',\'编辑字典\')'"
+                                                            th:onclick="'routingPage(\'/dic/edit/'+${entity.id}+'\')'"
                                                             th:if="${view}">编辑
                                                     </button>
                                                 </th:block>
@@ -163,7 +163,7 @@
                 var param = $('#DataFrom').serializeJson();
 
                 function completeHandler(data) {
-                    routingPage('/dic/preview', '字典管理');
+                    routingPage('/dic/preview');
                 }
 
                 doPost(url, param, completeHandler)

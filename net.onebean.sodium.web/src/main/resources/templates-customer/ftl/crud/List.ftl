@@ -73,7 +73,7 @@
                                         <div class="am-btn-toolbar">
                                             <div class="am-btn-group am-btn-group-xs">
                                                 <th:block sec:authorize="hasPermission('$everyone','${premName}_ADD')">
-                                                    <button type="button" class="am-btn am-btn-default am-btn-success" onclick="routingPage('/${mapping}/add','新增${description}')"><span class="am-icon-plus"></span> 新增</button>
+                                                    <button type="button" class="am-btn am-btn-default am-btn-success" onclick="routingPage('/${mapping}/add')"><span class="am-icon-plus"></span> 新增</button>
                                                 </th:block>
                                                 <button type="button" class="am-btn am-btn-default am-btn-secondary query-button"><span class="am-icon-search"></span> 查询</button>
                                                 <button type="button"  class="am-btn am-btn-default am-btn-warning reset-button"><span class="am-icon-archive"></span> 重置</button>
@@ -140,7 +140,7 @@
 <#if field_arr?exists>
     <#list field_arr as item>
         <#if item.columnName != 'id' && item.columnName != 'createTime' && item.columnName != 'updateTime' && item.columnName != 'isDeleted' && item.columnName != 'operatorId'  && item.columnName != 'operatorName'>
-            <td><#if (item_index == 1)><a href="javascript:;" onclick="routingPage('/${mapping}/view/{{data.id}}','查看${description}')"></#if>{{data.${item.columnName}}}<#if (item_index == 1)></a></#if></td>
+            <td><#if (item_index == 1)><a href="javascript:;" onclick="routingPage('/${mapping}/view/{{data.id}}')"></#if>{{data.${item.columnName}}}<#if (item_index == 1)></a></#if></td>
         </#if>
     </#list>
 </#if>
@@ -148,7 +148,7 @@
         <div class="tpl-table-black-operation">
 
             <th:block sec:authorize="hasPermission('$everyone','${premName}_EDIT')">
-                <a href="javascript:;" onclick="routingPage('/${mapping}/edit/{{data.id}}','编辑${description}')">
+                <a href="javascript:;" onclick="routingPage('/${mapping}/edit/{{data.id}}')">
                     <i class="am-icon-pencil"></i> 编辑
                 </a>
             </th:block>

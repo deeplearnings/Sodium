@@ -170,3 +170,15 @@
 .hidden{
     display: none;
 }
+
+.theme-black .child-menu-active{
+    /*background: #232829;*/
+    color: #1CA2CE;
+    /*border-left: #1CA2CE 3px solid!important;*/
+}
+
+.theme-white .child-menu-active{
+    /*background: #f2f6f9;*/
+    color: #3bb4f2;
+    /*border-left: #3bb4f2 3px solid!important;*/
+}

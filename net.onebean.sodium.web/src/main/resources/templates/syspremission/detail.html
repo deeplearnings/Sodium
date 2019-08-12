@@ -133,7 +133,7 @@
                                                 <th:block
                                                         sec:authorize="hasPermission('$everyone','PERM_PREMISSION_EDIT')">
                                                     <button type="button" class="am-btn am-btn-warning"
-                                                            th:onclick="'routingPage(\'/syspremission/edit/'+${entity.id}+'\',\'编辑权限\')'"
+                                                            th:onclick="'routingPage(\'/syspremission/edit/'+${entity.id}+'\')'"
                                                             th:if="${view}">编辑
                                                     </button>
                                                 </th:block>
@@ -258,7 +258,7 @@
                 var param = $('#DataFrom').serializeJson();
                 var url = "/syspremission/save";
                 var completeHandler = function (data) {
-                    routingPage('/syspremission/preview/', '权限管理');
+                    routingPage('/syspremission/preview/');
                 };
                 doPost(url, param, completeHandler)
             },

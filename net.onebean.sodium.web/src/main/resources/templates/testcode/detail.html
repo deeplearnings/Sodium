@@ -82,7 +82,7 @@
                                                 </th:block>
 
                                                 <th:block sec:authorize="hasPermission('$everyone','PERM_DWD_SAVE')">
-                                                    <button type="button" class="am-btn am-btn-warning" th:onclick="'routingPage(\'/sysuser/edit/'+${entity.id}+'\',\''+编辑+'\')'" th:if="${view}">编辑</button>
+                                                    <button type="button" class="am-btn am-btn-warning" th:onclick="'routingPage(\'/sysuser/edit/'+${entity.id}+'\')'" th:if="${view}">编辑</button>
                                                 </th:block>
                                                 <button type="button" class="am-btn am-btn-danger" onClick="routingPage('/testcode/preview/')">返回</button>
                                             </div>
@@ -147,7 +147,7 @@
                 var param = $('#DataFrom').serializeJson();
                 var url = "/testcode/save";
                 var completeHandler = function (data) {
-                    routingPage('/testcode/preview/','阿斯顿撒多');
+                    routingPage('/testcode/preview/');
                 };
                 doPost(url,param,completeHandler);
             }

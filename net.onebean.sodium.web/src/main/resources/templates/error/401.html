@@ -12,7 +12,7 @@
                 <div class="tpl-error-title-info">Logon Failure</div>
                 <div class="tpl-page-state-content tpl-error-content">
                     <p>老铁登陆失效或登陆失败,没关系,点击下方按钮,只不过是重头再来!</p>
-                    <button type="button" class="am-btn am-btn-secondary am-radius tpl-error-btn" th:onclick="'javascript:goUrl(\''+${ctx}+'/login\')'">点击重新登录</button></div>
+                    <button type="button" class="am-btn am-btn-secondary am-radius tpl-error-btn" th:onclick="'javascript:routingPage(\''+${ctx}+'/login\')'">点击重新登录</button></div>
             </div>
         </div>
     </div>

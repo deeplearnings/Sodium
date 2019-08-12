@@ -63,7 +63,7 @@
                                         <div class="am-btn-toolbar">
                                             <div class="am-btn-group am-btn-group-xs">
                                                 <th:block sec:authorize="hasPermission('$everyone','PERM_DWD_ADD')">
-                                                    <button type="button" class="am-btn am-btn-default am-btn-success" onclick="routingPage('/testcode/add','新增阿斯顿撒多')"><span class="am-icon-plus"></span> 新增</button>
+                                                    <button type="button" class="am-btn am-btn-default am-btn-success" onclick="routingPage('/testcode/add')"><span class="am-icon-plus"></span> 新增</button>
                                                 </th:block>
                                                 <button type="button" class="am-btn am-btn-default am-btn-secondary query-button"><span class="am-icon-search"></span> 查询</button>
                                                 <button type="button"  class="am-btn am-btn-default am-btn-warning reset-button"><span class="am-icon-archive"></span> 重置</button>
@@ -127,7 +127,7 @@
     {{each $data data}}
     <tr  class={{if $index%2==0}} "gradeX" {{else}} "even gradeC" {{/if}} >
             <td>{{data.money}}</td>
-            <td><a href="javascript:;" onclick="routingPage('/testcode/view/{{data.id}}','查看阿斯顿撒多')">{{data.realName}}</a></td>
+            <td><a href="javascript:;" onclick="routingPage('/testcode/view/{{data.id}}')">{{data.realName}}</a></td>
             <td>{{data.endTime}}</td>
             <td>{{data.orgId}}</td>
             <td>{{data.pid}}</td>
@@ -136,7 +136,7 @@
         <div class="tpl-table-black-operation">
 
             <th:block sec:authorize="hasPermission('$everyone','PERM_DWD_EDIT')">
-                <a href="javascript:;" onclick="routingPage('/testcode/edit/{{data.id}}','编辑阿斯顿撒多')">
+                <a href="javascript:;" onclick="routingPage('/testcode/edit/{{data.id}}')">
                     <i class="am-icon-pencil"></i> 编辑
                 </a>
             </th:block>

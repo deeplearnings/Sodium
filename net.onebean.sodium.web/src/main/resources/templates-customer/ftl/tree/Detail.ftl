@@ -64,7 +64,7 @@
                                                 </th:block>
 
                                                 <th:block sec:authorize="hasPermission('$everyone','PERM_ORG_EDIT')">
-                                                    <button type="button" class="am-btn am-btn-warning" th:onclick="'routingPage(\'/${mapping}/edit/'+${r"${identity.id"}+'\',\'编辑机构\')'" th:if="${r"${view"}">编辑</button>
+                                                    <button type="button" class="am-btn am-btn-warning" th:onclick="'routingPage(\'/${mapping}/edit/'+${r"${identity.id"}+'\')'" th:if="${r"${view"}">编辑</button>
                                                 </th:block>
 
                                                 <button type="button" class="am-btn am-btn-danger" onClick="routingPage('/${mapping}/preview/')">返回</button>
@@ -117,7 +117,7 @@
                 var param = $('#DataFrom').serializeJson();
                 var url = "/${mapping}/save";
                 var completeHandler = function (data) {
-                    routingPage('/${mapping}/preview/','角色管理');
+                    routingPage('/${mapping}/preview/');
                 };
                 doPost(url,param,completeHandler)
             }

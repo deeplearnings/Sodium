@@ -89,7 +89,7 @@
 
                                                 <th:block sec:authorize="hasPermission('$everyone','PERM_ORG_EDIT')">
                                                     <button type="button" class="am-btn am-btn-warning"
-                                                            th:onclick="'routingPage(\'/sysorg/edit/'+${entity.id}+'\',\'编辑机构\')'"
+                                                            th:onclick="'routingPage(\'/sysorg/edit/'+${entity.id}+'\')'"
                                                             th:if="${view}">编辑
                                                     </button>
                                                 </th:block>
@@ -146,7 +146,7 @@
                 var param = $('#DataFrom').serializeJson();
                 var url = "/sysorg/save";
                 var completeHandler = function (data) {
-                    routingPage('/sysorg/preview/', '角色管理');
+                    routingPage('/sysorg/preview/');
                 };
                 doPost(url, param, completeHandler)
             }

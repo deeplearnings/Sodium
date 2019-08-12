@@ -70,7 +70,7 @@
                                         <div class="am-btn-toolbar">
                                             <div class="am-btn-group am-btn-group-xs">
                                                 <th:block sec:authorize="hasPermission('$everyone','PERM_USER_ADD')">
-                                                    <button type="button" class="am-btn am-btn-default am-btn-success" onclick="routingPage('/sysuser/add','新增用户')"><span class="am-icon-plus"></span> 新增</button>
+                                                    <button type="button" class="am-btn am-btn-default am-btn-success" onclick="routingPage('/sysuser/add')"><span class="am-icon-plus"></span> 新增</button>
                                                 </th:block>
                                                 <button type="button" class="am-btn am-btn-default am-btn-secondary query-button"><span class="am-icon-search"></span> 查询</button>
                                                 <button type="button"  class="am-btn am-btn-default am-btn-warning reset-button"><span class="am-icon-archive"></span> 重置</button>
@@ -154,7 +154,7 @@
 <script id="tpl-sysuser" type="text/html">
     {{each $data data}}
     <tr  class={{if $index%2==0}} "gradeX" {{else}} "even gradeC" {{/if}} >
-    <td> <a href="javascript:;" onclick="routingPage('/sysuser/view/{{data.id}}','查看用户')">{{data.username}}</a> </td>
+    <td> <a href="javascript:;" onclick="routingPage('/sysuser/view/{{data.id}}')">{{data.username}}</a> </td>
     <td>{{data.realName}}</td>
     <td>{{data.email}}</td>
     <td>{{data.number}}</td>
@@ -168,7 +168,7 @@
 
             <th:block sec:authorize="hasPermission('$everyone','PERM_USER_EDIT')">
                 {{if userType != 'root' && $data.currentLoginUserId != data.id}}
-                <a href="javascript:;" onclick="routingPage('/sysuser/edit/{{data.id}}','编辑用户')">
+                <a href="javascript:;" onclick="routingPage('/sysuser/edit/{{data.id}}')">
                     <i class="am-icon-pencil"></i> 编辑
                 </a>
                 {{/if}}

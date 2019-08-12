@@ -24,7 +24,7 @@
                                         <div class="am-btn-toolbar">
                                             <div class="am-btn-group am-btn-group-xs">
                                                 <th:block sec:authorize="hasPermission('$everyone','PERM_ORG_ADD')">
-                                                    <button type="button" class="am-btn am-btn-default am-btn-success" onclick="routingPage('/${mapping}/add','新增机构')"><span class="am-icon-plus"></span> 新增</button>
+                                                    <button type="button" class="am-btn am-btn-default am-btn-success" onclick="routingPage('/${mapping}/add')"><span class="am-icon-plus"></span> 新增</button>
                                                 </th:block>
                                                 <button type="button" class="am-btn am-btn-default am-btn-secondary query-button"><span class="am-icon-search"></span> 刷新</button>
                                             </div>
@@ -94,13 +94,13 @@
             <i class="am-icon-file"></i>
         </a>
         {{/if}}
-        <a href="javascript:;" class="tree-span-title" onclick="routingPage('/${mapping}/view/{{data.id}}','查看机构')">{{data.title}}</a>
+        <a href="javascript:;" class="tree-span-title" onclick="routingPage('/${mapping}/view/{{data.id}}')">{{data.title}}</a>
     </td>
     <td>{{data.sort}}</td>
     <td>
         <div class="tpl-table-black-operation">
             <th:block sec:authorize="hasPermission('$everyone','PERM_ORG_ADD_CHILD')">
-                <a href="javascript:;" onclick="routingPage('/${mapping}/addchild?parentId={{data.id}}','添加下级机构')">
+                <a href="javascript:;" onclick="routingPage('/${mapping}/addchild?parentId={{data.id}}')">
                     <i class="am-icon-pencil"></i> 添加下级机构
                 </a>
             </th:block>
@@ -109,7 +109,7 @@
     <td>
         <div class="tpl-table-black-operation">
             <th:block sec:authorize="hasPermission('$everyone','PERM_ORG_EDIT')">
-                <a href="javascript:;" onclick="routingPage('/${mapping}/edit/{{data.id}}','编辑机构')">
+                <a href="javascript:;" onclick="routingPage('/${mapping}/edit/{{data.id}}')">
                     <i class="am-icon-pencil"></i> 编辑
                 </a>
             </th:block>
@@ -148,13 +148,13 @@
             <i class="am-icon-file"></i>
         </a>
         {{/if}}
-        <a href="javascript:;" class="tree-span-title" onclick="routingPage('/${mapping}/view/{{id}}','查看机构')">{{title}}</a>
+        <a href="javascript:;" class="tree-span-title" onclick="routingPage('/${mapping}/view/{{id}}')">{{title}}</a>
     </td>
     <td>{{sort}}</td>
     <td>
         <div class="tpl-table-black-operation">
             <th:block sec:authorize="hasPermission('$everyone','PERM_ORG_ADD_CHILD')">
-                <a href="javascript:;" onclick="routingPage('/${mapping}/addchild?parentId={{id}}','添加下级机构')">
+                <a href="javascript:;" onclick="routingPage('/${mapping}/addchild?parentId={{id}}')">
                     <i class="am-icon-pencil"></i> 添加下级机构
                 </a>
             </th:block>
@@ -163,7 +163,7 @@
     <td>
         <div class="tpl-table-black-operation">
             <th:block sec:authorize="hasPermission('$everyone','PERM_ORG_EDIT')">
-                <a href="javascript:;" onclick="routingPage('/${mapping}/edit/{{id}}','编辑机构')">
+                <a href="javascript:;" onclick="routingPage('/${mapping}/edit/{{id}}')">
                     <i class="am-icon-pencil"></i> 编辑
                 </a>
             </th:block>

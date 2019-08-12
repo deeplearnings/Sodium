@@ -677,6 +677,9 @@ ul.tpl-dropdown-content .tpl-dropdown-menu-messages-item .menu-messages-content 
 .theme-white .sidebar-nav-sub .sidebar-nav-link-logo {
   margin-left: 10px;
 }
+.theme-black .sidebar-nav-sub .sidebar-nav-link-logo {
+  margin-left: 10px;
+}
 .theme-white .tpl-header-search-box:hover,
 .theme-white .tpl-header-search-box:active .tpl-error-title {
   color: #848c90;
@@ -1217,6 +1220,9 @@ ul.tpl-dropdown-content .tpl-dropdown-menu-messages-item .menu-messages-content 
 .theme-white .sidebar-nav-link a {
   border-left: #fff 3px solid;
 }
+/*.theme-black .sidebar-nav-link a {*/
+/*border-left: #282d2f 3px solid;*/
+/*}*/
 .theme-white .sidebar-nav-link a:hover {
   background: #f2f6f9;
   color: #868E8E;
@@ -1864,6 +1870,8 @@ ul.tpl-dropdown-content .tpl-dropdown-menu-messages-item .menu-messages-content 
 }
 .theme-black .sidebar-nav-link a:hover {
   background: #232829;
+  color: #868E8E;
+  border-left: #1CA2CE 3px solid;
 }
 .theme-black .tpl-header-switch-button {
   background: #2f3638;
