@@ -123,7 +123,7 @@ public class UploadService {
     private String zipImage(String beforePath,String afterPath){
         File before = new File(beforePath);
         File after = new File(afterPath);
-        ImageUtil.zipImageFile(before,after,ImageUtil.getImgWidth(before), ImageUtil.getImgHeight(before));
+        ImageUtil.zipImageFileWithKeepOriginalSize(before,after,0.7f);
         if(before.exists() && before.isDirectory()){
             before.deleteOnExit();
         }
